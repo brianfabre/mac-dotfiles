@@ -28,7 +28,6 @@ Plug 'mattn/calendar-vim'                                   " calendar
 
 call plug#end()
 
-set termguicolors
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> LUA <==
@@ -38,13 +37,6 @@ lua require('plugin-config/treesitter')
 lua require('plugin-config/colorizer')
 lua require('plugin-config/dracula-nvim')
 lua require('leap').add_default_mappings()
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ==> COLORSCHEME <==
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-colorscheme dracula
-"colorscheme tokyonight-night
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -65,6 +57,9 @@ set termguicolors
 set conceallevel=2        " for markdown syntax
 set iskeyword+=-          " dash becomes part of word
 set linebreak             " doesnt split words
+set termguicolors
+set cursorline            " cursorline
+hi CursorLine term=bold guibg=gray25
 
 " enable indentation
 set breakindent
@@ -73,14 +68,24 @@ set breakindentopt=shift:2,min:40,sbr,list:-1
 " append '>>' to indent
 set showbreak=>>
 
-set cursorline                       " cursorline
-hi CursorLine term=bold guibg=gray25
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> OTHER SETTINGS <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" removes cursorline when in insert mode
 autocmd InsertLeave,WinEnter * set cursorline
 autocmd InsertEnter,WinLeave * set nocursorline
+
+" sets width when using 'gq'
+au BufRead,BufNewFile *.tex setlocal textwidth=100
+au BufRead,BufNewFile *.tex setlocal formatoptions-=t
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ==> COLORSCHEME <==
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+colorscheme dracula
+"colorscheme tokyonight-night
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -122,11 +127,6 @@ nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " type :Config to enter this init.vim
 command! Config execute ":e $MYVIMRC"
-" autoload after each save
-"augroup vimscript_source
-"  au!
-"  au BufWritePost,FileWritePost ~/.config/nvim/init.vim source <afile>
-"augroup END
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -134,13 +134,11 @@ command! Config execute ":e $MYVIMRC"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FZF
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
-"let g:fzf_layout = { 'down': '40%' }
 let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4"
 nnoremap <leader>ff <cmd>Files<cr>
 nnoremap <leader>fg <cmd>Rg<cr>
 nnoremap <leader>fc <cmd>History:<cr>
 nnoremap <leader>fb <cmd>BLines<cr>
-"inoremap <expr> <c-x><c-f> fzf#vim#complete#path('fd')
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
 
 
@@ -166,7 +164,6 @@ let g:formatdef_latexindent = '"latexindent -"'
 
 
 " vim-markdown
-"hi VimwikiHeader2 guifg=#FF0000 gui=bold,underline
 "hi htmlH1 guifg=#FFFF00 gui=bold,underline
 let g:markdown_fenced_languages = ['python', 'r']
 let g:vim_markdown_autowrite = 1                  " auto-saves when entering link
@@ -224,8 +221,4 @@ command! -bang -nargs=* TwTodo
             \ call fzf#vim#grep( 
             \ 'rg --column --no-heading --smart-case -- '.shellescape('- \[[ ]\] .+'), 1, <bang>0)
 "command! -bang -nargs=* TwTodo call fzf#vim#grep( join(['rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape('^- \[[ X]\] .+'), '~/wiki']), 1, fzf#vim#with_preview(), <bang>0)
-
-
-au BufRead,BufNewFile *.tex setlocal textwidth=100
-au BufRead,BufNewFile *.tex setlocal formatoptions-=t
 
