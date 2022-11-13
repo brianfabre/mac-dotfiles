@@ -40,5 +40,7 @@ dracula.setup({
     htmlItalic = { fg = dracula.colors().purple, italic = true, },
     htmlLink = { fg = dracula.colors().orange, underline = true, },
     htmlBoldItalic = { fg = dracula.colors().green, bold = true, italic = true },
+    ['@string.regex'] = { fg = dracula.colors().bright_white, },
+
   },
 })
