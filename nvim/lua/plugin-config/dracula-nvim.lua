@@ -30,7 +30,6 @@ dracula.setup({
     -- NonText = { fg = dracula.colors().white }, -- set NonText fg to white
     -- NvimTreeIndentMarker = { link = "NonText" }, -- link to NonText highlight
     -- Nothing = {} -- clear highlight of Nothing
-    htmlH1 = { fg = dracula.colors().bright_white, underline = true, bold = true },
     htmlH1 = { fg = dracula.colors().cyan, underline = true, bold = true },
     htmlH2 = { fg = dracula.colors().pink, underline = true, bold = true },
     htmlH3 = { fg = dracula.colors().green, underline = true, bold = true },
