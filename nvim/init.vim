@@ -7,11 +7,15 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'Mofiqul/dracula.nvim'
     Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+    Plug 'letorbi/vim-colors-modern-borland'
     " snippets
     Plug 'SirVer/ultisnips'
     " fzf
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
     " nvim-tree
     Plug 'kyazdani42/nvim-tree.lua'
     Plug 'kyazdani42/nvim-web-devicons'
@@ -20,8 +24,8 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'godlygeek/tabular'
     Plug 'mzlogin/vim-markdown-toc'
     " vim-airline
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+    " Plug 'vim-airline/vim-airline'
+    " Plug 'vim-airline/vim-airline-themes'
     " vim-wiki
     Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
     Plug 'michal-h21/vim-zettel'
@@ -29,11 +33,12 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'mattn/calendar-vim'
     " programming
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/playground'
     Plug 'tpope/vim-commentary'
-    Plug 'jiangmiao/auto-pairs'
     Plug 'dense-analysis/ale'
-    " python/R
+    " python/R/stata
     Plug 'jupyter-vim/jupyter-vim'
+    Plug 'poliquin/stata-vim'
     Plug 'jalvesaq/Nvim-R'
     " latex
     Plug 'lervag/vimtex'
@@ -43,13 +48,15 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'quangnguyen30192/cmp-nvim-ultisnips'
     Plug 'hrsh7th/cmp-omni'
     Plug 'hrsh7th/cmp-cmdline'
+    " text editing
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'svermeulen/vim-subversive'
+    Plug 'AckslD/nvim-neoclip.lua'
     " other
     Plug 'dstein64/vim-startuptime'
     Plug 'mhinz/vim-startify'
     Plug 'norcalli/nvim-colorizer.lua'
-    Plug 'svermeulen/vim-subversive'
-    Plug 'luukvbaal/nnn.nvim'
-    Plug 'poliquin/stata-vim'
+
     
 call plug#end()
 
@@ -57,38 +64,42 @@ call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> SETTINGS <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set number
-set relativenumber
+set number relativenumber
 set mouse=a
-set scrolloff=4                               " leaves space when scrolling
+set scrolloff=4                                " leaves space when scrolling
 set nohlsearch
-set incsearch                                 " search as characters are entered
-set tabstop=4                                 " sets tab spacing
-set shiftwidth=4                              " sets tab spacing
-set expandtab                                 " sets tab spacing
+set incsearch                                  " search as characters are entered
+set tabstop=4                                  " sets tab spacing
+set shiftwidth=4                               " sets tab spacing
+set expandtab                                  " sets tab spacing
 set autoindent
-set ignorecase                                " case-insensitive search
-set smartcase                                 " case-insensitive search
-set conceallevel=2                            " for markdown syntax
-set iskeyword+=-                              " dash becomes part of word
-set linebreak                                 " doesnt split words
+set ignorecase                                 " case-insensitive search
+set smartcase                                  " case-insensitive search
+set conceallevel=2                             " for markdown syntax
+set linebreak                                  " doesnt split words
 set termguicolors
-set breakindent                               " enable indentation
-set breakindentopt=shift:2,min:40,sbr,list:-1 " ident by an additional 2 characters on wrapped lines,
-                                              " when line >= 40 characters, put 'showbreak' at start of line
-set showbreak=>>                              " append '>>' to indent
+set breakindent                                " enable indentation
+set breakindentopt=shift:4,min:40,sbr,list:-1  " indent by an additional 4 characters on wrapped lines,
+                                               " when line >= 40 characters, put 'showbreak' at start of line
+set showbreak=>                                " append '>>' to indent
 set noswapfile
 set completeopt=menu,menuone,noselect
 set nocursorline
-" set cursorline                                " cursorline
-" hi CursorLine term=bold guibg=gray25
+                                               " set cursorline                                               " cursorline
+                                               " hi CursorLine term=bold guibg=gray25
+set laststatus=0                               " hides status line
+set norelativenumber
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ==> OTHER SETTINGS <==
+" ==> AUTOCOMMANDS <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " removes cursorline when in insert mode
 autocmd InsertLeave,WinEnter * set cursorline
 autocmd InsertEnter,WinLeave * set nocursorline
+
+" no relative line number in insert mode
+autocmd InsertEnter,WinLeave * if &number | set nornu | endif
+autocmd InsertLeave,WinEnter * if &number | set rnu | endif
 
 " sets width when using 'gq'
 au BufRead,BufNewFile *.tex setlocal textwidth=100
@@ -103,6 +114,19 @@ autocmd FileType python map <buffer> <leader>pp :w<CR>:ter python3 %<CR>
 " restart kitty when saving conf file
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ==> FUNCTIONS <==
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" check save status
+nnoremap <leader>sa :call SaveStatus()<CR>
+function! SaveStatus()
+  if &modified
+    echom "Unsaved"
+  else
+    echom "Saved"
+  endif
+endfunc
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> LUA <==
@@ -114,13 +138,16 @@ lua require('plugin-config/dracula-nvim')
 lua require('plugin-config/nvim-cmp')
 lua require('plugin-config/tokyonight')
 lua require('plugin-config/catppuccin')
+lua require('plugin-config/telescope')
+lua require('plugin-config/neoclip')
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> COLORSCHEME <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-colorscheme tokyonight-night
-" colorscheme dracula
+" colorscheme tokyonight-night
+colorscheme dracula
+" colorscheme borland
 " colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
 
 " makes neovim/nvimtree transparent
@@ -129,14 +156,9 @@ augroup user_colors
   autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
   autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
   autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
-  " autocmd ColorScheme * highlight LineNr guibg=none ctermbg=none
-  " autocmd ColorScheme * highlight Folded guibg=none ctermbg=none
-  " autocmd ColorScheme * highlight SpecialKey guibg=none ctermbg=none
-  " autocmd ColorScheme * highlight VertSplit guibg=none ctermbg=none
-  " autocmd ColorScheme * highlight SignColumn guibg=none ctermbg=none
-  " autocmd ColorScheme * highlight EndOfBuffer guibg=none ctermbg=none
-  " autocmd ColorScheme * highlight StatusLine   guibg=NONE ctermbg=NONE
+  autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
 augroup END
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> KEYBINDING <==
@@ -156,6 +178,8 @@ nnoremap <Leader>qa :%bd\|e#<CR>:bnext<CR>:bd<CR>
 " move line/down
 nnoremap <S-Up> :m-2<CR>
 nnoremap <S-Down> :m+<CR>
+vnoremap <S-Up> :m '<-2<CR>gv=gv
+vnoremap <S-Down> :m '>+1<CR>gv=gv
 
 " copy to clipboard
 noremap <Leader>y "*y
@@ -173,8 +197,13 @@ nnoremap <Leader>zz :qa!<CR>
 nnoremap <leader>fp :let @*=expand("%:p")<CR>
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
+" always centers after c-d/c-u
 nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
+
+" move within wrapped lines
+nnoremap j gj
+nnoremap k gk
 
 " faster in/outdenting
 inoremap << <c-d>
@@ -197,7 +226,7 @@ command! Config execute ":e $MYVIMRC"
 " ale
 """"""""""""""
 let g:ale_linters = {'python': ['flake8', 'pyflakes'], 'r': ['lintr']}
-let g:ale_fixers = {'python': ['black'], 'r': ['styler']}
+let g:ale_fixers = {'python': ['black'], 'r': ['styler'], 'tex': ['latexindent'], 'lua': ['stylua']}
 let g:ale_fix_on_save = 1
 let g:ale_completion_enabled = 1
 let g:ale_disable_lsp = 0
@@ -207,33 +236,26 @@ let g:ale_disable_lsp = 0
 " autopairs
 """"""""""""""
 let g:AutoPairsShortcutFastWrap = '<c-e>'
-let g:AutoPairsShortcutJump = '<c-n>'
 
-
-
-""""""""""""""
-" floaterm
-""""""""""""""
-let g:floaterm_width = 0.8
-let g:floaterm_height = 0.8
-let g:floaterm_keymap_toggle = '<F12>'
 
 
 """"""""""""""
 " FZF
 """"""""""""""
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
-let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --margin=1,4"
-nnoremap <leader>ff <cmd>Files<cr>
-nnoremap <leader>fg <cmd>Rg<cr>
-nnoremap <leader>fc <cmd>History:<cr>
-nnoremap <leader>fb <cmd>BLines<cr>
-inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files --no-ignore-vcs')
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'border': 'no' } }
+" let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --margin=1,4"
+let $FZF_DEFAULT_OPTS="--ansi"
+
+" nnoremap <leader>ff <cmd>Files<cr>
+" nnoremap <leader>fg <cmd>Rg<cr>
+" nnoremap <leader>fc <cmd>History:<cr>
+" nnoremap <leader>fb <cmd>BLines<cr>
+
 "!{node_modules/*,.git/*}"
 " -g "!{*,.csv}"
 command! -bang -nargs=* Rg
       \   call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --glob "!*.{csv,txt}" --color=always -g "*.{md,R,do,py,lua,vim}" --smart-case -- '.shellescape(<q-args>), 1,
+      \   'rg --column --line-number --no-heading --glob "!*.{csv,txt}" --color=always -g "*.{md,R,do,py,lua,vim,tex}" --smart-case -- '.shellescape(<q-args>), 1,
       \   fzf#vim#with_preview(), <bang>0)
 
 
@@ -280,6 +302,12 @@ nnoremap <silent> <leader>v :NvimTreeToggle<cr>
 
 
 """"""""""""""
+" startify
+""""""""""""""
+nnoremap <leader>ss :Startify<cr>
+
+
+""""""""""""""
 " ulti-snips
 """"""""""""""
 let g:UltiSnipsExpandTrigger=";;"
@@ -290,13 +318,13 @@ let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/UltiSnips']
 """"""""""""""
 " vim-airline
 """"""""""""""
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline_theme='molokai'
-let g:airline_section_c='%F'
-let g:airline_section_z='line:%l/%L col:%c'
-let g:airline_section_y=airline#section#create_right(['%{strftime("%Y/%m/%d %H:%M:%S")}'])
-let g:airline_section_b = '%t'
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#formatter = 'unique_tail'
+" let g:airline_theme='molokai'
+" let g:airline_section_c='%F'
+" let g:airline_section_z='line:%l/%L col:%c'
+" let g:airline_section_y=airline#section#create_right(['%{strftime("%Y/%m/%d %H:%M:%S")}'])
+" let g:airline_section_b = '%t'
 
 
 """"""""""""""
@@ -372,6 +400,9 @@ augroup END
 let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
 "autocmd BufNewFile */wiki/diary/[0-9]*.md :read ~/Documents/wiki/template_diary.tpl
 
+" complete file path for external files
+inoremap <expr> <c-f> fzf#vim#complete#path('rg --files --no-ignore-vcs')
+
 
 """"""""""""""
 " vim-zettel
@@ -407,14 +438,11 @@ command! -bang -nargs=* Titles
             \ 'rg --column --no-heading --color=always --smart-case --glob "!*.tpl"  -- '.shellescape('title:.*'), 1, 1)
 
 
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>fc <cmd>lua require('telescope.builtin').command_history()<cr>
+nnoremap <leader>fy :Telescope neoclip<cr>
 
 
-
-" shows the highlight group under cursor, e.g. htmlH1
-function! SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
-nmap <leader>gm :call SynStack()<CR>

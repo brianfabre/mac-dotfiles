@@ -99,9 +99,6 @@ require("tokyonight").setup({
     hl.htmlH1 = { fg = c.teal, underline = true, bold = true }
     hl.htmlH2 = { fg = c.blue, underline = true, bold = true }
     hl.htmlH3 = { fg = c.green, underline = true, bold = true }
-    -- hl.htmlH4 = { fg = dracula.colors().orange, underline = true, bold = true },
-    -- hl.htmlH5 = { fg = dracula.colors().purple, underline = true, bold = true },
-    -- hl.htmlH6 = { fg = dracula.colors().yellow, underline = true, bold = true },
     hl.htmlBold = { fg = c.red, bold = true }
     hl.htmlItalic = { fg = c.magenta, italic = true, }
     hl.htmlBoldItalic = { fg = c.yellow, bold = true, italic = true }

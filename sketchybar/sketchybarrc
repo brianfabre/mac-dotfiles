@@ -1,7 +1,14 @@
 PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+TEXT_FONT="FiraCode Nerd Font"
+# TEXT_FONT="Liga SFMono Nerd Font"
+PADDING=20
+
+source "$HOME/.config/sketchybar/colors.sh" # Loads all defined colors
 
 
 #                          ﱦ 齃     ﮂ  ﵁ 爵        ﭵ     ﱦ  ﰊ 異 ﴱ אַ  'Y⃣'
+
+
 
 ############## BAR ##############
 sketchybar --bar height=36 \
@@ -18,87 +25,128 @@ sketchybar --bar color=0xcc24273a
 
 ############## GLOBAL DEFAULTS ##############
 sketchybar --default updates=when_shown \
-                     icon.font="FiraCode Nerd Font:Bold:14.0" \
+                     icon.font="$TEXT_FONT:Bold:14.0" \
                      icon.color=0xffECEFF4 \
                      icon.highlight_color=0xffE48FA8 \
-                     label.font="FiraCode Nerd Font:Bold:14.0" \
-                     label.color=0xffECEFF4 \
+                     label.font="$TEXT_FONT:Medium:14.0" \
                      background.corner_radius=5 \
                      background.height=24
+sketchybar --default label.color=0xffcad3f5
 
 sketchybar --add item logo left \
            --set logo icon= \
-                 icon.color=0xff010101 \
-                 icon.padding_left=14 \
-                 icon.padding_right=14 \
-                 background.color=0xffA5E0D5 \
+                 icon.color=0xffA5E0D5 \
+                 icon.padding_left=12 \
+                 icon.padding_right=12 \
+                 icon.font="$TEXT_FONT:Bold:18.0" \
                  background.padding_right=8 \
                  background.padding_left=4 \
                  click_script="sketchybar --update"
 
-SPACE_ICONS=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10")
-SPACES=()
 
+SPACE_ICONS=("1" "2" "3" "4" "5" "6" "7" "8")
+SPACE_CLICK_SCRIPT="yabai -m space --focus \$SID 2>/dev/null"
+
+sid=0
 for i in "${!SPACE_ICONS[@]}"
 do
   sid=$(($i+1))
-  SPACES+=(space.$sid)
-  sketchybar --add space space.$sid left \
-             --set space.$sid associated_space=$sid \
-                              icon=${SPACE_ICONS[i]} \
-                              icon.padding_left=16 \
-                              icon.padding_right=16 \
-                              icon.highlight_color=0xffE48FA8 \
-                              background.padding_left=-4 \
-                              background.padding_right=-4 \
-                              background.color=0xff3C3E4F \
-                              background.drawing=on \
-                              label.drawing=off \
-                              click_script="yabai -m space --focus $sid"
+  sketchybar --add space      space.$sid left                      \
+             --set space.$sid associated_space=$sid                \
+                              icon=${SPACE_ICONS[i]}               \
+                              icon.padding_left=22                 \
+                              icon.padding_right=22                \
+                              icon.highlight_color=$RED            \
+                              background.padding_left=-4           \
+                              background.padding_right=-4          \
+                              background.color=$BACKGROUND_1       \
+                              background.drawing=on                \
+                              click_script="$SPACE_CLICK_SCRIPT"
+
+
 done
 
-sketchybar --add item space_separator left \
-           --set space_separator icon= \
-                                 background.padding_left=23 \
-                                 background.padding_right=23 \
-                                 label.drawing=off \
-                                 icon.color=0xff92B3F5
+sketchybar   --add item       separator left                          \
+             --set separator  icon=                                  \
+                              background.padding_left=26              \
+                              background.padding_right=15             \
+                              label.drawing=off                       \
+                              icon.color=$WHITE
 
 sketchybar --add item window_title left \
            --set window_title    script="~/.config/sketchybar/plugins/window_title.sh" \
                                  icon.drawing=off \
-                                 label.color=0xffb7bdf4 \
+                                 label.color=$ORANGE \
            --subscribe window_title front_app_switched
+
+
+
 
 ####### RIGHT
 # ------- Time ----------
 sketchybar --add item time right
-# sketchybar --set time label.font="$TEXT_FONT"
 sketchybar --set time script='sketchybar --set time label="$(date "+%I:%M%p")"'
-sketchybar --set time label.padding_left=10
 sketchybar --set time label.padding_right=15
 sketchybar --set time update_freq=2
 sketchybar --set time label.color=0xffcad3f5
+sketchybar --set time label.font="$TEXT_FONT:Bold:14.0"
 
 
 # ------- Date ----------
 sketchybar --add item date right
-# sketchybar --set date label.font="$TEXT_FONT"
-sketchybar --set date script='sketchybar --set date label="$(date "+%m/%d/%y (%a)")"'
-sketchybar --set date label.padding_left=10
-sketchybar --set date label.padding_right=10
-sketchybar --set date update_freq=4
+sketchybar --set date script='sketchybar --set date label="[$(date "+%b %d, %a")]"'
+sketchybar --set date label.font="$TEXT_FONT:Bold:14.0"
+sketchybar --set date label.padding_right=$PADDING
 sketchybar --set date label.color=0xffcad3f5
+sketchybar --set date update_freq=60
 
+# ------- Battery ----------
 sketchybar --add item battery right                      \
            --set battery script="$PLUGIN_DIR/battery.sh" \
                          update_freq=10                  \
-sketchybar --set battery label.padding_left=10
-sketchybar --set battery label.padding_right=10
+sketchybar --set battery label.padding_left=6
+sketchybar --set battery label.padding_right=$PADDING
 sketchybar --set battery label.color=0xffcad3f5
+sketchybar --set battery label.font="$TEXT_FONT:Bold:14"
 sketchybar --set battery icon.color=0xffcad3f5
-           --subscribe battery system_woke
+sketchybar --subscribe battery system_woke
 
-sketchybar --update
+# ------- Volume ----------
+sketchybar --add item sound right     
+sketchybar --set sound update_freq=1              
+sketchybar --set sound label.padding_left=6
+sketchybar --set sound label.padding_right=$PADDING
+sketchybar --set sound label.color=0xffcad3f5
+sketchybar --set sound label.font="$TEXT_FONT:Bold:14"
+sketchybar --set sound icon.color=0xffcad3f5      
+sketchybar --set sound script="$PLUGIN_DIR/sound.sh"
+
+# ------- RAM Usage ----------
+RAM_SCRIPT='sketchybar -m --set ram label="RAM: $(memory_pressure | grep "System-wide memory free percentage:" | awk "{ print 100-\$5 }")%"'
+sketchybar --add item ram right
+sketchybar --set ram label.font="$TEXT_FONT:Bold:14"
+sketchybar --set ram label.padding_right=$PADDING
+sketchybar --set ram script="$RAM_SCRIPT"
+sketchybar --set ram update_freq=2
+
+# ------- CPU Usage ----------
+CPU_SCRIPT='
+CORE_COUNT=$(sysctl -n machdep.cpu.thread_count)
+CPU_INFO=$(ps -eo pcpu,user)
+CPU_SYS=$(echo "$CPU_INFO" | sed "s/[^ 0-9\.]//g" | awk "{sum+=\$1} END {print sum/(100.0 * $CORE_COUNT)}")
+CPU_USE=$(printf "%02.0f"\\n "$(echo "$CPU_SYS*100"  | bc -l)")
+sketchybar --set cpu label="CPU: ${CPU_USE}%"
+'
+
+sketchybar --add item cpu right
+sketchybar --set cpu label.font="$TEXT_FONT:Bold:14"
+sketchybar --set cpu script="$CPU_SCRIPT"
+sketchybar --set cpu update_freq=2
+sketchybar --set cpu label.padding_right=$PADDING
+
+
+
+sketchybar   --update
 
 echo "sketchybar configuration loaded.."
+

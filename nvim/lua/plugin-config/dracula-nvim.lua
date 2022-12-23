@@ -5,7 +5,8 @@ dracula.setup({
     bg = "#282A36",
     fg = "#F8F8F2",
     selection = "#44475A",
-    comment = "#6272A4",
+    -- comment = "#6272A4",
+    comment = "#737aa2",
     red = "#FF5555",
     orange = "#FFB86C",
     yellow = "#F1FA8C",
@@ -25,6 +26,8 @@ dracula.setup({
     gutter_fg = "#4B5263",
     nontext = "#3B4048",
   },
+  -- set italic comment
+  italic_comment = true, -- default false
   overrides = {
     -- Examples
     -- NonText = { fg = dracula.colors().white }, -- set NonText fg to white
@@ -39,7 +42,8 @@ dracula.setup({
     htmlItalic = { fg = dracula.colors().purple, italic = true, },
     htmlLink = { fg = dracula.colors().orange, underline = true, },
     htmlBoldItalic = { fg = dracula.colors().green, bold = true, italic = true },
-    ['@string.regex'] = { fg = dracula.colors().bright_white, },
+    -- ['@comment'] = { italic = true },
+    -- Comment = { italic = true }
 
   },
 })

@@ -97,12 +97,13 @@ cmp.setup({
       -- { name = 'omni' },
     }),
     -- this disables completion when cursor in comment
-    enabled = function()
-        local context = require("cmp.config.context")
-        return not (
-          context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
-        )
-    end
+    -- currently disabled to test for errors
+    -- enabled = function()
+    --     local context = require("cmp.config.context")
+    --     return not (
+    --       context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
+    --     )
+    -- end
   })
 
 
