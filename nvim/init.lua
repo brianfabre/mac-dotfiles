@@ -35,9 +35,8 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'mzlogin/vim-markdown-toc'
     " vim-wiki
     Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
-    " Plug 'renerocksai/telekasten.nvim'
     Plug 'michal-h21/vim-zettel'
-    Plug 'michal-h21/vimwiki-sync'
+    " Plug 'michal-h21/vimwiki-sync'
     " Plug 'mattn/calendar-vim'
     " programming
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -118,7 +117,7 @@ command! Config execute ":e $MYVIMRC"
 """"""""""""""
 """ ale
 """"""""""""""
-let g:ale_linters = {'python': ['flake8', 'pyflakes'], 'r': ['lintr']}
+let g:ale_linters = {'python': ['flake8', 'pyflakes'], 'r': ['lintr'], 'tex': []}
 let g:ale_fixers = {'python': ['black'], 'r': ['styler'], 'tex': ['latexindent'], 'lua': ['stylua']}
 let g:ale_fix_on_save = 1
 let g:ale_completion_enabled = 1
@@ -248,8 +247,6 @@ let g:vmt_fence_closing_text = '/TOC'
 nmap s <plug>(SubversiveSubstitute)
 nmap ss <plug>(SubversiveSubstituteLine)
 nmap S <plug>(SubversiveSubstituteToEndOfLine)
-
-
 
 """"""""""""""
 """ vimtex
@@ -467,7 +464,12 @@ vim.cmd('colorscheme dracula')
 -- vim.cmd('catppuccin')
 -- }}}
 
--- autocommands {{{
+-- highlights {{{
+vim.api.nvim_set_hl(0, 'Folded', { fg = '#A9A9A9' })
+vim.api.nvim_set_hl(0, 'Visual', { fg = '#000000', bg = '#A9A9A9' })
+-- }}}
+
+-- autocommands / commands {{{
 vim.cmd([[
 " removes cursorline when in insert mode
 autocmd InsertLeave,WinEnter * set cursorline
@@ -485,8 +487,7 @@ autocmd FileType python map <buffer> <leader>pp :w<CR>:ter python3 %<CR>
 " restart kitty when saving conf file
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
 ]])
--- }}}
-
-vim.api.nvim_set_hl(0, 'Folded', { fg = '#A9A9A9' })
 
 vim.cmd("command! -nargs=+ NewGrep execute 'silent grep! <args>' | copen")
+
+-- }}}
