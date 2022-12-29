@@ -1,3 +1,3 @@
 require("neoclip").setup({
-	enable_persistent_history = true,
+	-- enable_persistent_history = true,
 })

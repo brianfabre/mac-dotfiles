@@ -1,11 +1,11 @@
-local actions = require("telescope.actions")
-require("telescope").setup({
+local actions = require('telescope.actions')
+require('telescope').setup({
 	defaults = {
-		file_ignore_patterns = { "%.csv", "%.txt", "%.xml" },
+		file_ignore_patterns = { '%.csv', '%.txt', '%.xml' },
 		mappings = {
 			i = {
-				["<C-p>"] = require("telescope.actions.layout").toggle_preview,
-				["<esc>"] = actions.close,
+				['<C-p>'] = require('telescope.actions.layout').toggle_preview,
+				['<esc>'] = actions.close,
 			},
 		},
 		preview = {
@@ -29,5 +29,11 @@ require("telescope").setup({
 	},
 })
 
-require("telescope").load_extension("fzf")
-require("telescope").load_extension("neoclip")
+require('telescope').load_extension('fzf')
+require('telescope').load_extension('neoclip')
+
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.current_buffer_fuzzy_find, {})
+vim.keymap.set('n', '<leader>fc', builtin.command_history, {})
