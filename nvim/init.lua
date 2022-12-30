@@ -69,6 +69,7 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'anuvyklack/pretty-fold.nvim'
     Plug 'kevinhwang91/nvim-bqf'
     Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+    "Plug 'rcarriga/nvim-notify'
     
 call plug#end()
 ]])
@@ -367,6 +368,8 @@ vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.cursorline = false
 vim.opt.laststatus = 0                                   -- hides status line
 vim.opt.foldmethod = 'marker'
+vim.formatoptions = 'tqj'                                -- removed 'c'
+vim.opt.iskeyword:append("-")
 -- stylua: ignore end
 -- }}}
 
@@ -436,6 +439,8 @@ map('n', '<leader>so', ':luafile %<CR>')
 map('n', '<leader>=', ':exe "resize +2"<CR>')
 map('n', '<leader>-', ':exe "resize -2"<CR>')
 
+map('n', '<leader>po', ':w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>')
+-- " autocmd FileType lua map <buffer> <leader>po :w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>
 -- }}}
 
 -- require lua{{{
@@ -453,7 +458,12 @@ require('plugin-config/nvim-comment-frame')
 require('plugin-config/pretty-fold')
 require('plugin-config/nvim-bqf')
 require('plugin-config/toggleterm')
+
 require('true-zen').setup({})
+-- require('notify').setup({
+-- 	stages = 'static',
+-- 	timeout = 2000,
+-- })
 -- }}}
 
 -- colorscheme{{{
@@ -484,8 +494,13 @@ au BufRead,BufNewFile *.tex setlocal formatoptions-=t
 autocmd TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=700 }
 " run python code
 autocmd FileType python map <buffer> <leader>pp :w<CR>:ter python3 %<CR>
+" run lua code
+autocmd FileType lua map <buffer> <leader>pp :w<CR>:!lua %<CR>
+" autocmd FileType lua map <buffer> <leader>po :w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>
 " restart kitty when saving conf file
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
+" iskeyword overwritten so putting it here
+autocmd BufRead, BufNewFile * set isk+=-
 ]])
 
 vim.cmd("command! -nargs=+ NewGrep execute 'silent grep! <args>' | copen")
