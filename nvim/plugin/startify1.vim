@@ -31,3 +31,4 @@ let g:startify_skiplist = [
 	            \ ]
 
 " let g:startify_custom_indices = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
+

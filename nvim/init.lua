@@ -5,8 +5,8 @@
 --//------------------------------------------//--
 
 -- leader {{{
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ','
+vim.g.mapleader = " "
+vim.g.maplocalleader = ","
 -- }}}
 
 -- plugins {{{
@@ -167,6 +167,8 @@ augroup jupytermap
     au FileType stata vnoremap <buffer> <silent> <localleader>sd :JupyterSendRange<CR>`>/^.<CR>
     au FileType stata nnoremap <buffer> <silent> <localleader>d :JupyterSendRange<CR>/^.<CR>
     au FileType stata nnoremap <buffer> <silent> <localleader>l :JupyterSendRange<CR>
+    au FileType stata nnoremap <buffer> <silent> <localleader>rv :!jupyter qtconsole &<CR>
+    au FileType stata nnoremap <buffer> <silent> <localleader>rf :e %<CR>
     au BufRead,BufNewFile *.do JupyterConnect
     " cycle through completion with tab
     " au FileType python inoremap <silent><expr> <Tab>
@@ -378,88 +380,89 @@ vim.opt.iskeyword:append("-")
 local function map(mode, lhs, rhs, opts)
 	local options = { noremap = true, silent = true }
 	if opts then
-		options = vim.tbl_extend('force', options, opts)
+		options = vim.tbl_extend("force", options, opts)
 	end
 	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
 -- move between panes to left/bottom/top/right
-map('n', '<C-h>', '<C-w>h')
-map('n', '<C-l>', '<C-w>l')
-map('n', '<C-j>', '<C-w>j')
-map('n', '<C-k>', '<C-w>k')
+map("n", "<C-h>", "<C-w>h")
+map("n", "<C-l>", "<C-w>l")
+map("n", "<C-j>", "<C-w>j")
+map("n", "<C-k>", "<C-w>k")
 
 -- move between buffers
-map('n', '<S-l>', ':bnext<CR>')
-map('n', '<S-h>', ':bprevious<CR>')
-map('n', '<Leader>qq', ':bdelete!<CR>')
-map('n', '<Leader>qa', ':%bd|e#<CR>:bnext<CR>:bd<CR>e')
+map("n", "<S-l>", ":bnext<CR>")
+map("n", "<S-h>", ":bprevious<CR>")
+map("n", "<Leader>qq", ":bdelete!<CR>")
+map("n", "<Leader>qa", ":%bd|e#<CR>:bnext<CR>:bd<CR>e")
 
 -- move line/down
-map('n', '<S-Up>', ':m-2<CR>')
-map('n', '<S-Down>', ':m+<CR>')
-map('v', '<S-Up>', ":m '<-2<CR>gv=gv")
-map('v', '<S-Down>', ":m '>+1<CR>gv=gv")
+map("n", "<S-Up>", ":m-2<CR>")
+map("n", "<S-Down>", ":m+<CR>")
+map("v", "<S-Up>", ":m '<-2<CR>gv=gv")
+map("v", "<S-Down>", ":m '>+1<CR>gv=gv")
 
 -- copy to clipboard
-map('v', '<Leader>y', '"*y')
+map("v", "<Leader>y", '"*y')
 
 -- no register for x
-map('n', 'x', '"_x')
+map("n", "x", '"_x')
 
 -- leave insert mode
-map('i', 'jk', '<esc>')
+map("i", "jk", "<esc>")
 
 -- quit all
-map('n', '<Leader>zz', ':qa!<CR>')
+map("n", "<Leader>zz", ":qa!<CR>")
 
 -- file path
-map('n', '<leader>fp', ':let @*=expand("%:p")<CR>')
-map('n', '<leader>cd', ':cd %:p:h<CR>:pwd<CR>')
+map("n", "<leader>fp", ':let @*=expand("%:p")<CR>')
+map("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>")
 
 -- always centers after c-d/c-u
-map('n', '<C-d>', '<C-d>zz')
-map('n', '<C-u>', '<C-u>zz')
+map("n", "<C-d>", "<C-d>zz")
+map("n", "<C-u>", "<C-u>zz")
 
 -- move within wrapped lines
-map('n', 'j', 'gj')
-map('n', 'k', 'gk')
+map("n", "j", "gj")
+map("n", "k", "gk")
 
 -- faster in/outdenting
-map('i', '<<', '<c-d>')
-map('i', '>>', '<c-t>')
+map("i", "<<", "<c-d>")
+map("i", ">>", "<c-t>")
 
 -- allow the . to execute once for each line of a visual selection
-map('v', '.', ':normal .<CR>')
+map("v", ".", ":normal .<CR>")
 
 -- source init.lua
-map('n', '<leader>so', ':luafile %<CR>')
+map("n", "<leader>so", ":luafile %<CR>")
 
 -- resize windows
-map('n', '<leader>=', ':exe "resize +2"<CR>')
-map('n', '<leader>-', ':exe "resize -2"<CR>')
+map("n", "<leader>=", ':exe "resize +2"<CR>')
+map("n", "<leader>-", ':exe "resize -2"<CR>')
 
-map('n', '<leader>po', ':w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>')
+map("n", "<leader>po", ":w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>")
 -- " autocmd FileType lua map <buffer> <leader>po :w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>
+
 -- }}}
 
 -- require lua{{{
-require('plugin-config/treesitter')
-require('plugin-config/nvim-tree')
-require('plugin-config/colorizer')
-require('plugin-config/dracula-nvim')
-require('plugin-config/nvim-cmp')
-require('plugin-config/tokyonight')
-require('plugin-config/catppuccin')
-require('plugin-config/telescope')
-require('plugin-config/neoclip')
-require('plugin-config/mini-jump')
-require('plugin-config/nvim-comment-frame')
-require('plugin-config/pretty-fold')
-require('plugin-config/nvim-bqf')
-require('plugin-config/toggleterm')
+require("plugin-config/treesitter")
+require("plugin-config/nvim-tree")
+require("plugin-config/colorizer")
+require("plugin-config/dracula-nvim")
+require("plugin-config/nvim-cmp")
+require("plugin-config/tokyonight")
+require("plugin-config/catppuccin")
+require("plugin-config/telescope")
+require("plugin-config/neoclip")
+require("plugin-config/mini-jump")
+require("plugin-config/nvim-comment-frame")
+require("plugin-config/pretty-fold")
+require("plugin-config/nvim-bqf")
+require("plugin-config/toggleterm")
 
-require('true-zen').setup({})
+require("true-zen").setup({})
 -- require('notify').setup({
 -- 	stages = 'static',
 -- 	timeout = 2000,
@@ -467,7 +470,7 @@ require('true-zen').setup({})
 -- }}}
 
 -- colorscheme{{{
-vim.cmd('colorscheme dracula')
+vim.cmd("colorscheme dracula")
 -- vim.cmd('colorscheme tokyonight-night')
 -- vim.cmd('dracula')
 -- vim.cmd('borland')
@@ -475,8 +478,8 @@ vim.cmd('colorscheme dracula')
 -- }}}
 
 -- highlights {{{
-vim.api.nvim_set_hl(0, 'Folded', { fg = '#A9A9A9' })
-vim.api.nvim_set_hl(0, 'Visual', { fg = '#000000', bg = '#A9A9A9' })
+vim.api.nvim_set_hl(0, "Folded", { fg = "#A9A9A9" })
+vim.api.nvim_set_hl(0, "Visual", { fg = "#000000", bg = "#A9A9A9" })
 -- }}}
 
 -- autocommands / commands {{{
@@ -501,6 +504,8 @@ autocmd FileType lua map <buffer> <leader>pp :w<CR>:!lua %<CR>
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
 " iskeyword overwritten so putting it here
 autocmd BufRead, BufNewFile * set isk+=-
+
+autocmd FileType stata setlocal commentstring=//\ %s
 ]])
 
 vim.cmd("command! -nargs=+ NewGrep execute 'silent grep! <args>' | copen")
