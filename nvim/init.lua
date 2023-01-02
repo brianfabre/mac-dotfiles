@@ -69,6 +69,7 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'anuvyklack/pretty-fold.nvim'
     Plug 'kevinhwang91/nvim-bqf'
     Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+    Plug 'nvim-lualine/lualine.nvim'
     "Plug 'rcarriga/nvim-notify'
     
 call plug#end()
@@ -134,21 +135,40 @@ let g:AutoPairsShortcutFastWrap = '<c-e>'
 """"""""""""""
 """ FZF
 """"""""""""""
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'border': 'no' } }
-" let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --margin=1,4"
-let $FZF_DEFAULT_OPTS="--ansi"
+""let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8, 'border': 'rounded' } }
+""let g:fzf_preview_window = ['hidden,right,50%', 'ctrl-p']
+""let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-p']
+""let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%'"
+""let $FZF_DEFAULT_OPTS="--ansi"
 
-" nnoremap <leader>ff <cmd>Files<cr>
-" nnoremap <leader>fg <cmd>Rg<cr>
-" nnoremap <leader>fc <cmd>History:<cr>
-" nnoremap <leader>fb <cmd>BLines<cr>
+
+""let g:fzf_colors =
+""\ { 'fg':      ['fg', 'Normal'],
+""  \ 'bg':      ['bg', 'Normal'],
+""  \ 'hl':      ['fg', 'Comment'],
+""  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+""  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+""  \ 'hl+':     ['fg', 'Statement'],
+""  \ 'info':    ['fg', 'PreProc'],
+""  \ 'border':  ['fg', 'Ignore'],
+""  \ 'prompt':  ['fg', 'Conditional'],
+""  \ 'pointer': ['fg', 'Exception'],
+""  \ 'marker':  ['fg', 'Keyword'],
+""  \ 'spinner': ['fg', 'Label'],
+""  \ 'header':  ['fg', 'Comment'] }
+
+""nnoremap <leader>ff <cmd>Files<cr>
+""nnoremap <leader>fg <cmd>Rg<cr>
+""nnoremap <leader>fc <cmd>History:<cr>
+""nnoremap <leader>fb <cmd>BLines<cr>
 
 "!{node_modules/*,.git/*}"
 " -g "!{*,.csv}"
-command! -bang -nargs=* Rg
-      \   call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --glob "!*.{csv,txt}" --color=always -g "*.{md,R,do,py,lua,vim,tex}" --smart-case -- '.shellescape(<q-args>), 1,
-      \   fzf#vim#with_preview(), <bang>0)
+
+""command! -bang -nargs=* Rg
+""      \   call fzf#vim#grep(
+""      \   'rg --column --line-number --no-heading --glob "!*.{csv,txt}" --color=always -g "*.{md,R,do,py,lua,vim,tex}" --smart-case -- '.shellescape(<q-args>), 1,
+""      \   fzf#vim#with_preview(), <bang>0)
 
 
 """"""""""""""
@@ -168,7 +188,7 @@ augroup jupytermap
     au FileType stata nnoremap <buffer> <silent> <localleader>d :JupyterSendRange<CR>/^.<CR>
     au FileType stata nnoremap <buffer> <silent> <localleader>l :JupyterSendRange<CR>
     au FileType stata nnoremap <buffer> <silent> <localleader>rv :!jupyter qtconsole &<CR>
-    au FileType stata nnoremap <buffer> <silent> <localleader>rf :e %<CR>
+    au FileType stata nnoremap <buffer> <silent> <localleader>rf :e! %<CR>
     au BufRead,BufNewFile *.do JupyterConnect
     " cycle through completion with tab
     " au FileType python inoremap <silent><expr> <Tab>
@@ -327,7 +347,7 @@ nnoremap <leader>fy :Telescope neoclip<cr>
 
 " nnoremap <leader>zn :TZNarrow<CR>
 " nnoremap <leader>zf :TZFocus<CR>
-" nnoremap <leader>zm :TZMinimalist<CR>
+nnoremap <leader>zm :TZMinimalist<CR>
 nnoremap <leader>za :TZAtaraxis<CR>
 
 
@@ -342,11 +362,14 @@ nnoremap <leader>gm :call SynGroup()<cr>
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m
 
+command! -nargs=0 RunQtConsole call jobstart("jupyter qtconsole --JupyterWidget.include_other_output=True")
+
 ]])
 -- }}}
 
 -- options {{{
 -- stylua: ignore start 
+vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
@@ -361,17 +384,18 @@ vim.opt.ignorecase = true                                -- case-insensitive sea
 vim.opt.smartcase = true                                 -- case-insensitive search
 vim.opt.conceallevel = 2                                 -- for markdown syntax
 vim.opt.linebreak = true                                 -- doesnt split words
-vim.opt.termguicolors = true
 vim.opt.breakindent = true                               -- enable indentation
 vim.opt.breakindentopt = { 'shift:4', 'sbr', 'list:-1' } -- indent by an additional 4 characters on wrapped line
 vim.opt.showbreak = '>'                                  -- append '>>' to indent
 vim.opt.swapfile = false
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
-vim.opt.cursorline = false
 vim.opt.laststatus = 0                                   -- hides status line
 vim.opt.foldmethod = 'marker'
-vim.formatoptions = 'tqj'                                -- removed 'c'
-vim.opt.iskeyword:append("-")
+
+-- vim.opt.cursorline = true
+
+-- vim.formatoptions = 'tqj'                                -- removed 'c'
+-- vim.opt.iskeyword:append("-")
 -- stylua: ignore end
 -- }}}
 
@@ -461,6 +485,7 @@ require("plugin-config/nvim-comment-frame")
 require("plugin-config/pretty-fold")
 require("plugin-config/nvim-bqf")
 require("plugin-config/toggleterm")
+require("plugin-config/lualine")
 
 require("true-zen").setup({})
 -- require('notify').setup({
