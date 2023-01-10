@@ -10,9 +10,22 @@
 # italic_font      auto
 # bold_italic_font auto
 
-#font_family      JetBrainsMono Nerd Font Mono Regular
-#font_family      Consolas
-font_family      Fira Code Regular
+# font_family      FiraCode Nerd Font Mono
+# font_size 16.0
+
+# font_family      Perfect DOS VGA 437 Win
+# font_size 22.0
+
+# font_family      Consolas
+# font_size 17.0
+
+font_family      Liga SFMono Nerd Font
+font_size 17.0
+
+# font_family      JetBrainsMono Nerd Font Mono
+# font_size 16.0
+
+
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
@@ -31,7 +44,7 @@ bold_italic_font auto
 #:     bold_italic_font Operator Mono Medium Italic
 
 #: Font size (in pts)
-font_size 16.0
+# font_size 22.0
 
 # force_ltr no
 
@@ -760,7 +773,7 @@ initial_window_height 550
 #: Fade the text in inactive windows by the specified amount (a number
 #: between zero and one, with zero being fully faded).
 
-# hide_window_decorations no
+hide_window_decorations titlebar-only
 
 #: Hide the window decorations (title-bar and window borders) with
 #: yes. On macOS, titlebar-only can be used to only hide the titlebar.
@@ -840,6 +853,7 @@ initial_window_height 550
 #: Tab bar {{{
 
 # tab_bar_edge bottom
+# tab_bar_edge top
 
 #: The edge to show the tab bar on, top or bottom.
 
@@ -855,6 +869,7 @@ initial_window_height 550
 #: contents of the current tab.
 
 # tab_bar_style fade
+# tab_bar_style powerline
 
 #: The tab bar style, can be one of:
 
@@ -912,7 +927,7 @@ initial_window_height 550
 #: The separator between tabs in the tab bar when using separator as
 #: the tab_bar_style.
 
-# tab_powerline_style angled
+# tab_powerline_style round
 
 #: The powerline separator style between tabs in the tab bar when
 #: using powerline as the tab_bar_style, can be one of: angled,
@@ -996,7 +1011,7 @@ initial_window_height 550
 #: The foreground and background colors.
 
 # background_opacity 1.0
-background_opacity 0.875
+background_opacity 0.85
 
 #: The opacity of the background. A number between zero and one, where
 #: one is opaque and zero is fully transparent. This will only work if
@@ -1148,6 +1163,7 @@ background_opacity 0.875
 #: interactive mode and reads its startup rc files.
 
 # editor .
+editor /opt/homebrew/bin/nvim
 
 #: The terminal based text editor (such as vim or nano) to use when
 #: editing the kitty config file or similar tasks.
@@ -1205,7 +1221,7 @@ background_opacity 0.875
 
 #: Relative paths are resolved from the kitty configuration directory.
 
-# allow_remote_control no
+allow_remote_control yes
 
 #: Allow other programs to control kitty. If you turn this on, other
 #: programs can control all aspects of kitty, including sending text
@@ -1233,6 +1249,7 @@ background_opacity 0.875
 #:    Remote control requests are always accepted.
 
 # listen_on none
+listen_on unix:$TMPDIR/kitty
 
 #: Listen to the specified UNIX socket for remote control connections.
 #: Note that this will apply to all kitty instances. It can be
@@ -1430,7 +1447,7 @@ background_opacity 0.875
 #: background_opacity. If you want to use both, you are probably
 #: better off just hiding the titlebar with hide_window_decorations.
 
-# macos_option_as_alt no
+macos_option_as_alt left
 
 #: Use the Option key as an Alt key on macOS. With this set to no,
 #: kitty will use the macOS native Option+Key to enter Unicode
@@ -1464,6 +1481,7 @@ background_opacity 0.875
 #: will only affect newly created OS windows.
 
 # macos_thicken_font 0
+macos_thicken_font 0.2
 
 #: Draw an extra border around the font with the given width, to
 #: increase legibility at small font sizes on macOS. For example, a
@@ -1589,7 +1607,7 @@ background_opacity 0.875
 #: The full list of actions that can be mapped to key presses is
 #: available here <https://sw.kovidgoyal.net/kitty/actions/>.
 
-# kitty_mod ctrl+shift
+kitty_mod ctrl+shift
 
 #: Special modifier key alias for default shortcuts. You can change
 #: the value of this option to alter all default shortcuts that use
@@ -1905,12 +1923,15 @@ background_opacity 0.875
 
 #: Next tab
 
+map alt+] next_tab
+# map kitty_mod+alt+cmd+l next_tab
 # map kitty_mod+right next_tab
 # map shift+cmd+]     next_tab
 # map ctrl+tab        next_tab
 
 #: Previous tab
 
+map alt+[ previous_tab
 # map kitty_mod+left previous_tab
 # map shift+cmd+[    previous_tab
 # map ctrl+shift+tab previous_tab
@@ -1941,12 +1962,18 @@ background_opacity 0.875
 
 # map kitty_mod+alt+t set_tab_title
 # map shift+cmd+i     set_tab_title
+map alt+i     set_tab_title
 
 
 #: You can also create shortcuts to go to specific tabs, with 1 being
 #: the first tab, 2 the second tab and -1 being the previously active
 #: tab, and any number larger than the last tab being the last tab::
 
+     map alt+1 goto_tab 1
+     map alt+2 goto_tab 2
+     map alt+3 goto_tab 3
+     map alt+4 goto_tab 4
+     map alt+5 goto_tab 5
 #:     map ctrl+alt+1 goto_tab 1
 #:     map ctrl+alt+2 goto_tab 2
 
@@ -2244,8 +2271,20 @@ background_opacity 0.875
 
 #: }}}
 
+# custom tab {{{
+tab_bar_margin_width      9
+tab_bar_margin_height     5 0
+tab_bar_style             separator
+tab_bar_min_tabs          2
+tab_separator             ""
+tab_bar_edge top
+# tab_title_template        "{fmt.fg._5c6370}{fmt.bg.default}{fmt.fg._abb2bf}{fmt.bg._5c6370} {index}:{title} {fmt.fg._5c6370}{fmt.bg.default} "
+# active_tab_title_template "{fmt.fg._BD93F9}{fmt.bg.default}{fmt.fg._282c34}{fmt.bg._BD93F9} {index}:{title} {fmt.fg._BD93F9}{fmt.bg.default} "
+tab_title_template        "{fmt.fg._5c6370}{fmt.bg.default}{fmt.fg._abb2bf}{fmt.bg._5c6370} {index}:{title} {fmt.fg._5c6370}{fmt.bg.default} "
+active_tab_title_template "{fmt.fg._BD93F9}{fmt.bg.default}{fmt.fg._282c34}{fmt.bg._BD93F9} {index}:{title} {fmt.fg._BD93F9}{fmt.bg.default} "
+#}}}
 
 # BEGIN_KITTY_THEME
-# Atelier Sulphurpool
+# Thayer Bright
 include current-theme.conf
 # END_KITTY_THEME

@@ -9,6 +9,19 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 -- }}}
 
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
+
 -- plugins {{{
 vim.cmd([[
 call plug#begin('~/.local/share/nvim/plugged')
@@ -26,50 +39,64 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
+    " Plug 'kiyoon/telescope-insert-path.nvim'
+
     " nvim-tree
     Plug 'kyazdani42/nvim-tree.lua'
     Plug 'kyazdani42/nvim-web-devicons'
+
     " markdown
     Plug 'godlygeek/tabular'
     Plug 'preservim/vim-markdown'
     Plug 'mzlogin/vim-markdown-toc'
+
     " vim-wiki
     Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
     Plug 'michal-h21/vim-zettel'
     " Plug 'michal-h21/vimwiki-sync'
     " Plug 'mattn/calendar-vim'
+
     " programming
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-treesitter/playground'
     Plug 'tpope/vim-commentary'
     Plug 'dense-analysis/ale'
+
     " python/R/stata
     Plug 'jupyter-vim/jupyter-vim'
     Plug 'poliquin/stata-vim'
     Plug 'jalvesaq/Nvim-R'
+
     " latex
     Plug 'lervag/vimtex'
     Plug 'vim-autoformat/vim-autoformat'
+
     " completion
     Plug 'hrsh7th/nvim-cmp'
     Plug 'quangnguyen30192/cmp-nvim-ultisnips'
     Plug 'hrsh7th/cmp-omni'
     Plug 'hrsh7th/cmp-cmdline'
+
     " text editing
     Plug 'jiangmiao/auto-pairs'
-    Plug 'svermeulen/vim-subversive'
     Plug 'AckslD/nvim-neoclip.lua'
-    Plug 'Pocco81/true-zen.nvim'
     Plug 's1n7ax/nvim-comment-frame'
+    Plug 'gbprod/substitute.nvim'
+
     " other
     Plug 'dstein64/vim-startuptime'
     Plug 'mhinz/vim-startify'
     Plug 'norcalli/nvim-colorizer.lua'
     Plug 'echasnovski/mini.jump'
-    Plug 'anuvyklack/pretty-fold.nvim'
+    ""Plug 'anuvyklack/pretty-fold.nvim'
     Plug 'kevinhwang91/nvim-bqf'
     Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
     Plug 'nvim-lualine/lualine.nvim'
+    Plug 'dccsillag/magma-nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'glepnir/zephyr-nvim'
+    Plug 'folke/zen-mode.nvim'
+    Plug 'echasnovski/mini.indentscope'
+    ""Plug 'hkupty/iron.nvim'
     "Plug 'rcarriga/nvim-notify'
     
 call plug#end()
@@ -92,19 +119,27 @@ function! SaveStatus()
   endif
 endfunc
 
+function! FindAll()
+    call inputsave()
+    let p = input('Search: ')
+    call inputrestore()
+    execute 'vimgrep "'.p.'" % |copen'
+endfunction
+
+nnoremap <leader>\ :call FindAll()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> COLORSCHEME <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " makes neovim/nvimtree transparent
-augroup user_colors
-  autocmd!
-  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
-  autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
-  autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
-  autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
-augroup END
+""augroup user_colors
+""  autocmd!
+""  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+""  autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
+""  autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
+""  autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
+""augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> VIMRC <==
@@ -183,16 +218,17 @@ augroup jupytermap
     " au FileType python inoremap <silent><expr> <Tab>
 augroup END
 
-augroup jupytermap
-    au FileType stata vnoremap <buffer> <silent> <localleader>sd :JupyterSendRange<CR>`>/^.<CR>
-    au FileType stata nnoremap <buffer> <silent> <localleader>d :JupyterSendRange<CR>/^.<CR>
-    au FileType stata nnoremap <buffer> <silent> <localleader>l :JupyterSendRange<CR>
-    au FileType stata nnoremap <buffer> <silent> <localleader>rv :!jupyter qtconsole &<CR>
-    au FileType stata nnoremap <buffer> <silent> <localleader>rf :e! %<CR>
-    au BufRead,BufNewFile *.do JupyterConnect
-    " cycle through completion with tab
-    " au FileType python inoremap <silent><expr> <Tab>
-augroup END
+""augroup jupytermap
+   "" au FileType stata vnoremap <buffer> <silent> <localleader>sd :JupyterSendRange<CR>`>/^.<CR>
+   "" au FileType stata nnoremap <buffer> <silent> <localleader>d :JupyterSendRange<CR>/^.<CR>
+   "" au FileType stata nnoremap <buffer> <silent> <localleader>l :JupyterSendRange<CR>
+   "" au FileType stata nnoremap <buffer> <silent> <localleader>rv :!jupyter qtconsole &<CR>
+   "" au FileType stata nnoremap <buffer> <silent> <localleader>rv :!jupyter qtconsole &<CR>
+   "" au FileType stata nnoremap <buffer> <silent> <localleader>rf :e! %<CR>
+   "" au BufRead,BufNewFile *.do JupyterConnect
+   "" " cycle through completion with tab
+   "" " au FileType python inoremap <silent><expr> <Tab>
+""augroup END
 
 """"""""""""""
 """ mini.jump
@@ -264,18 +300,19 @@ let g:vmt_fence_closing_text = '/TOC'
 
 
 """"""""""""""
-""" vim-subversive
-""""""""""""""
-" s for substitute
-nmap s <plug>(SubversiveSubstitute)
-nmap ss <plug>(SubversiveSubstituteLine)
-nmap S <plug>(SubversiveSubstituteToEndOfLine)
-
-""""""""""""""
 """ vimtex
 """"""""""""""
 let g:vimtex_quickfix_mode=0
+let g:vimtex_syntax_conceal = {
+          \ 'cites': 1,
+          \ 'sections': 1,
+          \}
 
+let g:vimtex_syntax_conceal_cites = {
+          \ 'type': 'icon',
+          \ 'icon': '📖',
+          \ 'verbose': v:false,
+          \}
 
 """"""""""""""
 """ vimwiki
@@ -345,12 +382,6 @@ command! -bang -nargs=* Titles
 nnoremap <leader>fy :Telescope neoclip<cr>
 
 
-" nnoremap <leader>zn :TZNarrow<CR>
-" nnoremap <leader>zf :TZFocus<CR>
-nnoremap <leader>zm :TZMinimalist<CR>
-nnoremap <leader>za :TZAtaraxis<CR>
-
-
 function! SynGroup()
     let l:s = synID(line('.'), col('.'), 1)
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
@@ -363,6 +394,21 @@ set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m
 
 command! -nargs=0 RunQtConsole call jobstart("jupyter qtconsole --JupyterWidget.include_other_output=True")
+
+
+let g:magma_image_provider = "kitty"
+let g:magma_automatically_open_output = v:false
+""let g:magma_output_window_borders = v:false
+autocmd FileType stata nnoremap <buffer> <silent> <localleader>rv :MagmaInit stata<CR>
+nnoremap <expr><silent> <LocalLeader>r  nvim_exec('MagmaEvaluateOperator', v:true)
+nnoremap <silent>       <LocalLeader>d :MagmaEvaluateLine<CR>
+xnoremap <silent>       <LocalLeader>sd  :<C-u>MagmaEvaluateVisual<CR>`>z<CR>
+nnoremap <silent>       <LocalLeader>rc :MagmaReevaluateCell<CR>
+nnoremap <silent>       <LocalLeader>rd :MagmaDelete<CR>
+" removes any stuck floating window
+nnoremap <silent> <LocalLeader>ra :lua for _, win in ipairs(vim.api.nvim_list_wins()) do local config = vim.api.nvim_win_get_config(win); if config.relative ~= "" then vim.api.nvim_win_close(win, false); print('Closing window', win) end end<CR>
+nnoremap <silent> <LocalLeader>ro :MagmaShowOutput<CR>
+nnoremap <silent> <LocalLeader>a :noautocmd MagmaEnterOutput<CR>
 
 ]])
 -- }}}
@@ -400,7 +446,8 @@ vim.opt.foldmethod = 'marker'
 -- }}}
 
 -- keymaps {{{
--- function
+
+-- FUNCTION
 local function map(mode, lhs, rhs, opts)
 	local options = { noremap = true, silent = true }
 	if opts then
@@ -482,29 +529,40 @@ require("plugin-config/telescope")
 require("plugin-config/neoclip")
 require("plugin-config/mini-jump")
 require("plugin-config/nvim-comment-frame")
-require("plugin-config/pretty-fold")
-require("plugin-config/nvim-bqf")
+-- require("plugin-config/pretty-fold")
 require("plugin-config/toggleterm")
 require("plugin-config/lualine")
+require("plugin-config/substitute")
+require("plugin-config/zen-mode")
+require("plugin-config/nvim-bqf")
+-- require("plugin-config/iron")
 
-require("true-zen").setup({})
 -- require('notify').setup({
 -- 	stages = 'static',
 -- 	timeout = 2000,
 -- })
+
+require("mini.indentscope").setup({
+	draw = {
+		delay = 1,
+		animation = require("mini.indentscope").gen_animation.none(),
+	},
+})
+
 -- }}}
 
 -- colorscheme{{{
-vim.cmd("colorscheme dracula")
--- vim.cmd('colorscheme tokyonight-night')
--- vim.cmd('dracula')
+-- vim.cmd("colorscheme dracula")
+-- vim.cmd("colorscheme zephyr")
+-- vim.cmd("colorscheme tokyonight-night")
 -- vim.cmd('borland')
--- vim.cmd('catppuccin')
+vim.cmd("colorscheme catppuccin")
 -- }}}
 
 -- highlights {{{
-vim.api.nvim_set_hl(0, "Folded", { fg = "#A9A9A9" })
-vim.api.nvim_set_hl(0, "Visual", { fg = "#000000", bg = "#A9A9A9" })
+-- vim.api.nvim_set_hl(0, "Folded", { fg = "#A9A9A9" })
+-- vim.api.nvim_set_hl(0, "Visual", { fg = "#000000", bg = "#A9A9A9" })
+
 -- }}}
 
 -- autocommands / commands {{{
@@ -519,7 +577,7 @@ autocmd InsertLeave,WinEnter * if &number | set rnu | endif
 au BufRead,BufNewFile *.tex setlocal textwidth=100
 au BufRead,BufNewFile *.tex setlocal formatoptions-=t
 " highlights text on yank
-autocmd TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=700 }
+""autocmd TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=700 }
 " run python code
 autocmd FileType python map <buffer> <leader>pp :w<CR>:ter python3 %<CR>
 " run lua code
@@ -531,8 +589,25 @@ autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -
 autocmd BufRead, BufNewFile * set isk+=-
 
 autocmd FileType stata setlocal commentstring=//\ %s
+
+" disable indentscope in startify
+autocmd Filetype startify lua vim.b.miniindentscope_disable=true
 ]])
 
 vim.cmd("command! -nargs=+ NewGrep execute 'silent grep! <args>' | copen")
+
+-- set colorscheme in vimwiki
+vim.api.nvim_create_autocmd("Filetype", {
+	group = vim.api.nvim_create_augroup("colorscheme", { clear = true }),
+	pattern = { "vimwiki", "tex" },
+	command = "colorscheme dracula",
+})
+
+-- highlight on yank
+vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+	callback = function()
+		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 700 })
+	end,
+})
 
 -- }}}

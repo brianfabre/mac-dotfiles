@@ -1,6 +1,7 @@
-require('lualine').setup({
+require("lualine").setup({
 	options = {
-		theme = 'dracula-nvim',
+		-- theme = "dracula-nvim",
+		theme = "catppuccin",
 	},
 	-- options = {
 	-- 	icons_enabled = true,
@@ -21,17 +22,17 @@ require('lualine').setup({
 	-- 	},
 	-- },
 	sections = {
-		lualine_a = { 'mode' },
-		lualine_b = { 'branch', 'diff', 'diagnostics' },
+		lualine_a = { "mode" },
+		lualine_b = { "branch", "diff", "diagnostics" },
 		lualine_c = {
 			{
-				'filename',
+				"filename",
 				path = 3,
 			},
 		},
-		lualine_x = { 'filetype' },
-		lualine_y = { 'progress' },
-		lualine_z = { 'location' },
+		lualine_x = { "filetype" },
+		lualine_y = { "progress" },
+		lualine_z = { "location" },
 	},
 	-- inactive_sections = {
 	-- 	lualine_a = {},

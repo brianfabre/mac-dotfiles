@@ -89,11 +89,11 @@ cmp.setup({
 		-- { name = 'vsnip' }, -- For vsnip users.
 		-- { name = 'luasnip' }, -- For luasnip users.
 		{ name = "ultisnips" }, -- For ultisnips users.
-		{ name = "omni", trigger_characters = { "$" } },
+		-- { name = "omni", trigger_characters = { "$" } },
 		-- { name = 'snippy' }, -- For snippy users.
 	}, {
 		-- { name = 'buffer' },
-		-- { name = 'omni' },
+		{ name = "omni" },
 	}),
 	-- this disables completion when cursor in comment
 	-- currently disabled to test for errors
