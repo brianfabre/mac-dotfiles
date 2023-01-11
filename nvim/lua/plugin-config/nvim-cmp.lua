@@ -98,11 +98,9 @@ cmp.setup({
 	-- this disables completion when cursor in comment
 	-- currently disabled to test for errors
 	-- enabled = function()
-	--     local context = require("cmp.config.context")
-	--     return not (
-	--       context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
-	--     )
-	-- end
+	-- 	local context = require("cmp.config.context")
+	-- 	return not (context.in_treesitter_capture("comment") or context.in_syntax_group("Comment"))
+	-- end,
 })
 
 local cmp_ultisnips = require("cmp_nvim_ultisnips")

@@ -1,7 +1,8 @@
 require("lualine").setup({
 	options = {
 		-- theme = "dracula-nvim",
-		theme = "catppuccin",
+		-- theme = "catppuccin",
+		theme = "auto",
 	},
 	-- options = {
 	-- 	icons_enabled = true,

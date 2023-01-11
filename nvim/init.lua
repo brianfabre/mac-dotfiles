@@ -9,6 +9,16 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 -- }}}
 
+-- keymap function
+local function map(mode, lhs, rhs, opts)
+	local options = { noremap = true, silent = true }
+	if opts then
+		options = vim.tbl_extend("force", options, opts)
+	end
+	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+end
+
+-- lazy.nvim {{{
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -22,85 +32,275 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- plugins {{{
-vim.cmd([[
-call plug#begin('~/.local/share/nvim/plugged')
+require("lazy").setup({
+	{
+		"mhinz/vim-startify",
+		lazy = false,
+		config = function()
+			map("n", "<leader>ss", ":Startify<cr>")
+		end,
+	},
+	{
+		"echasnovski/mini.base16",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("mini.base16").setup({
+				palette = require("mini.base16").mini_palette("#112641", "#e2e98f", 75),
+				name = "minischeme",
+			})
+		end,
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		lazy = false,
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("plugin-config/lualine")
+		end,
+	},
+	{
+		"vimwiki/vimwiki",
+		keys = { "<leader>ww" },
+		event = "BufEnter *.md",
+		dependencies = {
+			"michal-h21/vim-zettel",
+		},
+		-- must initialize before load plugin
+		init = function()
+			vim.g.vimwiki_list = {
+				{
+					path = "~/Documents/wiki/",
+					syntax = "markdown",
+					ext = ".md",
+					diary_rel_path = "journal/",
+					diary_index = "journal",
+					diary_header = "Journal",
+				},
+			}
+			vim.g.vimwiki_global_ext = 0
+			vim.g.vimwiki_hl_headers = 1
+			vim.g.vimwiki_auto_chdir = 1
+			vim.g.vimwiki_key_mappings = { table_mappings = 0 }
+		end,
+	},
+	{
+		"preservim/vim-markdown",
+		ft = {
+			"vimwiki",
+			"markdown",
+		},
+		dependencies = {
+			"mzlogin/vim-markdown-toc",
+			"godlygeek/tabular",
+		},
+	},
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		lazy = true,
+		-- priority = 1000,
+		config = function()
+			vim.cmd([[colorscheme catppuccin]])
+		end,
+	},
+	{
+		"nvim-telescope/telescope.nvim",
+		-- version = "0.1.0",
+		branch = "0.1.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		},
+		config = function()
+			require("plugin-config/telescope")
+		end,
+	},
+	{
+		"numToStr/Comment.nvim",
+		config = function()
+			require("Comment").setup({
+				mappings = { extra = false },
+			})
+		end,
+	},
+	{
+		"jiangmiao/auto-pairs",
+		config = function()
+			vim.g.AutoPairsShortcutFastWrap = "<c-e>"
+		end,
+	},
+	{
+		"dense-analysis/ale",
+		config = function()
+			vim.g.ale_fixers = {
+				python = "black",
+				r = "styler",
+				tex = "latexindent",
+				lua = "stylua",
+			}
+			vim.g.ale_linters = {
+				python = { "flake8", "pyflakes" },
+				r = "lintr",
+				tex = "",
+			}
+			vim.g.ale_fix_on_save = 1
+			vim.g.ale_completion_enabled = 1
+			vim.g.ale_disable_lsp = 0
+		end,
+	},
+	{
+		"hrsh7th/nvim-cmp",
+		-- event = "InsertEnter",
+		dependencies = {
+			"quangnguyen30192/cmp-nvim-ultisnips",
+			"hrsh7th/cmp-omni",
+			"hrsh7th/cmp-cmdline",
+		},
+		config = function()
+			require("plugin-config/nvim-cmp")
+		end,
+	},
+	{
+		"nvim-tree/nvim-tree.lua",
+		lazy = true,
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("plugin-config/nvim-tree")
+			map("n", "<leader>v", ":NvimTreeToggle<cr>")
+		end,
+		keys = { "<leader>v" },
+	},
+	{
+		"nvim-treesitter/nvim-treesitter",
+		config = function()
+			require("plugin-config/treesitter")
+		end,
+	},
+	{
+		"nvim-treesitter/playground",
+		cmd = "TSPlaygroundToggle",
+	},
+	{
+		"gbprod/substitute.nvim",
+		event = "TextYankPost",
+		config = function()
+			require("plugin-config/substitute")
+		end,
+	},
+	{
+		"jalvesaq/Nvim-R",
+		ft = "r",
+	},
+	{
+		"lervag/vimtex",
+		ft = "tex",
+		-- dependencies = {
+		-- 	"vim-autoformat/vim-autoformat",
+		-- },
+	},
+	{
+		"echasnovski/mini.indentscope",
+		config = function()
+			require("mini.indentscope").setup({
+				draw = {
+					delay = 1,
+					animation = require("mini.indentscope").gen_animation.none(),
+				},
+			})
+		end,
+	},
+	{
+		"dstein64/vim-startuptime",
+		cmd = "StartupTime",
+	},
+	{
+		"SirVer/ultisnips",
+		-- event = "InsertEnter",
+		-- event = "BufEnter *.md",
+		init = function()
+			vim.g.UltiSnipsExpandTrigger = ";;"
+		end,
+		config = function()
+			-- vim.g.UltiSnipsExpandTrigger = ";;"
+			-- vim.g.UltiSnipsSnippetDirectories = "$HOME.'/.config/nvim/UltiSnips'"
+			vim.g.UltiSnipsSnippetDirectories = { os.getenv("HOME") .. "/.config/nvim/UltiSnips" }
+		end,
+	},
+	{
+		"dccsillag/magma-nvim",
+		ft = "stata",
+		dependencies = {
+			"poliquin/stata-vim",
+		},
+	},
+	{
+		"Mofiqul/dracula.nvim",
+		lazy = true,
+		config = function()
+			require("plugin-config/dracula-nvim")
+		end,
+	},
+	{
+		"AckslD/nvim-neoclip.lua",
+		event = "TextYankPost",
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+		},
+		config = function()
+			require("neoclip").setup()
+		end,
+	},
+	{
+		"echasnovski/mini.jump",
+		lazy = false,
+		config = function()
+			require("mini.jump").setup({
+				delay = {
+					highlight = 50,
+				},
+			})
+			-- vim.api.nvim_set_hl(0, "MiniJump", {
+			-- 	sp = "#ff0000",
+			-- 	bold = true,
+			-- 	undercurl = true,
+			-- })
+			vim.api.nvim_set_hl(0, "MiniJump", {
+				bg = "#ff0000",
+				fg = "#ffffff",
+			})
+		end,
+	},
+	{
+		"akinsho/toggleterm.nvim",
+		keys = { "<leader>lg" },
+		version = "*",
+		config = function()
+			require("plugin-config/toggleterm")
+		end,
+	},
+	{
+		"kevinhwang91/nvim-bqf",
+		ft = "qf",
+		config = function()
+			require("plugin-config/nvim-bqf")
+		end,
+	},
+	-- { "junegunn/fzf" },
+	-- { "junegunn/fzf.vim" },
+	-- { "folke/tokyonight.nvim" },
+	-- { "letorbi/vim-colors-modern-borland" },
+	-- { "jupyter-vim/jupyter-vim" },
+	-- { "s1n7ax/nvim-comment-frame" },
+	-- { "norcalli/nvim-colorizer.lua" },
+	-- { "glepnir/zephyr-nvim" },
+	-- { "folke/zen-mode.nvim" },
+})
 
-    " colorscheme
-    Plug 'Mofiqul/dracula.nvim'
-    Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-    Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
-    Plug 'letorbi/vim-colors-modern-borland'
-    " snippets
-    Plug 'SirVer/ultisnips'
-    " fzf
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    Plug 'junegunn/fzf.vim'
-    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
-    " Plug 'kiyoon/telescope-insert-path.nvim'
-
-    " nvim-tree
-    Plug 'kyazdani42/nvim-tree.lua'
-    Plug 'kyazdani42/nvim-web-devicons'
-
-    " markdown
-    Plug 'godlygeek/tabular'
-    Plug 'preservim/vim-markdown'
-    Plug 'mzlogin/vim-markdown-toc'
-
-    " vim-wiki
-    Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
-    Plug 'michal-h21/vim-zettel'
-    " Plug 'michal-h21/vimwiki-sync'
-    " Plug 'mattn/calendar-vim'
-
-    " programming
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'nvim-treesitter/playground'
-    Plug 'tpope/vim-commentary'
-    Plug 'dense-analysis/ale'
-
-    " python/R/stata
-    Plug 'jupyter-vim/jupyter-vim'
-    Plug 'poliquin/stata-vim'
-    Plug 'jalvesaq/Nvim-R'
-
-    " latex
-    Plug 'lervag/vimtex'
-    Plug 'vim-autoformat/vim-autoformat'
-
-    " completion
-    Plug 'hrsh7th/nvim-cmp'
-    Plug 'quangnguyen30192/cmp-nvim-ultisnips'
-    Plug 'hrsh7th/cmp-omni'
-    Plug 'hrsh7th/cmp-cmdline'
-
-    " text editing
-    Plug 'jiangmiao/auto-pairs'
-    Plug 'AckslD/nvim-neoclip.lua'
-    Plug 's1n7ax/nvim-comment-frame'
-    Plug 'gbprod/substitute.nvim'
-
-    " other
-    Plug 'dstein64/vim-startuptime'
-    Plug 'mhinz/vim-startify'
-    Plug 'norcalli/nvim-colorizer.lua'
-    Plug 'echasnovski/mini.jump'
-    ""Plug 'anuvyklack/pretty-fold.nvim'
-    Plug 'kevinhwang91/nvim-bqf'
-    Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
-    Plug 'nvim-lualine/lualine.nvim'
-    Plug 'dccsillag/magma-nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'glepnir/zephyr-nvim'
-    Plug 'folke/zen-mode.nvim'
-    Plug 'echasnovski/mini.indentscope'
-    ""Plug 'hkupty/iron.nvim'
-    "Plug 'rcarriga/nvim-notify'
-    
-call plug#end()
-]])
 -- }}}
 
 -- vim command {{{
@@ -133,13 +333,13 @@ nnoremap <leader>\ :call FindAll()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " makes neovim/nvimtree transparent
-""augroup user_colors
-""  autocmd!
-""  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
-""  autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
-""  autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
-""  autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
-""augroup END
+" augroup user_colors
+"   autocmd!
+"   autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+"   autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
+"   autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
+"   autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
+" augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> VIMRC <==
@@ -151,22 +351,6 @@ command! Config execute ":e $MYVIMRC"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> PLUGINS <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""
-""" ale
-""""""""""""""
-let g:ale_linters = {'python': ['flake8', 'pyflakes'], 'r': ['lintr'], 'tex': []}
-let g:ale_fixers = {'python': ['black'], 'r': ['styler'], 'tex': ['latexindent'], 'lua': ['stylua']}
-let g:ale_fix_on_save = 1
-let g:ale_completion_enabled = 1
-let g:ale_disable_lsp = 0
-
-
-""""""""""""""
-""" autopairs
-""""""""""""""
-let g:AutoPairsShortcutFastWrap = '<c-e>'
-
-
 """"""""""""""
 """ FZF
 """"""""""""""
@@ -228,13 +412,7 @@ augroup END
    "" au BufRead,BufNewFile *.do JupyterConnect
    "" " cycle through completion with tab
    "" " au FileType python inoremap <silent><expr> <Tab>
-""augroup END
-
-""""""""""""""
-""" mini.jump
-""""""""""""""
-hi MiniJump gui=bold,undercurl guisp=#FF0000
-
+"augroup END
 
 """"""""""""""
 """ nvim-r 
@@ -252,23 +430,9 @@ au VimResized * let R_rconsole_height = winheight(0) / 3
 
 
 """"""""""""""
-""" nvim-tree
-""""""""""""""
-nnoremap <silent> <leader>v :NvimTreeToggle<cr>
-
-
-""""""""""""""
-""" startify
-""""""""""""""
-nnoremap <leader>ss :Startify<cr>
-
-
-""""""""""""""
 """ ulti-snips
 """"""""""""""
-let g:UltiSnipsExpandTrigger=";;"
-" let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/UltiSnips']
+
 
 
 """"""""""""""
@@ -317,29 +481,17 @@ let g:vimtex_syntax_conceal_cites = {
 """"""""""""""
 """ vimwiki
 """"""""""""""
-let g:vimwiki_global_ext=0
-let g:vimwiki_ext2syntax = {'.md': 'markdown'}
-let g:vimwiki_auto_chdir = 1
-let g:vimwiki_key_mappings = { 'table_mappings': 0, } " allows ultisnips to use tab insert mode
-let g:vimwiki_list = [{
-            \'path': '~/Documents/wiki/',
-            \'syntax': 'markdown',
-            \'ext': '.md',
-            \'diary_rel_path': 'journal/',
-            \'diary_index': 'journal',
-            \'diary_header': 'Journal',
-            \'nested_syntaxes': {'python': 'python', 'r': 'r'},
-            \'automatic_nested_syntaxes': 1}]
+" let g:vimwiki_ext2syntax = {'.md': 'markdown'}
+" let g:vimwiki_list = [{
+"             \'nested_syntaxes': {'python': 'python', 'r': 'r'},
+"             \'automatic_nested_syntaxes': 1}]
 
 
-augroup filetypedetect
-    au BufEnter,BufNewFile,BufRead *.md			        setlocal syntax=markdown
-"	 au BufEnter,BufNewFile,BufRead ~/Documents/wiki/*	setlocal syntax=markdown
-"    au BufEnter,BufNewFile,BufRead *.tex			    setlocal syntax=latex
-augroup END
+" augroup filetypedetect
+"     au BufEnter,BufNewFile,BufRead *.md			        setlocal syntax=markdown
+" augroup END
 
 " let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
-" autocmd BufNewFile */wiki/journal/[0-9]*.md :read ~/Documents/wiki/template_diary.tpl
 
 " complete file path for external files
 inoremap <expr> <c-f> fzf#vim#complete#path('rg --files --no-ignore-vcs')
@@ -352,18 +504,6 @@ let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading
 let g:zettel_format = '%Y%m%d%H%M%S'
 let g:zettel_options = [{"disable_front_matter": 1, "template" :  "~/Documents/wiki/template.tpl"}]
 let g:vimwiki_markdown_link_ext = 1
-
-
-""""""""""""""
-""" vimwiki-sync
-""""""""""""""
-" "already declared in vimwiki settings
-" let g:vimwiki_list = [{
-"         \ 'path':'$HOME/Documents/wiki',
-"         \ 'syntax': 'markdown',
-"         \ 'ext': '.md'
-" \}]
-let g:sync_taskwarrior = 0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -407,14 +547,16 @@ nnoremap <silent>       <LocalLeader>rc :MagmaReevaluateCell<CR>
 nnoremap <silent>       <LocalLeader>rd :MagmaDelete<CR>
 " removes any stuck floating window
 nnoremap <silent> <LocalLeader>ra :lua for _, win in ipairs(vim.api.nvim_list_wins()) do local config = vim.api.nvim_win_get_config(win); if config.relative ~= "" then vim.api.nvim_win_close(win, false); print('Closing window', win) end end<CR>
-nnoremap <silent> <LocalLeader>ro :MagmaShowOutput<CR>
-nnoremap <silent> <LocalLeader>a :noautocmd MagmaEnterOutput<CR>
+nnoremap FileType stata <silent> <LocalLeader>ro :MagmaShowOutput<CR>
+nnoremap FileType stata <silent> <LocalLeader>a :noautocmd MagmaEnterOutput<CR>
 
 ]])
 -- }}}
 
 -- options {{{
 -- stylua: ignore start 
+vim.g.loaded_netrw = 1 -- disable netrw
+vim.g.loaded_netrwPlugin = 1 -- disable netrw
 vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -435,7 +577,7 @@ vim.opt.breakindentopt = { 'shift:4', 'sbr', 'list:-1' } -- indent by an additio
 vim.opt.showbreak = '>'                                  -- append '>>' to indent
 vim.opt.swapfile = false
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
-vim.opt.laststatus = 0                                   -- hides status line
+-- vim.opt.laststatus = 0                                   -- hides status line
 vim.opt.foldmethod = 'marker'
 
 -- vim.opt.cursorline = true
@@ -446,15 +588,6 @@ vim.opt.foldmethod = 'marker'
 -- }}}
 
 -- keymaps {{{
-
--- FUNCTION
-local function map(mode, lhs, rhs, opts)
-	local options = { noremap = true, silent = true }
-	if opts then
-		options = vim.tbl_extend("force", options, opts)
-	end
-	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
 
 -- move between panes to left/bottom/top/right
 map("n", "<C-h>", "<C-w>h")
@@ -518,36 +651,19 @@ map("n", "<leader>po", ":w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>
 -- }}}
 
 -- require lua{{{
-require("plugin-config/treesitter")
-require("plugin-config/nvim-tree")
-require("plugin-config/colorizer")
-require("plugin-config/dracula-nvim")
-require("plugin-config/nvim-cmp")
-require("plugin-config/tokyonight")
-require("plugin-config/catppuccin")
-require("plugin-config/telescope")
-require("plugin-config/neoclip")
-require("plugin-config/mini-jump")
-require("plugin-config/nvim-comment-frame")
+-- require("plugin-config/colorizer")
+-- require("plugin-config/tokyonight")
+-- require("plugin-config/catppuccin")
+-- require("plugin-config/nvim-comment-frame")
+-- require("plugin-config/zen-mode")
+
 -- require("plugin-config/pretty-fold")
-require("plugin-config/toggleterm")
-require("plugin-config/lualine")
-require("plugin-config/substitute")
-require("plugin-config/zen-mode")
-require("plugin-config/nvim-bqf")
 -- require("plugin-config/iron")
 
 -- require('notify').setup({
 -- 	stages = 'static',
 -- 	timeout = 2000,
 -- })
-
-require("mini.indentscope").setup({
-	draw = {
-		delay = 1,
-		animation = require("mini.indentscope").gen_animation.none(),
-	},
-})
 
 -- }}}
 
@@ -556,7 +672,7 @@ require("mini.indentscope").setup({
 -- vim.cmd("colorscheme zephyr")
 -- vim.cmd("colorscheme tokyonight-night")
 -- vim.cmd('borland')
-vim.cmd("colorscheme catppuccin")
+-- vim.cmd("colorscheme catppuccin")
 -- }}}
 
 -- highlights {{{
@@ -596,18 +712,24 @@ autocmd Filetype startify lua vim.b.miniindentscope_disable=true
 
 vim.cmd("command! -nargs=+ NewGrep execute 'silent grep! <args>' | copen")
 
--- set colorscheme in vimwiki
-vim.api.nvim_create_autocmd("Filetype", {
-	group = vim.api.nvim_create_augroup("colorscheme", { clear = true }),
-	pattern = { "vimwiki", "tex" },
-	command = "colorscheme dracula",
-})
+-- -- set colorscheme in vimwiki
+-- vim.api.nvim_create_autocmd("Filetype", {
+-- 	group = vim.api.nvim_create_augroup("colorscheme", { clear = true }),
+-- 	pattern = { "vimwiki", "tex" },
+-- 	command = "colorscheme dracula",
+-- })
 
 -- highlight on yank
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 	callback = function()
 		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 700 })
 	end,
+})
+
+-- set syntax for .md
+vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile", "BufRead" }, {
+	pattern = { "*.md" },
+	command = "setlocal syntax=markdown",
 })
 
 -- }}}
