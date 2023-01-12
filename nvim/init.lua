@@ -9,7 +9,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 -- }}}
 
--- keymap function
+-- functions{{{
 local function map(mode, lhs, rhs, opts)
 	local options = { noremap = true, silent = true }
 	if opts then
@@ -17,8 +17,11 @@ local function map(mode, lhs, rhs, opts)
 	end
 	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
+-- }}}
 
 -- lazy.nvim {{{
+
+-- bootstrap{{{
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -31,11 +34,11 @@ if not vim.loop.fs_stat(lazypath) then
 	})
 end
 vim.opt.rtp:prepend(lazypath)
+-- }}}
 
 require("lazy").setup({
 	{
 		"mhinz/vim-startify",
-		lazy = false,
 		config = function()
 			map("n", "<leader>ss", ":Startify<cr>")
 		end,
@@ -63,9 +66,10 @@ require("lazy").setup({
 	},
 	{
 		"vimwiki/vimwiki",
-		keys = { "<leader>ww" },
-		event = "BufEnter *.md",
+		-- keys = { "<leader>ww" },
+		-- event = "BufEnter *.md",
 		dependencies = {
+			"preservim/vim-markdown",
 			"michal-h21/vim-zettel",
 		},
 		-- must initialize before load plugin
@@ -96,6 +100,15 @@ require("lazy").setup({
 			"mzlogin/vim-markdown-toc",
 			"godlygeek/tabular",
 		},
+		config = function()
+			-- vim.cmd("setlocal syntax=markdown")
+			vim.g.markdown_fenced_languages = { "python=python", "r=r" }
+			vim.g.vim_markdown_autowrite = 1 -- auto-saves when entering link
+			vim.g.vim_markdown_folding_disabled = 1
+			vim.g.vim_markdown_frontmatter = 1 -- highlights yaml frontmatter
+			vim.g.vim_markdown_toc_autofit = 1
+			vim.g.vim_markdown_new_list_item_indent = 0 -- no indent when pressing typing 'o'
+		end,
 	},
 	{
 		"catppuccin/nvim",
@@ -165,7 +178,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-tree/nvim-tree.lua",
-		lazy = true,
+		-- keys = { "<leader>v" },
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 		},
@@ -173,7 +186,6 @@ require("lazy").setup({
 			require("plugin-config/nvim-tree")
 			map("n", "<leader>v", ":NvimTreeToggle<cr>")
 		end,
-		keys = { "<leader>v" },
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -199,9 +211,9 @@ require("lazy").setup({
 	{
 		"lervag/vimtex",
 		ft = "tex",
-		-- dependencies = {
-		-- 	"vim-autoformat/vim-autoformat",
-		-- },
+		config = function()
+			vim.g.vimtex_quickfix_mode = 0
+		end,
 	},
 	{
 		"echasnovski/mini.indentscope",
@@ -237,6 +249,9 @@ require("lazy").setup({
 		dependencies = {
 			"poliquin/stata-vim",
 		},
+		config = function()
+			require("plugin-config/magma-nvim")
+		end,
 	},
 	{
 		"Mofiqul/dracula.nvim",
@@ -253,6 +268,7 @@ require("lazy").setup({
 		},
 		config = function()
 			require("neoclip").setup()
+			map("n", "<leader>fy", ":Telescope neoclip<cr>")
 		end,
 	},
 	{
@@ -290,6 +306,27 @@ require("lazy").setup({
 			require("plugin-config/nvim-bqf")
 		end,
 	},
+	{
+		"folke/zen-mode.nvim",
+		cmd = "ZenMode",
+		config = function()
+			require("plugin-config/zen-mode")
+		end,
+	},
+	{
+		"chentoast/marks.nvim",
+		config = function()
+			require("marks").setup({
+				-- force_write_shada = true,
+				mappings = {
+					preview = false,
+					delete_buf = "mda",
+					next = "mw",
+					prev = "mq",
+				},
+			})
+		end,
+	},
 	-- { "junegunn/fzf" },
 	-- { "junegunn/fzf.vim" },
 	-- { "folke/tokyonight.nvim" },
@@ -305,6 +342,7 @@ require("lazy").setup({
 
 -- vim command {{{
 vim.cmd([[
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> FUNCTIONS <==
@@ -429,34 +467,21 @@ let R_rconsole_width = 0
 au VimResized * let R_rconsole_height = winheight(0) / 3
 
 
-""""""""""""""
-""" ulti-snips
-""""""""""""""
-
-
-
-""""""""""""""
-""" vim-autoformat
-""""""""""""""
-" let g:python3_host_prog="/opt/homebrew/Cellar/python@3.10/3.10.6_2/bin/python3"
-let g:python3_host_prog="/opt/homebrew/bin/python3"
-let g:formatdef_latexindent = '"latexindent -"'
-
 
 """"""""""""""
 """ vim-markdown
 """"""""""""""
-let g:markdown_fenced_languages = ['python=python', 'r=r']
-let g:vim_markdown_autowrite = 1            " auto-saves when entering link
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_frontmatter = 1          " highlights yaml frontmatter
-let g:vim_markdown_toc_autofit = 1
-let g:vim_markdown_new_list_item_indent = 0 " no indent when pressing typing 'o'
-" let g:vim_markdown_folding_style_pythonic = 1 " folding style
+" let g:markdown_fenced_languages = ['python=python', 'r=r']
+" let g:vim_markdown_autowrite = 1            " auto-saves when entering link
+" let g:vim_markdown_folding_disabled = 1
+" let g:vim_markdown_frontmatter = 1          " highlights yaml frontmatter
+" let g:vim_markdown_toc_autofit = 1
+" let g:vim_markdown_new_list_item_indent = 0 " no indent when pressing typing 'o'
+"" let g:vim_markdown_folding_style_pythonic = 1 " folding style
 
 
 """"""""""""""
-""" vim-markdown
+""" vim-markdown-toc
 """"""""""""""
 let g:vmt_fence_text = 'TOC'
 let g:vmt_fence_closing_text = '/TOC'
@@ -464,35 +489,8 @@ let g:vmt_fence_closing_text = '/TOC'
 
 
 """"""""""""""
-""" vimtex
-""""""""""""""
-let g:vimtex_quickfix_mode=0
-let g:vimtex_syntax_conceal = {
-          \ 'cites': 1,
-          \ 'sections': 1,
-          \}
-
-let g:vimtex_syntax_conceal_cites = {
-          \ 'type': 'icon',
-          \ 'icon': '📖',
-          \ 'verbose': v:false,
-          \}
-
-""""""""""""""
 """ vimwiki
 """"""""""""""
-" let g:vimwiki_ext2syntax = {'.md': 'markdown'}
-" let g:vimwiki_list = [{
-"             \'nested_syntaxes': {'python': 'python', 'r': 'r'},
-"             \'automatic_nested_syntaxes': 1}]
-
-
-" augroup filetypedetect
-"     au BufEnter,BufNewFile,BufRead *.md			        setlocal syntax=markdown
-" augroup END
-
-" let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
-
 " complete file path for external files
 inoremap <expr> <c-f> fzf#vim#complete#path('rg --files --no-ignore-vcs')
 
@@ -504,22 +502,6 @@ let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading
 let g:zettel_format = '%Y%m%d%H%M%S'
 let g:zettel_options = [{"disable_front_matter": 1, "template" :  "~/Documents/wiki/template.tpl"}]
 let g:vimwiki_markdown_link_ext = 1
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ==> EXPERIMENTAL <==
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! -bang -nargs=* TwTodo
-            \ call fzf#vim#grep(
-            \ 'rg --column --no-heading --color=always --smart-case -- '.shellescape('- \[[ ]\] .+'), 1, <bang>0)
-
-command! -bang -nargs=* Titles
-            \ call fzf#vim#grep(
-            "\ 'rg --column --no-heading --color=always --smart-case -- '.shellescape('title:.*'), 1, <bang>0)
-            \ 'rg --column --no-heading --color=always --smart-case --glob "!*.tpl"  -- '.shellescape('title:.*'), 1, 1)
-
-
-nnoremap <leader>fy :Telescope neoclip<cr>
 
 
 function! SynGroup()
@@ -536,27 +518,16 @@ set grepformat=%f:%l:%c:%m
 command! -nargs=0 RunQtConsole call jobstart("jupyter qtconsole --JupyterWidget.include_other_output=True")
 
 
-let g:magma_image_provider = "kitty"
-let g:magma_automatically_open_output = v:false
-""let g:magma_output_window_borders = v:false
-autocmd FileType stata nnoremap <buffer> <silent> <localleader>rv :MagmaInit stata<CR>
-nnoremap <expr><silent> <LocalLeader>r  nvim_exec('MagmaEvaluateOperator', v:true)
-nnoremap <silent>       <LocalLeader>d :MagmaEvaluateLine<CR>
-xnoremap <silent>       <LocalLeader>sd  :<C-u>MagmaEvaluateVisual<CR>`>z<CR>
-nnoremap <silent>       <LocalLeader>rc :MagmaReevaluateCell<CR>
-nnoremap <silent>       <LocalLeader>rd :MagmaDelete<CR>
-" removes any stuck floating window
-nnoremap <silent> <LocalLeader>ra :lua for _, win in ipairs(vim.api.nvim_list_wins()) do local config = vim.api.nvim_win_get_config(win); if config.relative ~= "" then vim.api.nvim_win_close(win, false); print('Closing window', win) end end<CR>
-nnoremap FileType stata <silent> <LocalLeader>ro :MagmaShowOutput<CR>
-nnoremap FileType stata <silent> <LocalLeader>a :noautocmd MagmaEnterOutput<CR>
 
 ]])
 -- }}}
 
 -- options {{{
 -- stylua: ignore start 
-vim.g.loaded_netrw = 1 -- disable netrw
-vim.g.loaded_netrwPlugin = 1 -- disable netrw
+vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
+vim.g.loaded_netrw = 1                                   -- disable netrw
+vim.g.loaded_netrwPlugin = 1                             -- disable netrw
+
 vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -577,10 +548,10 @@ vim.opt.breakindentopt = { 'shift:4', 'sbr', 'list:-1' } -- indent by an additio
 vim.opt.showbreak = '>'                                  -- append '>>' to indent
 vim.opt.swapfile = false
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
--- vim.opt.laststatus = 0                                   -- hides status line
 vim.opt.foldmethod = 'marker'
 
 -- vim.opt.cursorline = true
+-- vim.opt.laststatus = 0                                   -- hides status line
 
 -- vim.formatoptions = 'tqj'                                -- removed 'c'
 -- vim.opt.iskeyword:append("-")
@@ -655,7 +626,6 @@ map("n", "<leader>po", ":w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>
 -- require("plugin-config/tokyonight")
 -- require("plugin-config/catppuccin")
 -- require("plugin-config/nvim-comment-frame")
--- require("plugin-config/zen-mode")
 
 -- require("plugin-config/pretty-fold")
 -- require("plugin-config/iron")
@@ -664,53 +634,40 @@ map("n", "<leader>po", ":w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>
 -- 	stages = 'static',
 -- 	timeout = 2000,
 -- })
-
 -- }}}
 
 -- colorscheme{{{
 -- vim.cmd("colorscheme dracula")
 -- vim.cmd("colorscheme zephyr")
 -- vim.cmd("colorscheme tokyonight-night")
--- vim.cmd('borland')
+-- vim.cmd("colorscheme borland")
 -- vim.cmd("colorscheme catppuccin")
 -- }}}
 
 -- highlights {{{
 -- vim.api.nvim_set_hl(0, "Folded", { fg = "#A9A9A9" })
 -- vim.api.nvim_set_hl(0, "Visual", { fg = "#000000", bg = "#A9A9A9" })
-
 -- }}}
 
 -- autocommands / commands {{{
 vim.cmd([[
 " removes cursorline when in insert mode
-autocmd InsertLeave,WinEnter * set cursorline
-autocmd InsertEnter,WinLeave * set nocursorline
+" autocmd InsertLeave,WinEnter * set cursorline
+" autocmd InsertEnter,WinLeave * set nocursorline
 " no relative line number in insert mode
 autocmd InsertEnter,WinLeave * if &number | set nornu | endif
 autocmd InsertLeave,WinEnter * if &number | set rnu | endif
-" sets width when using 'gq'
-au BufRead,BufNewFile *.tex setlocal textwidth=100
-au BufRead,BufNewFile *.tex setlocal formatoptions-=t
-" highlights text on yank
-""autocmd TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=700 }
 " run python code
 autocmd FileType python map <buffer> <leader>pp :w<CR>:ter python3 %<CR>
 " run lua code
 autocmd FileType lua map <buffer> <leader>pp :w<CR>:!lua %<CR>
-" autocmd FileType lua map <buffer> <leader>po :w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>
 " restart kitty when saving conf file
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
 " iskeyword overwritten so putting it here
 autocmd BufRead, BufNewFile * set isk+=-
 
 autocmd FileType stata setlocal commentstring=//\ %s
-
-" disable indentscope in startify
-autocmd Filetype startify lua vim.b.miniindentscope_disable=true
 ]])
-
-vim.cmd("command! -nargs=+ NewGrep execute 'silent grep! <args>' | copen")
 
 -- -- set colorscheme in vimwiki
 -- vim.api.nvim_create_autocmd("Filetype", {
@@ -729,7 +686,31 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 -- set syntax for .md
 vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile", "BufRead" }, {
 	pattern = { "*.md" },
-	command = "setlocal syntax=markdown",
+	command = "set syntax=markdown",
+})
+
+-- disable indentscope in startify
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	pattern = { "startify" },
+	callback = function()
+		vim.b.miniindentscope_disable = true
+	end,
+})
+
+-- hide cursorline when in insert
+local cursorGrp = vim.api.nvim_create_augroup("CursorLine", { clear = true })
+vim.api.nvim_create_autocmd(
+	{ "InsertLeave", "WinEnter" },
+	{ pattern = "*", command = "set cursorline", group = cursorGrp }
+)
+vim.api.nvim_create_autocmd(
+	{ "InsertEnter", "WinLeave" },
+	{ pattern = "*", command = "set nocursorline", group = cursorGrp }
+)
+
+-- delete all marks on enter
+vim.api.nvim_create_autocmd({ "BufRead" }, {
+	command = ":delm a-zA-Z0-9",
 })
 
 -- }}}
