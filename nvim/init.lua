@@ -1,8 +1,8 @@
---//------------------------------------------//--
---//                  NEOVIM                  //--
---//          init.vim --> init.lua           //--
---//             work in progress             //--
---//------------------------------------------//--
+--------------------------------------------------
+--                    NEOVIM                    --
+--            init.vim --> init.lua             --
+--               work in progress               --
+--------------------------------------------------
 
 -- leader {{{
 vim.g.mapleader = " "
@@ -66,12 +66,6 @@ require("lazy").setup({
 	},
 	{
 		"vimwiki/vimwiki",
-		-- keys = { "<leader>ww" },
-		-- event = "BufEnter *.md",
-		dependencies = {
-			"preservim/vim-markdown",
-			"michal-h21/vim-zettel",
-		},
 		-- must initialize before load plugin
 		init = function()
 			vim.g.vimwiki_list = {
@@ -96,7 +90,10 @@ require("lazy").setup({
 			"vimwiki",
 			"markdown",
 		},
+		-- all vimwiki-related dependencies here
+		-- must load vimwiki first
 		dependencies = {
+			"michal-h21/vim-zettel",
 			"mzlogin/vim-markdown-toc",
 			"godlygeek/tabular",
 		},
@@ -327,12 +324,18 @@ require("lazy").setup({
 			})
 		end,
 	},
+	{
+		"s1n7ax/nvim-comment-frame",
+		keys = { "<leader>cc", "<leader>C" },
+		config = function()
+			require("plugin-config/nvim-comment-frame")
+		end,
+	},
 	-- { "junegunn/fzf" },
 	-- { "junegunn/fzf.vim" },
 	-- { "folke/tokyonight.nvim" },
 	-- { "letorbi/vim-colors-modern-borland" },
 	-- { "jupyter-vim/jupyter-vim" },
-	-- { "s1n7ax/nvim-comment-frame" },
 	-- { "norcalli/nvim-colorizer.lua" },
 	-- { "glepnir/zephyr-nvim" },
 	-- { "folke/zen-mode.nvim" },
@@ -389,68 +392,6 @@ command! Config execute ":e $MYVIMRC"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> PLUGINS <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""
-""" FZF
-""""""""""""""
-""let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8, 'border': 'rounded' } }
-""let g:fzf_preview_window = ['hidden,right,50%', 'ctrl-p']
-""let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-p']
-""let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%'"
-""let $FZF_DEFAULT_OPTS="--ansi"
-
-
-""let g:fzf_colors =
-""\ { 'fg':      ['fg', 'Normal'],
-""  \ 'bg':      ['bg', 'Normal'],
-""  \ 'hl':      ['fg', 'Comment'],
-""  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-""  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-""  \ 'hl+':     ['fg', 'Statement'],
-""  \ 'info':    ['fg', 'PreProc'],
-""  \ 'border':  ['fg', 'Ignore'],
-""  \ 'prompt':  ['fg', 'Conditional'],
-""  \ 'pointer': ['fg', 'Exception'],
-""  \ 'marker':  ['fg', 'Keyword'],
-""  \ 'spinner': ['fg', 'Label'],
-""  \ 'header':  ['fg', 'Comment'] }
-
-""nnoremap <leader>ff <cmd>Files<cr>
-""nnoremap <leader>fg <cmd>Rg<cr>
-""nnoremap <leader>fc <cmd>History:<cr>
-""nnoremap <leader>fb <cmd>BLines<cr>
-
-"!{node_modules/*,.git/*}"
-" -g "!{*,.csv}"
-
-""command! -bang -nargs=* Rg
-""      \   call fzf#vim#grep(
-""      \   'rg --column --line-number --no-heading --glob "!*.{csv,txt}" --color=always -g "*.{md,R,do,py,lua,vim,tex}" --smart-case -- '.shellescape(<q-args>), 1,
-""      \   fzf#vim#with_preview(), <bang>0)
-
-
-""""""""""""""
-""" jupyter
-""""""""""""""
-let g:jupyter_mapkeys = 0
-augroup jupytermap
-    au FileType python vnoremap <buffer> <silent> " :JupyterSendRange<CR>
-    au FileType python nnoremap <buffer> <silent> " :JupyterSendCell<CR>
-    au FileType python inoremap <buffer> <silent> ;; <esc>:JupyterSendRange<CR>
-    " cycle through completion with tab
-    " au FileType python inoremap <silent><expr> <Tab>
-augroup END
-
-""augroup jupytermap
-   "" au FileType stata vnoremap <buffer> <silent> <localleader>sd :JupyterSendRange<CR>`>/^.<CR>
-   "" au FileType stata nnoremap <buffer> <silent> <localleader>d :JupyterSendRange<CR>/^.<CR>
-   "" au FileType stata nnoremap <buffer> <silent> <localleader>l :JupyterSendRange<CR>
-   "" au FileType stata nnoremap <buffer> <silent> <localleader>rv :!jupyter qtconsole &<CR>
-   "" au FileType stata nnoremap <buffer> <silent> <localleader>rv :!jupyter qtconsole &<CR>
-   "" au FileType stata nnoremap <buffer> <silent> <localleader>rf :e! %<CR>
-   "" au BufRead,BufNewFile *.do JupyterConnect
-   "" " cycle through completion with tab
-   "" " au FileType python inoremap <silent><expr> <Tab>
-"augroup END
 
 """"""""""""""
 """ nvim-r 
@@ -465,19 +406,6 @@ let R_rconsole_width = 0
 
 " doesnt work
 au VimResized * let R_rconsole_height = winheight(0) / 3
-
-
-
-""""""""""""""
-""" vim-markdown
-""""""""""""""
-" let g:markdown_fenced_languages = ['python=python', 'r=r']
-" let g:vim_markdown_autowrite = 1            " auto-saves when entering link
-" let g:vim_markdown_folding_disabled = 1
-" let g:vim_markdown_frontmatter = 1          " highlights yaml frontmatter
-" let g:vim_markdown_toc_autofit = 1
-" let g:vim_markdown_new_list_item_indent = 0 " no indent when pressing typing 'o'
-"" let g:vim_markdown_folding_style_pythonic = 1 " folding style
 
 
 """"""""""""""
@@ -516,8 +444,6 @@ set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m
 
 command! -nargs=0 RunQtConsole call jobstart("jupyter qtconsole --JupyterWidget.include_other_output=True")
-
-
 
 ]])
 -- }}}
