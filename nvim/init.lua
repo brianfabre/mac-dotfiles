@@ -38,9 +38,27 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{
+		"catppuccin/nvim",
+		lazy = true,
+		name = "catppuccin",
+		config = function()
+			require("plugin-config/catppuccin")
+			vim.cmd([[colorscheme catppuccin]])
+		end,
+	},
+	{
 		"mhinz/vim-startify",
 		config = function()
 			map("n", "<leader>ss", ":Startify<cr>")
+		end,
+	},
+	{
+		"Mofiqul/dracula.nvim",
+		lazy = true,
+		-- priority = 1000,
+		config = function()
+			require("plugin-config/dracula-nvim")
+			vim.cmd([[colorscheme dracula]])
 		end,
 	},
 	{
@@ -108,15 +126,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		lazy = true,
-		-- priority = 1000,
-		config = function()
-			vim.cmd([[colorscheme catppuccin]])
-		end,
-	},
-	{
 		"nvim-telescope/telescope.nvim",
 		-- version = "0.1.0",
 		branch = "0.1.x",
@@ -144,6 +153,7 @@ require("lazy").setup({
 	},
 	{
 		"dense-analysis/ale",
+		enabled = false,
 		config = function()
 			vim.g.ale_fixers = {
 				python = "black",
@@ -157,17 +167,18 @@ require("lazy").setup({
 				tex = "",
 			}
 			vim.g.ale_fix_on_save = 1
-			vim.g.ale_completion_enabled = 1
-			vim.g.ale_disable_lsp = 0
+			vim.g.ale_completion_enabled = 0
+			vim.g.ale_disable_lsp = 1
 		end,
 	},
 	{
 		"hrsh7th/nvim-cmp",
 		-- event = "InsertEnter",
 		dependencies = {
-			"quangnguyen30192/cmp-nvim-ultisnips",
+			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-omni",
 			"hrsh7th/cmp-cmdline",
+			"quangnguyen30192/cmp-nvim-ultisnips",
 		},
 		config = function()
 			require("plugin-config/nvim-cmp")
@@ -229,6 +240,7 @@ require("lazy").setup({
 	},
 	{
 		"SirVer/ultisnips",
+        -- enabled = false,
 		-- event = "InsertEnter",
 		-- event = "BufEnter *.md",
 		init = function()
@@ -248,13 +260,6 @@ require("lazy").setup({
 		},
 		config = function()
 			require("plugin-config/magma-nvim")
-		end,
-	},
-	{
-		"Mofiqul/dracula.nvim",
-		lazy = true,
-		config = function()
-			require("plugin-config/dracula-nvim")
 		end,
 	},
 	{
@@ -331,13 +336,72 @@ require("lazy").setup({
 			require("plugin-config/nvim-comment-frame")
 		end,
 	},
+	{
+		"kylechui/nvim-surround",
+		version = "*",
+		config = function()
+			require("nvim-surround").setup({
+				-- Configuration here, or leave empty to use defaults
+			})
+		end,
+	},
+	{
+		"rcarriga/nvim-notify",
+		enabled = false,
+		config = function()
+			require("notify").setup({
+				stages = "static",
+				timeout = 2000,
+			})
+		end,
+	},
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"seblj/nvim-echo-diagnostics",
+		},
+		config = function()
+			require("echo-diagnostics").setup({
+				show_diagnostic_number = true,
+				show_diagnostic_source = false,
+			})
+			-- show line diagnostics automatically in hover window or echo
+			vim.diagnostic.config({ virtual_text = false })
+			vim.o.updatetime = 250
+			-- vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
+			vim.cmd([[autocmd CursorHold * lua require('echo-diagnostics').echo_line_diagnostic()]])
+
+			vim.fn.sign_define("DiagnosticSignError", {
+				texthl = "DiagnosticSignError",
+				text = "",
+				numhl = "DiagnosticSignError",
+			})
+
+			vim.fn.sign_define("DiagnosticSignWarn", {
+				texthl = "DiagnosticSignWarn",
+				text = "",
+				numhl = "DiagnosticSignWarn",
+			})
+			vim.fn.sign_define("DiagnosticSignHint", {
+				texthl = "DiagnosticSignHint",
+				text = "",
+				numhl = "DiagnosticSignHint",
+			})
+			vim.fn.sign_define("DiagnosticSignInfo", {
+				texthl = "DiagnosticSignInfo",
+				text = "",
+				numhl = "DiagnosticSignInfo",
+			})
+		end,
+	},
+	{
+		"kiyoon/telescope-insert-path.nvim",
+	},
 	-- { "junegunn/fzf" },
 	-- { "junegunn/fzf.vim" },
 	-- { "folke/tokyonight.nvim" },
 	-- { "letorbi/vim-colors-modern-borland" },
-	-- { "jupyter-vim/jupyter-vim" },
 	-- { "norcalli/nvim-colorizer.lua" },
-	-- { "glepnir/zephyr-nvim" },
 	-- { "folke/zen-mode.nvim" },
 })
 
@@ -473,7 +537,8 @@ vim.opt.breakindent = true                               -- enable indentation
 vim.opt.breakindentopt = { 'shift:4', 'sbr', 'list:-1' } -- indent by an additional 4 characters on wrapped line
 vim.opt.showbreak = '>'                                  -- append '>>' to indent
 vim.opt.swapfile = false
-vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+-- vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.opt.completeopt = { 'noselect' }
 vim.opt.foldmethod = 'marker'
 
 -- vim.opt.cursorline = true
@@ -542,32 +607,26 @@ map("n", "<leader>so", ":luafile %<CR>")
 map("n", "<leader>=", ':exe "resize +2"<CR>')
 map("n", "<leader>-", ':exe "resize -2"<CR>')
 
-map("n", "<leader>po", ":w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>")
+-- new line below and stay in normal
+map("n", "<CR>", "o<Esc>")
+
+-- map("n", "<leader>po", ":w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>")
 -- " autocmd FileType lua map <buffer> <leader>po :w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>
+
 
 -- }}}
 
 -- require lua{{{
 -- require("plugin-config/colorizer")
 -- require("plugin-config/tokyonight")
--- require("plugin-config/catppuccin")
--- require("plugin-config/nvim-comment-frame")
 
 -- require("plugin-config/pretty-fold")
 -- require("plugin-config/iron")
-
--- require('notify').setup({
--- 	stages = 'static',
--- 	timeout = 2000,
--- })
 -- }}}
 
 -- colorscheme{{{
--- vim.cmd("colorscheme dracula")
--- vim.cmd("colorscheme zephyr")
 -- vim.cmd("colorscheme tokyonight-night")
 -- vim.cmd("colorscheme borland")
--- vim.cmd("colorscheme catppuccin")
 -- }}}
 
 -- highlights {{{
@@ -586,7 +645,7 @@ autocmd InsertLeave,WinEnter * if &number | set rnu | endif
 " run python code
 autocmd FileType python map <buffer> <leader>pp :w<CR>:ter python3 %<CR>
 " run lua code
-autocmd FileType lua map <buffer> <leader>pp :w<CR>:!lua %<CR>
+autocmd FileType lua map <buffer> <leader>pp :w<CR>:luafile %<CR>
 " restart kitty when saving conf file
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
 " iskeyword overwritten so putting it here
@@ -640,3 +699,5 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
 })
 
 -- }}}
+
+-- require("plugin-config/test1")

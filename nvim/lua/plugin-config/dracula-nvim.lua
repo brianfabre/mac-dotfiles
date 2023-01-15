@@ -1,4 +1,4 @@
-local dracula = require('dracula')
+local dracula = require("dracula")
 dracula.setup({
 	-- customize dracula color palette
 	-- colors = {
@@ -27,6 +27,7 @@ dracula.setup({
 	-- 	nontext = '#3B4048',
 	-- },
 	-- set italic comment
+	transparent_bg = false, -- default false
 	italic_comment = true, -- default false
 	overrides = {
 		-- Examples
@@ -43,6 +44,6 @@ dracula.setup({
 		htmlLink = { fg = dracula.colors().orange, underline = true },
 		htmlBoldItalic = { fg = dracula.colors().green, bold = true, italic = true },
 		-- Comment = { fg = dracula.colors().comment },
-		Comment = { fg = '#A9A9A9', italic = true },
+		Comment = { fg = "#A9A9A9", italic = true },
 	},
 })

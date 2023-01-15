@@ -12,7 +12,7 @@ cmp.setup({
 	},
 	window = {
 		-- completion = cmp.config.window.bordered(),
-		documentation = cmp.config.window.bordered(),
+		-- documentation = cmp.config.window.bordered(),
 	},
 	mapping = cmp.mapping.preset.insert({
 		-- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -85,28 +85,26 @@ cmp.setup({
 		}),
 	}),
 	sources = cmp.config.sources({
-		-- { name = 'nvim_lsp' },
-		-- { name = 'vsnip' }, -- For vsnip users.
-		-- { name = 'luasnip' }, -- For luasnip users.
-		{ name = "ultisnips" }, -- For ultisnips users.
+        { name = "omni", keyword_length = 0 },
+		{ name = "nvim_lsp" },
+		{ name = "ultisnips" }, -- For ultisnips users
 		-- { name = "omni", trigger_characters = { "$" } },
-		-- { name = 'snippy' }, -- For snippy users.
 	}, {
 		-- { name = 'buffer' },
-		{ name = "omni" },
+		-- { name = "omni" },
 	}),
 	-- this disables completion when cursor in comment
-	-- currently disabled to test for errors
+	-- currently disabled due to errors
 	-- enabled = function()
 	-- 	local context = require("cmp.config.context")
 	-- 	return not (context.in_treesitter_capture("comment") or context.in_syntax_group("Comment"))
 	-- end,
 })
 
-local cmp_ultisnips = require("cmp_nvim_ultisnips")
-cmp_ultisnips.setup({
-	filetype_source = "ultisnips_default",
-})
+-- local cmp_ultisnips = require("cmp_nvim_ultisnips")
+-- cmp_ultisnips.setup({
+-- 	filetype_source = "ultisnips_default",
+-- })
 
 -- disables completion in markdown
 local autocmd = vim.api.nvim_create_autocmd
@@ -117,7 +115,7 @@ autocmd("FileType", {
 	end,
 })
 
--- `:` cmdline setup.
+-- cmdline setup.
 cmp.setup.cmdline(":", {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = cmp.config.sources({
@@ -130,4 +128,32 @@ cmp.setup.cmdline(":", {
 			},
 		},
 	}),
+})
+
+-- Set up lspconfig.
+require("lspconfig")["sumneko_lua"].setup({
+	capabilities = require("cmp_nvim_lsp").default_capabilities(),
+	settings = {
+		Lua = {
+            completion = {
+                enable = false,
+            },
+			runtime = {
+				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+				version = "LuaJIT",
+			},
+			diagnostics = {
+				-- Get the language server to recognize the `vim` global
+				globals = { "vim" },
+			},
+			workspace = {
+				-- Make the server aware of Neovim runtime files
+				library = vim.api.nvim_get_runtime_file("", true),
+			},
+			-- Do not send telemetry data containing a randomized but unique identifier
+			telemetry = {
+				enable = false,
+			},
+		},
+	},
 })

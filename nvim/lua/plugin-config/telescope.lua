@@ -1,4 +1,5 @@
 local actions = require("telescope.actions")
+local path_actions = require("telescope_insert_path")
 require("telescope").setup({
 	defaults = {
 		file_ignore_patterns = { "%.csv", "%.txt", "%.xml" },
@@ -7,9 +8,17 @@ require("telescope").setup({
 				["<C-p>"] = require("telescope.actions.layout").toggle_preview,
 				["<esc>"] = actions.close,
 			},
+			n = {
+				["[i"] = path_actions.insert_relpath_i_visual,
+				["[I"] = path_actions.insert_relpath_I_visual,
+				["[a"] = path_actions.insert_relpath_a_visual,
+				["[A"] = path_actions.insert_relpath_A_visual,
+				["[o"] = path_actions.insert_relpath_o_visual,
+				["[O"] = path_actions.insert_relpath_O_visual,
+			},
 		},
 		preview = {
-			hide_on_startup = true, -- hide previewer when picker starts
+			-- hide_on_startup = true, -- hide previewer when picker starts
 		},
 	},
 	extensions = {
@@ -31,7 +40,7 @@ local ts = {
 	builtin = require("telescope.builtin"),
 	grep_fuzzy = function()
 		require("telescope.builtin").grep_string({
-			prompt_title = "Fuzzy Find",
+			prompt_title = "FZF",
 			shorten_path = true,
 			word_match = "-w",
 			only_sort_text = true,
@@ -40,10 +49,35 @@ local ts = {
 	end,
 }
 
+local dropdown = require("telescope.themes").get_dropdown({
+	-- borderchars = {
+	-- 	{ "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+	-- 	prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+	-- 	results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+	-- 	preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+	-- },
+	width = 0.8,
+	previewer = false,
+	-- prompt_title = false,
+	preview_title = false,
+})
+
+vim.keymap.set("n", "<leader>ff", function()
+	ts.builtin.find_files(dropdown)
+end)
+vim.keymap.set("n", "<leader>fc", function()
+	ts.builtin.command_history(dropdown)
+end)
 vim.keymap.set("n", "<leader>fg", ts.grep_fuzzy, {})
-vim.keymap.set("n", "<leader>ff", ts.builtin.find_files, {})
 vim.keymap.set("n", "<leader>fb", ts.builtin.current_buffer_fuzzy_find, {})
-vim.keymap.set("n", "<leader>fc", ts.builtin.command_history, {})
+-- vim.keymap.set("n", "<leader>fc", ts.builtin.command_history, {})
 vim.keymap.set("n", "<leader>fh", ts.builtin.help_tags, {})
 vim.keymap.set("n", "<leader>fv", ts.builtin.buffers, {})
 vim.keymap.set("n", "<leader>fm", ts.builtin.marks, {})
+
+-- vim.keymap.set(
+-- 	"n",
+-- 	"<leader>ff",
+-- 	"<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
+-- 	opts
+-- )

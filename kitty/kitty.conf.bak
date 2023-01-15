@@ -17,10 +17,13 @@
 # font_size 22.0
 
 # font_family      Consolas
+# font_size 18.0
+
+# font_family      Liga SFMono Nerd Font
 # font_size 17.0
 
-font_family      Liga SFMono Nerd Font
-font_size 17.0
+font_family      SauceCodePro Nerd Font Mono
+font_size 18.0
 
 # font_family      JetBrainsMono Nerd Font Mono
 # font_size 16.0
@@ -1010,8 +1013,8 @@ hide_window_decorations titlebar-only
 
 #: The foreground and background colors.
 
-# background_opacity 1.0
-background_opacity 0.85
+background_opacity 1.0
+# background_opacity 0.85
 
 #: The opacity of the background. A number between zero and one, where
 #: one is opaque and zero is fully transparent. This will only work if
@@ -2285,6 +2288,6 @@ active_tab_title_template "{fmt.fg._BD93F9}{fmt.bg.default}{fmt.fg._282c34}{fmt.
 #}}}
 
 # BEGIN_KITTY_THEME
-# Thayer Bright
+# Bright Lights
 include current-theme.conf
 # END_KITTY_THEME
