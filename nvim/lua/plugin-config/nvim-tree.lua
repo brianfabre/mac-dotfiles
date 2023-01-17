@@ -11,38 +11,39 @@ local float_col = math.floor((vim.api.nvim_win_get_width(0) - float_width) / 2)
 
 -- empty setup using defaults
 require("nvim-tree").setup({
-    sync_root_with_cwd = true,
-    reload_on_bufenter = true,
-    update_focused_file = {
-        enable = true,
-        update_root = true,
-      },
-    view = {
-        centralize_selection = true,
-      },
-    renderer = {
-        icons = {
-          show = {
-            git = false,
-          },
-        },
-      },
-    git = {
-        ignore = false,
-    },
-    view = {
-        float = {
-          enable = true,
-          -- enable = false,
-          quit_on_focus_loss = true,
-          open_win_config = {
-            relative = "editor",
-            border = "rounded",
-            width = float_width,
-            height = float_height,
-            row = float_row,
-            col = float_col,
-          },
-        },
-      },
+	sync_root_with_cwd = true,
+	reload_on_bufenter = true,
+	respect_buf_cwd = true,
+	update_focused_file = {
+		enable = true,
+		update_root = true,
+	},
+	view = {
+		centralize_selection = true,
+	},
+	renderer = {
+		icons = {
+			show = {
+				git = false,
+			},
+		},
+	},
+	git = {
+		ignore = false,
+	},
+	-- view = {
+	-- 	float = {
+	-- 		enable = true,
+	-- 		-- enable = false,
+	-- 		quit_on_focus_loss = true,
+	-- 		open_win_config = {
+	-- 			relative = "editor",
+	-- 			border = "rounded",
+	-- 			width = float_width,
+	-- 			height = float_height,
+	-- 			row = float_row,
+	-- 			col = float_col,
+	-- 		},
+	-- 	},
+	-- },
 })

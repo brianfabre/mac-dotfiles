@@ -1,3 +1,30 @@
+local kind_icons = { -- {{{
+	Text = "",
+	Method = "",
+	Function = "",
+	Constructor = "",
+	Field = "",
+	Variable = "",
+	Class = "ﴯ",
+	Interface = "",
+	Module = "",
+	Property = "ﰠ",
+	Unit = "",
+	Value = "",
+	Enum = "",
+	Keyword = "",
+	Snippet = "",
+	Color = "",
+	File = "",
+	Reference = "",
+	Folder = "",
+	EnumMember = "",
+	Constant = "",
+	Struct = "",
+	Event = "",
+	Operator = "",
+	TypeParameter = "",
+} -- }}}
 local cmp = require("cmp")
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 cmp.setup({
@@ -11,8 +38,39 @@ cmp.setup({
 		end,
 	},
 	window = {
-		-- completion = cmp.config.window.bordered(),
-		-- documentation = cmp.config.window.bordered(),
+		-- completion = cmp.config.window.bordered({
+		-- 	border = "single",
+		-- 	winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
+		-- 	col_offset = -1,
+		-- }),
+		documentation = cmp.config.window.bordered({
+			border = "single",
+			-- winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
+			-- col_offset = -1,
+		}),
+	},
+	formatting = {
+		format = function(entry, vim_item)
+			local prsnt, lspkind = pcall(require, "lspkind")
+			if not prsnt then
+				-- from kind_icons array
+				-- concatenates the icons with the name of the item kind
+				vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+			else
+				-- From lspkind
+				return lspkind.cmp_format()
+			end
+			-- Source
+			vim_item.menu = ({
+				buffer = "[Buffer]",
+				nvim_lsp = "[LSP]",
+				ultisnips = "[UltiSnip]",
+				nvim_lua = "[Lua]",
+				latex_symbols = "[LaTeX]",
+			})[entry.source.name]
+
+			return vim_item
+		end,
 	},
 	mapping = cmp.mapping.preset.insert({
 		-- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -85,9 +143,14 @@ cmp.setup({
 		}),
 	}),
 	sources = cmp.config.sources({
-        { name = "omni", keyword_length = 0 },
-		{ name = "nvim_lsp" },
 		{ name = "ultisnips" }, -- For ultisnips users
+		{ name = "omni" },
+		{
+			name = "nvim_lsp",
+			entry_filter = function(entry)
+				return require("cmp").lsp.CompletionItemKind.Snippet ~= entry:get_kind()
+			end,
+		},
 		-- { name = "omni", trigger_characters = { "$" } },
 	}, {
 		-- { name = 'buffer' },
@@ -135,9 +198,9 @@ require("lspconfig")["sumneko_lua"].setup({
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
 	settings = {
 		Lua = {
-            completion = {
-                enable = false,
-            },
+			completion = {
+				enable = false,
+			},
 			runtime = {
 				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
 				version = "LuaJIT",
@@ -157,3 +220,23 @@ require("lspconfig")["sumneko_lua"].setup({
 		},
 	},
 })
+
+-- vscode comp theme
+vim.cmd([[
+" gray
+highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
+" blue
+highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
+highlight! link CmpItemAbbrMatchFuzzy CmpItemAbbrMatch
+" light blue
+highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
+highlight! link CmpItemKindInterface CmpItemKindVariable
+highlight! link CmpItemKindText CmpItemKindVariable
+" pink
+highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
+highlight! link CmpItemKindMethod CmpItemKindFunction
+" front
+highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
+highlight! link CmpItemKindProperty CmpItemKindKeyword
+highlight! link CmpItemKindUnit CmpItemKindKeyword
+]])

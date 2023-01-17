@@ -17,6 +17,21 @@ local function map(mode, lhs, rhs, opts)
 	end
 	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
+
+-- local diag_on = false
+-- local function toggle_diag()
+-- 	if diag_on then
+-- 		diag_on = false
+-- 		vim.diagnostic.hide()
+-- 		-- vim.lsp.diagnostic.disable()
+-- 	else
+-- 		diag_on = true
+-- 		vim.diagnostic.show()
+-- 		-- vim.lsp.diagnostic.enable()
+-- 	end
+-- end
+-- vim.cmd([[autocmd BufRead * lua vim.diagnostic.hide()]])
+-- vim.keymap.set("n", "<leader>dt", toggle_diag)
 -- }}}
 
 -- lazy.nvim {{{
@@ -40,6 +55,7 @@ require("lazy").setup({
 	{
 		"catppuccin/nvim",
 		lazy = true,
+		-- priority = 1000,
 		name = "catppuccin",
 		config = function()
 			require("plugin-config/catppuccin")
@@ -70,11 +86,12 @@ require("lazy").setup({
 				palette = require("mini.base16").mini_palette("#112641", "#e2e98f", 75),
 				name = "minischeme",
 			})
+			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "", bg = "" })
+			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#112641" })
 		end,
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-		lazy = false,
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 		},
@@ -100,6 +117,9 @@ require("lazy").setup({
 			vim.g.vimwiki_hl_headers = 1
 			vim.g.vimwiki_auto_chdir = 1
 			vim.g.vimwiki_key_mappings = { table_mappings = 0 }
+		end,
+		config = function()
+			vim.cmd([[autocmd FileType vimwiki nnoremap <CR> <cmd>silent VimwikiFollowLink<cr>]])
 		end,
 	},
 	{
@@ -153,7 +173,6 @@ require("lazy").setup({
 	},
 	{
 		"dense-analysis/ale",
-		enabled = false,
 		config = function()
 			vim.g.ale_fixers = {
 				python = "black",
@@ -161,14 +180,16 @@ require("lazy").setup({
 				tex = "latexindent",
 				lua = "stylua",
 			}
-			vim.g.ale_linters = {
-				python = { "flake8", "pyflakes" },
-				r = "lintr",
-				tex = "",
-			}
-			vim.g.ale_fix_on_save = 1
+			-- vim.g.ale_linters = {
+			-- python = { "flake8", "pyflakes" },
+			-- 	python = { "" },
+			-- 	r = "lintr",
+			-- 	tex = "",
+			-- }
 			vim.g.ale_completion_enabled = 0
+			vim.g.ale_fix_on_save = 1
 			vim.g.ale_disable_lsp = 1
+			vim.g.ale_linters_explicit = 1
 		end,
 	},
 	{
@@ -240,7 +261,7 @@ require("lazy").setup({
 	},
 	{
 		"SirVer/ultisnips",
-        -- enabled = false,
+		-- enabled = false,
 		-- event = "InsertEnter",
 		-- event = "BufEnter *.md",
 		init = function()
@@ -357,6 +378,7 @@ require("lazy").setup({
 	},
 	{
 		"neovim/nvim-lspconfig",
+		-- enabled = false,
 		dependencies = {
 			"seblj/nvim-echo-diagnostics",
 		},
@@ -397,12 +419,22 @@ require("lazy").setup({
 	{
 		"kiyoon/telescope-insert-path.nvim",
 	},
-	-- { "junegunn/fzf" },
-	-- { "junegunn/fzf.vim" },
+	{
+		"norcalli/nvim-colorizer.lua",
+		-- enabled = false,
+		init = function()
+			vim.opt.termguicolors = true
+		end,
+		config = function()
+			require("colorizer").setup({
+				"*", -- Highlight all files, but customize some others.
+				"!python", -- Exclude vim from highlighting.
+				"!tex", -- Exclude vim from highlighting.
+				-- Exclusion Only makes sense if '*' is specified!
+			})
+		end,
+	},
 	-- { "folke/tokyonight.nvim" },
-	-- { "letorbi/vim-colors-modern-borland" },
-	-- { "norcalli/nvim-colorizer.lua" },
-	-- { "folke/zen-mode.nvim" },
 })
 
 -- }}}
@@ -519,6 +551,7 @@ vim.g.loaded_netrw = 1                                   -- disable netrw
 vim.g.loaded_netrwPlugin = 1                             -- disable netrw
 
 vim.opt.termguicolors = true
+-- vim.opt.cmdheight = 0
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
@@ -537,7 +570,6 @@ vim.opt.breakindent = true                               -- enable indentation
 vim.opt.breakindentopt = { 'shift:4', 'sbr', 'list:-1' } -- indent by an additional 4 characters on wrapped line
 vim.opt.showbreak = '>'                                  -- append '>>' to indent
 vim.opt.swapfile = false
--- vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.completeopt = { 'noselect' }
 vim.opt.foldmethod = 'marker'
 
@@ -600,38 +632,16 @@ map("i", ">>", "<c-t>")
 -- allow the . to execute once for each line of a visual selection
 map("v", ".", ":normal .<CR>")
 
--- source init.lua
-map("n", "<leader>so", ":luafile %<CR>")
+-- open lazy.nvim
+map("n", "<leader>ly", ":Lazy<CR>")
+
+-- open nvim config
+map("n", "<leader>il", ":e $MYVIMRC<CR>")
 
 -- resize windows
 map("n", "<leader>=", ':exe "resize +2"<CR>')
 map("n", "<leader>-", ':exe "resize -2"<CR>')
 
--- new line below and stay in normal
-map("n", "<CR>", "o<Esc>")
-
--- map("n", "<leader>po", ":w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>")
--- " autocmd FileType lua map <buffer> <leader>po :w<CR>:source /Users/brian/Documents/neovim/test.lua<CR>
-
-
--- }}}
-
--- require lua{{{
--- require("plugin-config/colorizer")
--- require("plugin-config/tokyonight")
-
--- require("plugin-config/pretty-fold")
--- require("plugin-config/iron")
--- }}}
-
--- colorscheme{{{
--- vim.cmd("colorscheme tokyonight-night")
--- vim.cmd("colorscheme borland")
--- }}}
-
--- highlights {{{
--- vim.api.nvim_set_hl(0, "Folded", { fg = "#A9A9A9" })
--- vim.api.nvim_set_hl(0, "Visual", { fg = "#000000", bg = "#A9A9A9" })
 -- }}}
 
 -- autocommands / commands {{{

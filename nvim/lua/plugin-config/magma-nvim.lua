@@ -15,7 +15,17 @@ vim.g.magma_automatically_open_output = false
 -- vim.g.magma_output_window_borders = false
 vim.g.magma_image_provider = "kitty"
 
+-- highlights for float
+-- moved to base16 config
+-- vim.api.nvim_set_hl(0, "FloatBorder", { fg = "", bg = "" })
+-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#112641" })
+
 -- augroup and autocmd
+
+-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
+-- 	{ pattern = "stata", command = ":MagmaInit stata<CR>" },
+-- })
+
 local group = vim.api.nvim_create_augroup("statagroup", { clear = true })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
