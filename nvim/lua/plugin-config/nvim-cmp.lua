@@ -26,27 +26,22 @@ local kind_icons = { -- {{{
 	TypeParameter = "",
 } -- }}}
 local cmp = require("cmp")
+local WIDE_HEIGHT = 60
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 cmp.setup({
 	snippet = {
 		-- REQUIRED - you must specify a snippet engine
 		expand = function(args)
-			-- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-			-- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-			-- require('snippy').expand_snippet(args.body) -- For `snippy` users.
 			vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
 		end,
 	},
 	window = {
 		-- completion = cmp.config.window.bordered({
 		-- 	border = "single",
-		-- 	winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
 		-- 	col_offset = -1,
 		-- }),
 		documentation = cmp.config.window.bordered({
 			border = "single",
-			-- winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
-			-- col_offset = -1,
 		}),
 	},
 	formatting = {
@@ -69,23 +64,18 @@ cmp.setup({
 				latex_symbols = "[LaTeX]",
 			})[entry.source.name]
 
+			vim_item.abbr = string.sub(vim_item.abbr, 1, 30)
+
 			return vim_item
 		end,
 	},
 	mapping = cmp.mapping.preset.insert({
-		-- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-		-- ['<C-f>'] = cmp.mapping.scroll_docs(4),
-		-- ['<C-Space>'] = cmp.mapping.complete(),
+		["<C-b>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		-- ["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.abort(),
 		-- ['<CR>'] = cmp.mapping.confirm({ select = true }),
 		["<Tab>"] = cmp.mapping({
-			-- c = function()
-			--     if cmp.visible() then
-			--         cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-			--     else
-			--         cmp.complete()
-			--     end
-			-- end,
 			i = function(fallback)
 				if cmp.visible() then
 					cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
@@ -128,18 +118,10 @@ cmp.setup({
 				end
 			end,
 		}),
-
 		["<Down>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), { "i" }),
 		["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), { "i" }),
 		["<CR>"] = cmp.mapping({
 			i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
-			-- c = function(fallback)
-			--     if cmp.visible() then
-			--         cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-			--     else
-			--         fallback()
-			--     end
-			-- end
 		}),
 	}),
 	sources = cmp.config.sources({
@@ -151,17 +133,24 @@ cmp.setup({
 				return require("cmp").lsp.CompletionItemKind.Snippet ~= entry:get_kind()
 			end,
 		},
-		-- { name = "omni", trigger_characters = { "$" } },
 	}, {
 		-- { name = 'buffer' },
-		-- { name = "omni" },
+		-- { name = "omni", trigger_characters = { "$" } },
 	}),
-	-- this disables completion when cursor in comment
-	-- currently disabled due to errors
-	-- enabled = function()
-	-- 	local context = require("cmp.config.context")
-	-- 	return not (context.in_treesitter_capture("comment") or context.in_syntax_group("Comment"))
-	-- end,
+	view = {
+		entries = { name = "custom", selection_order = "near_cursor" },
+	},
+	-- disables completion when cursor in comment
+	enabled = function()
+		-- disable completion in comments
+		local context = require("cmp.config.context")
+		-- keep command mode completion enabled when cursor is in a comment
+		if vim.api.nvim_get_mode().mode == "c" then
+			return true
+		else
+			return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
+		end
+	end,
 })
 
 -- local cmp_ultisnips = require("cmp_nvim_ultisnips")
@@ -193,13 +182,24 @@ cmp.setup.cmdline(":", {
 	}),
 })
 
+cmp.setup.cmdline({ "/", "?" }, {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = {
+		{ name = "buffer" },
+	},
+})
+
+-- must call neodev before lspconfig
+require("neodev").setup({})
+
 -- Set up lspconfig.
 require("lspconfig")["sumneko_lua"].setup({
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
 	settings = {
 		Lua = {
 			completion = {
-				enable = false,
+				-- enable = false,
+				callSnippet = "Replace",
 			},
 			runtime = {
 				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)

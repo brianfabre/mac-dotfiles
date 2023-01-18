@@ -197,6 +197,8 @@ require("lazy").setup({
 		-- event = "InsertEnter",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-omni",
 			"hrsh7th/cmp-cmdline",
 			"quangnguyen30192/cmp-nvim-ultisnips",
@@ -368,7 +370,7 @@ require("lazy").setup({
 	},
 	{
 		"rcarriga/nvim-notify",
-		enabled = false,
+		enabled = true,
 		config = function()
 			require("notify").setup({
 				stages = "static",
@@ -432,6 +434,13 @@ require("lazy").setup({
 				"!tex", -- Exclude vim from highlighting.
 				-- Exclusion Only makes sense if '*' is specified!
 			})
+		end,
+	},
+	{
+		"folke/neodev.nvim",
+		-- enabled = false,
+		config = function()
+			require("neodev").setup({})
 		end,
 	},
 	-- { "folke/tokyonight.nvim" },
@@ -614,7 +623,7 @@ map("i", "jk", "<esc>")
 map("n", "<Leader>zz", ":qa!<CR>")
 
 -- file path
-map("n", "<leader>fp", ':let @*=expand("%:p")<CR>')
+map("n", "<leader>cwd", ":lua print(vim.fn.getcwd())<CR>")
 map("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>")
 
 -- always centers after c-d/c-u
@@ -656,6 +665,7 @@ autocmd InsertLeave,WinEnter * if &number | set rnu | endif
 autocmd FileType python map <buffer> <leader>pp :w<CR>:ter python3 %<CR>
 " run lua code
 autocmd FileType lua map <buffer> <leader>pp :w<CR>:luafile %<CR>
+autocmd FileType lua map <buffer> <leader>po :w<CR>:luafile ~/.config/nvim/dev/init.lua<CR>
 " restart kitty when saving conf file
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
 " iskeyword overwritten so putting it here
@@ -710,4 +720,5 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
 
 -- }}}
 
--- require("plugin-config/test1")
+-- require("dev")
+-- vim.opt.runtimepath:append("/Users/brian/Documents/neovim/lua/")
