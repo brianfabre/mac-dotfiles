@@ -1,5 +1,5 @@
 local actions = require("telescope.actions")
-local path_actions = require("telescope_insert_path")
+local test = require("robust/test")
 require("telescope").setup({
 	defaults = {
 		file_ignore_patterns = { "%.csv", "%.txt", "%.xml" },
@@ -7,14 +7,11 @@ require("telescope").setup({
 			i = {
 				["<C-p>"] = require("telescope.actions.layout").toggle_preview,
 				["<esc>"] = actions.close,
+				["<C-o>"] = path_link,
 			},
 			n = {
-				["[i"] = path_actions.insert_relpath_i_visual,
-				["[I"] = path_actions.insert_relpath_I_visual,
-				["[a"] = path_actions.insert_relpath_a_visual,
-				["[A"] = path_actions.insert_relpath_A_visual,
-				["[o"] = path_actions.insert_relpath_o_visual,
-				["[O"] = path_actions.insert_relpath_O_visual,
+				-- ["<C-o>"] = function(prompt_bufnr) end,
+				["<C-o>"] = path_link,
 			},
 		},
 		preview = {

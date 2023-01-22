@@ -54,8 +54,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{
 		"catppuccin/nvim",
-		lazy = true,
-		-- priority = 1000,
+		-- lazy = true,
+		priority = 1000,
 		name = "catppuccin",
 		config = function()
 			require("plugin-config/catppuccin")
@@ -79,8 +79,8 @@ require("lazy").setup({
 	},
 	{
 		"echasnovski/mini.base16",
-		lazy = false,
-		priority = 1000,
+		lazy = true,
+		-- priority = 1000,
 		config = function()
 			require("mini.base16").setup({
 				palette = require("mini.base16").mini_palette("#112641", "#e2e98f", 75),
@@ -375,6 +375,7 @@ require("lazy").setup({
 			require("notify").setup({
 				stages = "static",
 				timeout = 2000,
+				render = "minimal",
 			})
 		end,
 	},
@@ -563,6 +564,7 @@ vim.opt.termguicolors = true
 -- vim.opt.cmdheight = 0
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.splitbelow = true
 vim.opt.mouse = 'a'
 vim.opt.scrolloff = 4                                    -- leaves space when scrolling
 vim.opt.hlsearch = false
@@ -651,6 +653,9 @@ map("n", "<leader>il", ":e $MYVIMRC<CR>")
 map("n", "<leader>=", ':exe "resize +2"<CR>')
 map("n", "<leader>-", ':exe "resize -2"<CR>')
 
+-- terminal mode
+map("t", "<ESC>", "<C-\\><C-n>")
+
 -- }}}
 
 -- autocommands / commands {{{
@@ -662,10 +667,12 @@ vim.cmd([[
 autocmd InsertEnter,WinLeave * if &number | set nornu | endif
 autocmd InsertLeave,WinEnter * if &number | set rnu | endif
 " run python code
-autocmd FileType python map <buffer> <leader>pp :w<CR>:ter python3 %<CR>
+" autocmd FileType python map <buffer> <leader>pp :w<CR>:10 split\|ter python3 %<CR>
+" autocmd FileType python map <buffer> <leader>pp :w<CR>:luafile ~/.config/nvim/lua/robust/test.lua<CR>
 " run lua code
 autocmd FileType lua map <buffer> <leader>pp :w<CR>:luafile %<CR>
-autocmd FileType lua map <buffer> <leader>po :w<CR>:luafile ~/.config/nvim/dev/init.lua<CR>
+
+autocmd FileType * map <leader>po :w<CR>:luafile ~/.config/nvim/lua/robust/test.lua<CR>
 " restart kitty when saving conf file
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
 " iskeyword overwritten so putting it here
@@ -720,5 +727,12 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
 
 -- }}}
 
--- require("dev")
+-- highlights{{{
+vim.api.nvim_set_hl(0, "SpellBad", {
+	bg = "#ff0000",
+	fg = "#ffffff",
+})
+-- }}}
+
+require("bk/my-code")
 -- vim.opt.runtimepath:append("/Users/brian/Documents/neovim/lua/")

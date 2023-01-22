@@ -23,6 +23,7 @@ map . set hidden!
 map d delete
 map x cut
 map a mkdir
+map zp zip
 
 map gx cd ~/Downloads
 
