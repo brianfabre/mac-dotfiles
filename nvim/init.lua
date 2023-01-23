@@ -1,6 +1,6 @@
---------------------------------------------------
---                    NEOVIM                    --
---------------------------------------------------
+----------------------
+--      NEOVIM      --
+----------------------
 
 -- leader {{{
 vim.g.mapleader = " "
@@ -61,9 +61,12 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"mhinz/vim-startify",
+		"goolord/alpha-nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			map("n", "<leader>ss", ":Startify<cr>")
+			-- require("alpha").setup(require("alpha.themes.startify").config)
+			require("plugin-config/alpha")
+			map("n", "<leader>ss", ":Alpha<cr>")
 		end,
 	},
 	{
@@ -73,6 +76,9 @@ require("lazy").setup({
 		config = function()
 			require("plugin-config/dracula-nvim")
 			vim.cmd([[colorscheme dracula]])
+			-- makes neovim/nvimtree transparent
+			vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "", fg = "" })
+			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "", fg = "" })
 		end,
 	},
 	{
@@ -90,9 +96,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-		},
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("plugin-config/lualine")
 		end,
@@ -249,7 +253,7 @@ require("lazy").setup({
 		config = function()
 			-- disable indentscope in startify, markdown
 			vim.api.nvim_create_autocmd({ "FileType" }, {
-				pattern = { "startify", "markdown", "lazy" },
+				pattern = { "startify", "alpha", "markdown", "lazy" },
 				callback = function()
 					vim.b.miniindentscope_disable = true
 				end,
@@ -449,6 +453,38 @@ require("lazy").setup({
 			require("neodev").setup({})
 		end,
 	},
+	{
+		"ghillb/cybu.nvim",
+		event = "BufEnter *",
+		branch = "main", -- timely updates
+		-- branch = "v1.x", -- won't receive breaking changes
+		dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/plenary.nvim" },
+		config = function()
+			local ok, cybu = pcall(require, "cybu")
+			if not ok then
+				return
+			end
+			cybu.setup({
+				style = {
+					hide_buffer_id = true,
+					path = "tail",
+					-- path_abbreviation = "shortened",
+				},
+				behavior = {
+					mode = {
+						default = {
+							view = "paging",
+						},
+					},
+				},
+				display_time = 1000,
+			})
+			vim.keymap.set("n", "H", "<Plug>(CybuPrev)")
+			vim.keymap.set("n", "L", "<Plug>(CybuNext)")
+			-- vim.keymap.set({ "n", "v" }, "<c-s-tab>", "<plug>(CybuLastusedPrev)")
+			-- vim.keymap.set({ "n", "v" }, "<c-tab>", "<plug>(CybuLastusedNext)")
+		end,
+	},
 	-- { "folke/tokyonight.nvim" },
 })
 
@@ -484,14 +520,17 @@ nnoremap <leader>\ :call FindAll()<cr>
 " ==> COLORSCHEME <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" makes neovim/nvimtree transparent
-augroup user_colors
-  autocmd!
-  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
-  autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
-  autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
-  autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
-augroup END
+" DEPRECATED makes neovim/nvimtree transparent
+" augroup user_colors
+"   autocmd!
+"   autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+"   autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
+"   autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
+"   autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
+"   autocmd ColorScheme * highlight TelescopePromptNormal ctermbg=NONE guibg=NONE
+"   autocmd ColorScheme * highlight TelescopeResultsNormal ctermbg=NONE guibg=NONE
+"   autocmd ColorScheme * highlight TelescopePreviewNormal ctermbg=NONE guibg=NONE
+" augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> VIMRC <==
@@ -567,6 +606,7 @@ vim.g.loaded_netrwPlugin = 1                             -- disable netrw
 
 vim.opt.termguicolors = true
 -- vim.opt.cmdheight = 0
+vim.opt.autochdir = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.splitbelow = true
@@ -606,8 +646,8 @@ map("n", "<C-j>", "<C-w>j")
 map("n", "<C-k>", "<C-w>k")
 
 -- move between buffers
-map("n", "<S-l>", ":bnext<CR>")
-map("n", "<S-h>", ":bprevious<CR>")
+-- map("n", "<S-l>", ":bnext<CR>")
+-- map("n", "<S-h>", ":bprevious<CR>")
 map("n", "<Leader>qq", ":bdelete!<CR>")
 map("n", "<Leader>qa", ":%bd|e#<CR>:bnext<CR>:bd<CR>e")
 
@@ -730,7 +770,11 @@ vim.api.nvim_set_hl(0, "SpellBad", {
 	bg = "#ff0000",
 	fg = "#ffffff",
 })
+
 -- }}}
 
+-- require{{{
 require("bk/my-code")
+-- }}}
+
 -- vim.opt.runtimepath:append("/Users/brian/Documents/neovim/lua/")

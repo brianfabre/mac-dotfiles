@@ -17,6 +17,15 @@ require("telescope").setup({
 		preview = {
 			-- hide_on_startup = true, -- hide previewer when picker starts
 		},
+		-- ripgrep_arguments = {
+		-- 	"rg",
+		-- 	"--hidden",
+		-- 	"--no-heading",
+		-- 	"--with-filename",
+		-- 	"--line-number",
+		-- 	"--column",
+		-- 	"--smart-case",
+		-- },
 	},
 	extensions = {
 		fzf = {
@@ -65,11 +74,13 @@ end)
 vim.keymap.set("n", "<leader>fc", function()
 	ts.builtin.command_history(dropdown)
 end)
+vim.keymap.set("n", "<leader>fv", function()
+	ts.builtin.buffers(dropdown)
+end)
 vim.keymap.set("n", "<leader>fg", ts.grep_fuzzy, {})
 vim.keymap.set("n", "<leader>fb", ts.builtin.current_buffer_fuzzy_find, {})
 -- vim.keymap.set("n", "<leader>fc", ts.builtin.command_history, {})
 vim.keymap.set("n", "<leader>fh", ts.builtin.help_tags, {})
-vim.keymap.set("n", "<leader>fv", ts.builtin.buffers, {})
 vim.keymap.set("n", "<leader>fm", ts.builtin.marks, {})
 
 -- vim.keymap.set(
