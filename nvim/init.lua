@@ -1,7 +1,5 @@
 --------------------------------------------------
 --                    NEOVIM                    --
---            init.vim --> init.lua             --
---               work in progress               --
 --------------------------------------------------
 
 -- leader {{{
@@ -54,8 +52,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{
 		"catppuccin/nvim",
-		-- lazy = true,
-		priority = 1000,
+		lazy = true,
+		-- priority = 1000,
 		name = "catppuccin",
 		config = function()
 			require("plugin-config/catppuccin")
@@ -70,8 +68,8 @@ require("lazy").setup({
 	},
 	{
 		"Mofiqul/dracula.nvim",
-		lazy = true,
-		-- priority = 1000,
+		-- lazy = true,
+		priority = 1000,
 		config = function()
 			require("plugin-config/dracula-nvim")
 			vim.cmd([[colorscheme dracula]])
@@ -249,6 +247,14 @@ require("lazy").setup({
 	{
 		"echasnovski/mini.indentscope",
 		config = function()
+			-- disable indentscope in startify, markdown
+			vim.api.nvim_create_autocmd({ "FileType" }, {
+				pattern = { "startify", "markdown", "lazy" },
+				callback = function()
+					vim.b.miniindentscope_disable = true
+				end,
+			})
+
 			require("mini.indentscope").setup({
 				draw = {
 					delay = 1,
@@ -370,6 +376,7 @@ require("lazy").setup({
 	},
 	{
 		"rcarriga/nvim-notify",
+		lazy = true,
 		enabled = true,
 		config = function()
 			require("notify").setup({
@@ -420,10 +427,8 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"kiyoon/telescope-insert-path.nvim",
-	},
-	{
 		"norcalli/nvim-colorizer.lua",
+		cmd = "ColorizerToggle",
 		-- enabled = false,
 		init = function()
 			vim.opt.termguicolors = true
@@ -480,13 +485,13 @@ nnoremap <leader>\ :call FindAll()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " makes neovim/nvimtree transparent
-" augroup user_colors
-"   autocmd!
-"   autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
-"   autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
-"   autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
-"   autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
-" augroup END
+augroup user_colors
+  autocmd!
+  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+  autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
+  autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
+  autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
+augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> VIMRC <==
@@ -653,8 +658,8 @@ map("n", "<leader>il", ":e $MYVIMRC<CR>")
 map("n", "<leader>=", ':exe "resize +2"<CR>')
 map("n", "<leader>-", ':exe "resize -2"<CR>')
 
--- terminal mode
-map("t", "<ESC>", "<C-\\><C-n>")
+-- -- terminal mode
+-- map("t", "<ESC>", "<C-\\><C-n>")
 
 -- }}}
 
@@ -701,14 +706,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile", "BufRead" }, {
 	command = "set syntax=markdown",
 })
 
--- disable indentscope in startify
-vim.api.nvim_create_autocmd({ "FileType" }, {
-	pattern = { "startify" },
-	callback = function()
-		vim.b.miniindentscope_disable = true
-	end,
-})
-
 -- hide cursorline when in insert
 local cursorGrp = vim.api.nvim_create_augroup("CursorLine", { clear = true })
 vim.api.nvim_create_autocmd(
@@ -728,6 +725,7 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
 -- }}}
 
 -- highlights{{{
+-- set spell
 vim.api.nvim_set_hl(0, "SpellBad", {
 	bg = "#ff0000",
 	fg = "#ffffff",

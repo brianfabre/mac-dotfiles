@@ -27,7 +27,7 @@ dracula.setup({
 	-- 	nontext = '#3B4048',
 	-- },
 	-- set italic comment
-	transparent_bg = false, -- default false
+	transparent_bg = true, -- default false
 	italic_comment = true, -- default false
 	overrides = {
 		-- Examples
