@@ -26,8 +26,6 @@ local kind_icons = { -- {{{
 	TypeParameter = "",
 } -- }}}
 local cmp = require("cmp")
-local WIDE_HEIGHT = 60
-local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 cmp.setup({
 	snippet = {
 		-- REQUIRED - you must specify a snippet engine

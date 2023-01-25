@@ -66,7 +66,22 @@ require("lazy").setup({
 		config = function()
 			-- require("alpha").setup(require("alpha.themes.startify").config)
 			require("plugin-config/alpha")
-			map("n", "<leader>ss", ":Alpha<cr>")
+			map("n", "<leader>ss", ":Alpha<cr>", { desc = "Start menu" })
+		end,
+	},
+	{
+		"folke/which-key.nvim",
+		config = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 500
+			require("which-key").setup({
+				plugins = {
+					spelling = {
+						enabled = true,
+					},
+				},
+				-- ignore_missing = true,
+			})
 		end,
 	},
 	{
@@ -79,6 +94,7 @@ require("lazy").setup({
 			-- makes neovim/nvimtree transparent
 			vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "", fg = "" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "", fg = "" })
+			vim.api.nvim_set_hl(0, "Visual", { bg = "#A9A9A9", fg = "#282A36" })
 		end,
 	},
 	{
@@ -174,27 +190,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"dense-analysis/ale",
-		config = function()
-			vim.g.ale_fixers = {
-				python = "black",
-				r = "styler",
-				tex = "latexindent",
-				lua = "stylua",
-			}
-			-- vim.g.ale_linters = {
-			-- python = { "flake8", "pyflakes" },
-			-- 	python = { "" },
-			-- 	r = "lintr",
-			-- 	tex = "",
-			-- }
-			vim.g.ale_completion_enabled = 0
-			vim.g.ale_fix_on_save = 1
-			vim.g.ale_disable_lsp = 1
-			vim.g.ale_linters_explicit = 1
-		end,
-	},
-	{
 		"hrsh7th/nvim-cmp",
 		-- event = "InsertEnter",
 		dependencies = {
@@ -217,7 +212,7 @@ require("lazy").setup({
 		},
 		config = function()
 			require("plugin-config/nvim-tree")
-			map("n", "<leader>v", ":NvimTreeToggle<cr>")
+			map("n", "<leader>v", ":NvimTreeToggle<cr>", { desc = "Toggle NvimTree" })
 		end,
 	},
 	{
@@ -253,7 +248,7 @@ require("lazy").setup({
 		config = function()
 			-- disable indentscope in startify, markdown
 			vim.api.nvim_create_autocmd({ "FileType" }, {
-				pattern = { "startify", "alpha", "markdown", "lazy" },
+				pattern = { "alpha", "markdown", "lazy" },
 				callback = function()
 					vim.b.miniindentscope_disable = true
 				end,
@@ -303,12 +298,12 @@ require("lazy").setup({
 		},
 		config = function()
 			require("neoclip").setup()
-			map("n", "<leader>fy", ":Telescope neoclip<cr>")
+			map("n", "<leader>fy", ":Telescope neoclip<cr>", { desc = "Neoclip" })
 		end,
 	},
 	{
 		"echasnovski/mini.jump",
-		lazy = false,
+		enabled = false,
 		config = function()
 			require("mini.jump").setup({
 				delay = {
@@ -364,6 +359,7 @@ require("lazy").setup({
 	},
 	{
 		"s1n7ax/nvim-comment-frame",
+		enabled = false,
 		keys = { "<leader>cc", "<leader>C" },
 		config = function()
 			require("plugin-config/nvim-comment-frame")
@@ -447,10 +443,29 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"mhartington/formatter.nvim",
+		-- enabled = false,
+		event = "BufWrite",
+		config = function()
+			require("plugin-config/formatter")
+			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+				pattern = "*",
+				command = "FormatWrite",
+				group = vim.api.nvim_create_augroup("FormatAutogroup", { clear = true }),
+			})
+		end,
+	},
+	{
 		"folke/neodev.nvim",
 		-- enabled = false,
 		config = function()
 			require("neodev").setup({})
+		end,
+	},
+	{
+		"rlane/pounce.nvim",
+		config = function()
+			vim.cmd([[nmap / <cmd>Pounce<CR>]])
 		end,
 	},
 	{
@@ -497,15 +512,15 @@ vim.cmd([[
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> FUNCTIONS <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" check save status
-nnoremap <leader>sa :call SaveStatus()<CR>
-function! SaveStatus()
-  if &modified
-    echom "Unsaved"
-  else
-    echom "Saved"
-  endif
-endfunc
+" " check save status
+" nnoremap <leader>sa :call SaveStatus()<CR>
+" function! SaveStatus()
+"   if &modified
+"     echom "Unsaved"
+"   else
+"     echom "Saved"
+"   endif
+" endfunc
 
 function! FindAll()
     call inputsave()
@@ -514,7 +529,6 @@ function! FindAll()
     execute 'vimgrep "'.p.'" % |copen'
 endfunction
 
-nnoremap <leader>\ :call FindAll()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> COLORSCHEME <==
@@ -582,12 +596,11 @@ let g:zettel_options = [{"disable_front_matter": 1, "template" :  "~/Documents/w
 let g:vimwiki_markdown_link_ext = 1
 
 
-function! SynGroup()
-    let l:s = synID(line('.'), col('.'), 1)
-    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-endfun
-
-nnoremap <leader>gm :call SynGroup()<cr>
+" function! SynGroup()
+"     let l:s = synID(line('.'), col('.'), 1)
+"     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+" endfun
+" nnoremap <leader>gm :call SynGroup()<cr>
 
 " set grep to rg
 set grepprg=rg\ --vimgrep
@@ -648,8 +661,8 @@ map("n", "<C-k>", "<C-w>k")
 -- move between buffers
 -- map("n", "<S-l>", ":bnext<CR>")
 -- map("n", "<S-h>", ":bprevious<CR>")
-map("n", "<Leader>qq", ":bdelete!<CR>")
-map("n", "<Leader>qa", ":%bd|e#<CR>:bnext<CR>:bd<CR>e")
+map("n", "<Leader>qq", ":bdelete!<CR>", { desc = "Quit buffer" })
+map("n", "<Leader>qa", ":%bd|e#<CR>:bnext<CR>:bd<CR>e", { desc = "Quit all other buffers" })
 
 -- move line/down
 map("n", "<S-Up>", ":m-2<CR>")
@@ -667,11 +680,11 @@ map("n", "x", '"_x')
 map("i", "jk", "<esc>")
 
 -- quit all
-map("n", "<Leader>zz", ":qa!<CR>")
+map("n", "<Leader>qp", ":qa!<CR>", { desc = "Quit Neovim" })
 
 -- file path
-map("n", "<leader>cwd", ":lua print(vim.fn.getcwd())<CR>")
-map("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>")
+map("n", "<leader>cw", ":lua print(vim.fn.getcwd())<CR>", { desc = "Echo CWD" })
+map("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Set as working dir" })
 
 -- always centers after c-d/c-u
 map("n", "<C-d>", "<C-d>zz")
@@ -689,14 +702,18 @@ map("i", ">>", "<c-t>")
 map("v", ".", ":normal .<CR>")
 
 -- open lazy.nvim
-map("n", "<leader>ly", ":Lazy<CR>")
+map("n", "<leader>ly", ":Lazy<CR>", { desc = "lazy.nvim" })
 
 -- open nvim config
-map("n", "<leader>il", ":e $MYVIMRC<CR>")
+map("n", "<leader>li", ":e $MYVIMRC<CR>", { desc = "init.lua" })
 
 -- resize windows
-map("n", "<leader>=", ':exe "resize +2"<CR>')
-map("n", "<leader>-", ':exe "resize -2"<CR>')
+map("n", "<leader>=", ':exe "resize +2"<CR>', { desc = "Win size increase" })
+map("n", "<leader>-", ':exe "resize -2"<CR>', { desc = "Win size decrease" })
+
+map("n", "<leader>\\", ":call FindAll()<CR>", { desc = "QuickFix search" })
+
+-- nnoremap <leader>\ :call FindAll()<cr>
 
 -- -- terminal mode
 -- map("t", "<ESC>", "<C-\\><C-n>")
@@ -778,3 +795,29 @@ require("bk/my-code")
 -- }}}
 
 -- vim.opt.runtimepath:append("/Users/brian/Documents/neovim/lua/")
+
+local wk = require("which-key")
+wk.register({
+	c = {
+		name = "Directory",
+	},
+	f = {
+		name = "Telescope",
+	},
+	l = {
+		name = "Open ...",
+		g = { "Lazygit" },
+	},
+	p = {
+		name = "Run code",
+	},
+	q = {
+		name = "Quit ...",
+	},
+	s = {
+		name = "Start menu",
+	},
+	w = {
+		name = "Wiki",
+	},
+}, { prefix = "<leader>" })

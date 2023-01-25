@@ -5,6 +5,7 @@ end
 
 local header = require("alpha.themes.theta").config.layout[2]
 local recent = require("alpha.themes.theta").config.layout[4]
+-- local recent = require("alpha.themes.startify").config.layout[6]
 local dashboard = require("alpha.themes.dashboard")
 local links = {
 	type = "group",

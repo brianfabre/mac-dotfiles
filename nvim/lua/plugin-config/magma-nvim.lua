@@ -31,7 +31,7 @@ local group = vim.api.nvim_create_augroup("statagroup", { clear = true })
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	pattern = { "stata" },
 	callback = function()
-		vim.keymap.set("n", "<localleader>ra", close_float, { silent = true })
+		vim.keymap.set("n", "<localleader>ra", close_float, { desc = "Close float", silent = true })
 	end,
 	group = group,
 })

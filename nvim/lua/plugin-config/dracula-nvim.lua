@@ -26,8 +26,8 @@ dracula.setup({
 	-- 	gutter_fg = '#4B5263',
 	-- 	nontext = '#3B4048',
 	-- },
-	-- set italic comment
 	transparent_bg = true, -- default false
+	-- set italic comment
 	italic_comment = true, -- default false
 	overrides = {
 		-- Examples

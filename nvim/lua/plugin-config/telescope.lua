@@ -70,18 +70,18 @@ local dropdown = require("telescope.themes").get_dropdown({
 
 vim.keymap.set("n", "<leader>ff", function()
 	ts.builtin.find_files(dropdown)
-end)
+end, { desc = "Files" })
 vim.keymap.set("n", "<leader>fc", function()
 	ts.builtin.command_history(dropdown)
-end)
+end, { desc = "Command history" })
 vim.keymap.set("n", "<leader>fv", function()
 	ts.builtin.buffers(dropdown)
-end)
-vim.keymap.set("n", "<leader>fg", ts.grep_fuzzy, {})
-vim.keymap.set("n", "<leader>fb", ts.builtin.current_buffer_fuzzy_find, {})
+end, { desc = "Buffers" })
+vim.keymap.set("n", "<leader>fg", ts.grep_fuzzy, { desc = "Grep" })
+vim.keymap.set("n", "<leader>fb", ts.builtin.current_buffer_fuzzy_find, { desc = "Buffer search" })
 -- vim.keymap.set("n", "<leader>fc", ts.builtin.command_history, {})
-vim.keymap.set("n", "<leader>fh", ts.builtin.help_tags, {})
-vim.keymap.set("n", "<leader>fm", ts.builtin.marks, {})
+vim.keymap.set("n", "<leader>fh", ts.builtin.help_tags, { desc = "Help tags" })
+vim.keymap.set("n", "<leader>fm", ts.builtin.marks, { desc = "Marks" })
 
 -- vim.keymap.set(
 -- 	"n",
