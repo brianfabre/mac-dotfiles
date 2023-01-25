@@ -16,11 +16,13 @@ from kitty.tab_bar import (
 
 opts = get_options()
 icon_fg = as_rgb(color_as_int(opts.color16))
-icon_bg = as_rgb(color_as_int(opts.color8))
+icon_bg = as_rgb(color_as_int(opts.tab_bar_background))
+active_tab_bg = as_rgb(color_as_int(opts.color8))
 bat_text_color = as_rgb(color_as_int(opts.color15))
 clock_color = as_rgb(color_as_int(opts.color15))
 date_color = as_rgb(color_as_int(opts.color8))
-SEPARATOR_SYMBOL, SOFT_SEPARATOR_SYMBOL = ("", "")
+# SEPARATOR_SYMBOL, SOFT_SEPARATOR_SYMBOL = ("", "")
+SEPARATOR_SYMBOL, SOFT_SEPARATOR_SYMBOL = ("", "")
 RIGHT_MARGIN = 1
 REFRESH_TIME = 1
 ICON = "  "
@@ -78,6 +80,7 @@ def _draw_left_status(
     tab_bg = screen.cursor.bg
     tab_fg = screen.cursor.fg
     default_bg = as_rgb(int(draw_data.default_bg))
+    # default_bg = active_tab_bg
     if extra_data.next_tab:
         next_tab_bg = as_rgb(draw_data.tab_bg(extra_data.next_tab))
         needs_soft_separator = next_tab_bg == tab_bg
@@ -194,7 +197,8 @@ def draw_tab(
     date = datetime.now().strftime("  %m.%d.%y")
     cells = get_battery_cells()
     cells.append((clock_color, clock))
-    cells.append((date_color, date))
+    cells.append((clock_color, date))
+    # cells.append((date_color, date))
     right_status_length = RIGHT_MARGIN
     for cell in cells:
         right_status_length += len(str(cell[1]))

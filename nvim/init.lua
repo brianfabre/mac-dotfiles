@@ -72,16 +72,7 @@ require("lazy").setup({
 	{
 		"folke/which-key.nvim",
 		config = function()
-			vim.o.timeout = true
-			vim.o.timeoutlen = 500
-			require("which-key").setup({
-				plugins = {
-					spelling = {
-						enabled = true,
-					},
-				},
-				-- ignore_missing = true,
-			})
+			require("plugin-config/which-key")
 		end,
 	},
 	{
@@ -95,6 +86,30 @@ require("lazy").setup({
 			vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "", fg = "" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "", fg = "" })
 			vim.api.nvim_set_hl(0, "Visual", { bg = "#A9A9A9", fg = "#282A36" })
+			-- tabline colors
+			local colors = require("dracula").colors()
+			vim.api.nvim_set_hl(0, "MiniTablineCurrent", {
+				bg = colors.comment,
+				fg = colors.yellow,
+			})
+			vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", {
+				-- bg = colors.comment,
+				fg = colors.bright_blue,
+			})
+			vim.api.nvim_set_hl(0, "MiniTablineHidden", {
+				fg = colors.yellow,
+			})
+			vim.api.nvim_set_hl(0, "MiniTablineModifiedHidden", {
+				fg = colors.bright_blue,
+			})
+			vim.api.nvim_set_hl(0, "MiniTablineVisible", {
+				bg = "",
+				-- fg = colors.pink,
+			})
+			vim.api.nvim_set_hl(0, "MiniTablineModifiedVisible", {
+				bg = "",
+				fg = colors.comment,
+			})
 		end,
 	},
 	{
@@ -115,6 +130,12 @@ require("lazy").setup({
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("plugin-config/lualine")
+		end,
+	},
+	{
+		"echasnovski/mini.tabline",
+		config = function()
+			require("mini.tabline").setup({})
 		end,
 	},
 	{
@@ -466,10 +487,24 @@ require("lazy").setup({
 		"rlane/pounce.nvim",
 		config = function()
 			vim.cmd([[nmap / <cmd>Pounce<CR>]])
+			vim.api.nvim_set_hl(0, "PounceMatch", {
+				bg = "#ff0000",
+				fg = "#ffffff",
+			})
+			vim.api.nvim_set_hl(0, "PounceGap", {
+				bg = "#ff0000",
+				fg = "#ffffff",
+			})
+			vim.api.nvim_set_hl(0, "PounceAccept", {
+				bg = "#00FF00",
+				fg = "#000000",
+				bold = true,
+			})
 		end,
 	},
 	{
 		"ghillb/cybu.nvim",
+		enabled = false,
 		event = "BufEnter *",
 		branch = "main", -- timely updates
 		-- branch = "v1.x", -- won't receive breaking changes
@@ -659,8 +694,8 @@ map("n", "<C-j>", "<C-w>j")
 map("n", "<C-k>", "<C-w>k")
 
 -- move between buffers
--- map("n", "<S-l>", ":bnext<CR>")
--- map("n", "<S-h>", ":bprevious<CR>")
+map("n", "<S-l>", ":bnext<CR>")
+map("n", "<S-h>", ":bprevious<CR>")
 map("n", "<Leader>qq", ":bdelete!<CR>", { desc = "Quit buffer" })
 map("n", "<Leader>qa", ":%bd|e#<CR>:bnext<CR>:bd<CR>e", { desc = "Quit all other buffers" })
 
@@ -680,11 +715,12 @@ map("n", "x", '"_x')
 map("i", "jk", "<esc>")
 
 -- quit all
-map("n", "<Leader>qp", ":qa!<CR>", { desc = "Quit Neovim" })
+map("n", "<leader>qp", ":qa!<CR>", { desc = "Quit Neovim" })
 
 -- file path
 map("n", "<leader>cw", ":lua print(vim.fn.getcwd())<CR>", { desc = "Echo CWD" })
 map("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Set as working dir" })
+map("n", "<leader>cp", ':let @+=expand("%:p")<CR>', { desc = "Path to clipboard" })
 
 -- always centers after c-d/c-u
 map("n", "<C-d>", "<C-d>zz")
@@ -790,34 +826,13 @@ vim.api.nvim_set_hl(0, "SpellBad", {
 
 -- }}}
 
--- require{{{
-require("bk/my-code")
+-- require {{{
+
+-- runs python code in new split
+require("bk/run_code")
+-- hides tabline when only one buffer
+require("bk/autohide_tabline")
+
 -- }}}
 
 -- vim.opt.runtimepath:append("/Users/brian/Documents/neovim/lua/")
-
-local wk = require("which-key")
-wk.register({
-	c = {
-		name = "Directory",
-	},
-	f = {
-		name = "Telescope",
-	},
-	l = {
-		name = "Open ...",
-		g = { "Lazygit" },
-	},
-	p = {
-		name = "Run code",
-	},
-	q = {
-		name = "Quit ...",
-	},
-	s = {
-		name = "Start menu",
-	},
-	w = {
-		name = "Wiki",
-	},
-}, { prefix = "<leader>" })
