@@ -82,34 +82,12 @@ require("lazy").setup({
 		config = function()
 			require("plugin-config/dracula-nvim")
 			vim.cmd([[colorscheme dracula]])
+			-- should be called later?
+			vim.api.nvim_set_hl(0, "Folded", { fg = "#ABB2BF" })
+			vim.api.nvim_set_hl(0, "Visual", { bg = "#A9A9A9", fg = "#282A36" })
 			-- makes neovim/nvimtree transparent
 			vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "", fg = "" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "", fg = "" })
-			vim.api.nvim_set_hl(0, "Visual", { bg = "#A9A9A9", fg = "#282A36" })
-			-- tabline colors
-			local colors = require("dracula").colors()
-			vim.api.nvim_set_hl(0, "MiniTablineCurrent", {
-				bg = colors.comment,
-				fg = colors.yellow,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", {
-				-- bg = colors.comment,
-				fg = colors.bright_blue,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineHidden", {
-				fg = colors.yellow,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineModifiedHidden", {
-				fg = colors.bright_blue,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineVisible", {
-				bg = "",
-				-- fg = colors.pink,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineModifiedVisible", {
-				bg = "",
-				fg = colors.comment,
-			})
 		end,
 	},
 	{
@@ -471,7 +449,7 @@ require("lazy").setup({
 			require("plugin-config/formatter")
 			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 				pattern = "*",
-				command = "FormatWrite",
+				command = "silent FormatWrite",
 				group = vim.api.nvim_create_augroup("FormatAutogroup", { clear = true }),
 			})
 		end,
@@ -503,37 +481,19 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"ghillb/cybu.nvim",
-		enabled = false,
-		event = "BufEnter *",
-		branch = "main", -- timely updates
-		-- branch = "v1.x", -- won't receive breaking changes
-		dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/plenary.nvim" },
+		"jackMort/ChatGPT.nvim",
+		-- enabled = false,
+		cmd = "ChatGPT",
 		config = function()
-			local ok, cybu = pcall(require, "cybu")
-			if not ok then
-				return
-			end
-			cybu.setup({
-				style = {
-					hide_buffer_id = true,
-					path = "tail",
-					-- path_abbreviation = "shortened",
-				},
-				behavior = {
-					mode = {
-						default = {
-							view = "paging",
-						},
-					},
-				},
-				display_time = 1000,
+			require("chatgpt").setup({
+				welcome_message = "",
 			})
-			vim.keymap.set("n", "H", "<Plug>(CybuPrev)")
-			vim.keymap.set("n", "L", "<Plug>(CybuNext)")
-			-- vim.keymap.set({ "n", "v" }, "<c-s-tab>", "<plug>(CybuLastusedPrev)")
-			-- vim.keymap.set({ "n", "v" }, "<c-tab>", "<plug>(CybuLastusedNext)")
 		end,
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+		},
 	},
 	-- { "folke/tokyonight.nvim" },
 })
@@ -547,16 +507,6 @@ vim.cmd([[
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ==> FUNCTIONS <==
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" " check save status
-" nnoremap <leader>sa :call SaveStatus()<CR>
-" function! SaveStatus()
-"   if &modified
-"     echom "Unsaved"
-"   else
-"     echom "Saved"
-"   endif
-" endfunc
-
 function! FindAll()
     call inputsave()
     let p = input('Search: ')
@@ -641,7 +591,7 @@ let g:vimwiki_markdown_link_ext = 1
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m
 
-command! -nargs=0 RunQtConsole call jobstart("jupyter qtconsole --JupyterWidget.include_other_output=True")
+" command! -nargs=0 RunQtConsole call jobstart("jupyter qtconsole --JupyterWidget.include_other_output=True")
 
 ]])
 -- }}}
@@ -681,7 +631,6 @@ vim.opt.foldmethod = 'marker'
 -- vim.opt.laststatus = 0                                   -- hides status line
 
 -- vim.formatoptions = 'tqj'                                -- removed 'c'
--- vim.opt.iskeyword:append("-")
 -- stylua: ignore end
 -- }}}
 
@@ -749,32 +698,20 @@ map("n", "<leader>-", ':exe "resize -2"<CR>', { desc = "Win size decrease" })
 
 map("n", "<leader>\\", ":call FindAll()<CR>", { desc = "QuickFix search" })
 
--- nnoremap <leader>\ :call FindAll()<cr>
-
--- -- terminal mode
--- map("t", "<ESC>", "<C-\\><C-n>")
-
 -- }}}
 
 -- autocommands / commands {{{
 vim.cmd([[
-" removes cursorline when in insert mode
-" autocmd InsertLeave,WinEnter * set cursorline
-" autocmd InsertEnter,WinLeave * set nocursorline
 " no relative line number in insert mode
 autocmd InsertEnter,WinLeave * if &number | set nornu | endif
 autocmd InsertLeave,WinEnter * if &number | set rnu | endif
-" run python code
-" autocmd FileType python map <buffer> <leader>pp :w<CR>:10 split\|ter python3 %<CR>
-" autocmd FileType python map <buffer> <leader>pp :w<CR>:luafile ~/.config/nvim/lua/robust/test.lua<CR>
 " run lua code
 autocmd FileType lua map <buffer> <leader>pp :w<CR>:luafile %<CR>
 
-autocmd FileType * map <leader>po :w<CR>:luafile ~/.config/nvim/lua/robust/test.lua<CR>
+" run code
+" autocmd FileType * map <leader>po :w<CR>:luafile ~/.config/nvim/lua/robust/test.lua<CR>
 " restart kitty when saving conf file
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
-" iskeyword overwritten so putting it here
-autocmd BufRead, BufNewFile * set isk+=-
 
 autocmd FileType stata setlocal commentstring=//\ %s
 ]])
@@ -797,6 +734,12 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile", "BufRead" }, {
 	pattern = { "*.md" },
 	command = "set syntax=markdown",
+})
+
+-- set iskeyword+=-
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "Filetype" }, {
+	pattern = { "*" },
+	command = "set iskeyword+=-",
 })
 
 -- hide cursorline when in insert
@@ -835,4 +778,7 @@ require("bk/autohide_tabline")
 
 -- }}}
 
+-- other{{{
 -- vim.opt.runtimepath:append("/Users/brian/Documents/neovim/lua/")
+
+-- }}}

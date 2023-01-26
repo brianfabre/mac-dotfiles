@@ -31,7 +31,14 @@ wk.register({
 		name = "Quit ...",
 	},
 	s = {
-		name = "Start menu",
+		name = "Search ...",
+		p = { ":cd ~/.local/share/nvim/lazy<CR> :Telescope find_files <CR>", "Plugins" },
+		c = { ':cd ~/.config<CR> :lua require"telescope.builtin".find_files({ hidden = true })<CR>', "Config" },
+		r = { ":cd ~/Documents/R<CR> :Telescope find_files <CR>", "R" },
+		s = { ":cd ~/Documents/Stata<CR> :Telescope find_files <CR>", "Stata" },
+		l = { ":cd ~/Documents/Latex<CR> :Telescope find_files <CR>", "Latex" },
+		d = { ":cd ~/Documents<CR> :Telescope find_files <CR>", "Documents" },
+		-- p = { ":cd ~/Documents/PycharmProjects<CR> :Telescope find_files <CR>", "Pycharm search" },
 	},
 	w = {
 		name = "Wiki",

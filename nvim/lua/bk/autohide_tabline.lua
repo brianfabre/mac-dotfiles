@@ -15,6 +15,5 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufRead", "BufDelete" }, {
 			vim.o.showtabline = 0
 		end
 	end,
-	-- command = "countbuf",
 	group = vim.api.nvim_create_augroup("Tabline", { clear = true }),
 })

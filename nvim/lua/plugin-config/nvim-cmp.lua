@@ -25,6 +25,11 @@ local kind_icons = { -- {{{
 	Operator = "",
 	TypeParameter = "",
 } -- }}}
+
+local t = function(str)
+	return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 local cmp = require("cmp")
 cmp.setup({
 	snippet = {
@@ -68,12 +73,18 @@ cmp.setup({
 		end,
 	},
 	mapping = cmp.mapping.preset.insert({
-		["<C-b>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		-- ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+		-- ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
 		-- ["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.abort(),
-		-- ['<CR>'] = cmp.mapping.confirm({ select = true }),
 		["<Tab>"] = cmp.mapping({
+			c = function()
+				if cmp.visible() then
+					cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+				else
+					cmp.complete()
+				end
+			end,
 			i = function(fallback)
 				if cmp.visible() then
 					cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
@@ -119,7 +130,7 @@ cmp.setup({
 		["<Down>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), { "i" }),
 		["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), { "i" }),
 		["<CR>"] = cmp.mapping({
-			i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+			i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = false }),
 		}),
 	}),
 	sources = cmp.config.sources({
@@ -188,6 +199,8 @@ cmp.setup.cmdline({ "/", "?" }, {
 	},
 })
 
+-- lsp-config{{{
+
 -- must call neodev before lspconfig
 require("neodev").setup({})
 
@@ -220,6 +233,9 @@ require("lspconfig")["sumneko_lua"].setup({
 	},
 })
 
+-- require("lspconfig")["pyright"].setup({})
+-- require("lspconfig").jedi_language_server.setup({})
+
 -- vscode comp theme
 vim.cmd([[
 " gray
@@ -239,3 +255,4 @@ highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
 highlight! link CmpItemKindProperty CmpItemKindKeyword
 highlight! link CmpItemKindUnit CmpItemKindKeyword
 ]])
+-- }}}

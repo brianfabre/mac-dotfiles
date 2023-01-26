@@ -47,3 +47,28 @@ dracula.setup({
 		Comment = { fg = "#A9A9A9", italic = true },
 	},
 })
+
+-- tabline colors
+local colors = require("dracula").colors()
+vim.api.nvim_set_hl(0, "MiniTablineCurrent", {
+	bg = colors.comment,
+	fg = colors.yellow,
+})
+vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", {
+	bg = colors.comment,
+	fg = colors.bright_blue,
+})
+vim.api.nvim_set_hl(0, "MiniTablineHidden", {
+	fg = colors.yellow,
+})
+vim.api.nvim_set_hl(0, "MiniTablineModifiedHidden", {
+	fg = colors.bright_blue,
+})
+vim.api.nvim_set_hl(0, "MiniTablineVisible", {
+	bg = "",
+	-- fg = colors.pink,
+})
+vim.api.nvim_set_hl(0, "MiniTablineModifiedVisible", {
+	bg = "",
+	fg = colors.comment,
+})

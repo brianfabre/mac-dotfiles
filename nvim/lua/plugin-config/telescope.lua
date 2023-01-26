@@ -82,6 +82,8 @@ vim.keymap.set("n", "<leader>fb", ts.builtin.current_buffer_fuzzy_find, { desc =
 -- vim.keymap.set("n", "<leader>fc", ts.builtin.command_history, {})
 vim.keymap.set("n", "<leader>fh", ts.builtin.help_tags, { desc = "Help tags" })
 vim.keymap.set("n", "<leader>fm", ts.builtin.marks, { desc = "Marks" })
+vim.keymap.set("n", "<leader>fl", ts.builtin.highlights, { desc = "Highlights" })
+vim.keymap.set("n", "<leader>ft", ":ChatGPT<CR>", { desc = "ChatGPT" })
 
 -- vim.keymap.set(
 -- 	"n",
