@@ -133,10 +133,6 @@ def _redraw_tab_bar(_):
 
 def get_battery_cells() -> list:
     try:
-        # with open("/sys/class/power_supply/BAT0/status", "r") as f:
-        #     status = f.read()
-        # with open("/sys/class/power_supply/BAT0/capacity", "r") as f:
-        #     percent = int(f.read())
         bat_stat = os.popen("pmset -g batt").read()
         x = bat_stat.split()
         sub = "charg"
@@ -153,13 +149,6 @@ def get_battery_cells() -> list:
             icon = UNPLUGGED_ICONS[
                 min(UNPLUGGED_ICONS.keys(), key=lambda x: abs(x - percent))
             ]
-        # elif status == "Not charging\n":
-        #     icon_color = UNPLUGGED_COLORS[
-        #         min(UNPLUGGED_COLORS.keys(), key=lambda x: abs(x - percent))
-        #     ]
-        #     icon = PLUGGED_ICONS[
-        #         min(PLUGGED_ICONS.keys(), key=lambda x: abs(x - percent))
-        #     ]
         else:
             icon_color = PLUGGED_COLORS[
                 min(PLUGGED_COLORS.keys(), key=lambda x: abs(x - percent))
@@ -193,8 +182,8 @@ def draw_tab(
     if timer_id is None:
         timer_id = add_timer(_redraw_tab_bar, REFRESH_TIME, True)
     # clock = datetime.now().strftime(" %H:%M")
-    clock = datetime.now().strftime("  %I:%M%p")
-    date = datetime.now().strftime("  %m.%d.%y")
+    clock = datetime.now().strftime(" | %I:%M%p")
+    date = datetime.now().strftime(" | %m.%d.%y")
     cells = get_battery_cells()
     cells.append((clock_color, clock))
     cells.append((clock_color, date))

@@ -61,18 +61,12 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"goolord/alpha-nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
+		"folke/tokyonight.nvim",
+		lazy = true,
+		-- priority = 1000,
 		config = function()
-			-- require("alpha").setup(require("alpha.themes.startify").config)
-			require("plugin-config/alpha")
-			map("n", "<leader>ss", ":Alpha<cr>", { desc = "Start menu" })
-		end,
-	},
-	{
-		"folke/which-key.nvim",
-		config = function()
-			require("plugin-config/which-key")
+			require("plugin-config/tokyonight")
+			vim.cmd([[colorscheme tokyonight]])
 		end,
 	},
 	{
@@ -101,6 +95,21 @@ require("lazy").setup({
 			})
 			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "", bg = "" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#112641" })
+		end,
+	},
+	{
+		"goolord/alpha-nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			-- require("alpha").setup(require("alpha.themes.startify").config)
+			require("plugin-config/alpha")
+			map("n", "<leader>a", ":Alpha<cr>", { desc = "Start menu" })
+		end,
+	},
+	{
+		"folke/which-key.nvim",
+		config = function()
+			require("plugin-config/which-key")
 		end,
 	},
 	{
@@ -495,7 +504,9 @@ require("lazy").setup({
 			"nvim-telescope/telescope.nvim",
 		},
 	},
-	-- { "folke/tokyonight.nvim" },
+	{
+		"knubie/vim-kitty-navigator",
+	},
 })
 
 -- }}}
@@ -637,10 +648,10 @@ vim.opt.foldmethod = 'marker'
 -- keymaps {{{
 
 -- move between panes to left/bottom/top/right
-map("n", "<C-h>", "<C-w>h")
-map("n", "<C-l>", "<C-w>l")
-map("n", "<C-j>", "<C-w>j")
-map("n", "<C-k>", "<C-w>k")
+-- map("n", "<C-h>", "<C-w>h")
+-- map("n", "<C-l>", "<C-w>l")
+-- map("n", "<C-j>", "<C-w>j")
+-- map("n", "<C-k>", "<C-w>k")
 
 -- move between buffers
 map("n", "<S-l>", ":bnext<CR>")
@@ -676,8 +687,8 @@ map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
 
 -- move within wrapped lines
-map("n", "j", "gj")
-map("n", "k", "gk")
+-- map("n", "j", "gj")
+-- map("n", "k", "gk")
 
 -- faster in/outdenting
 map("i", "<<", "<c-d>")
@@ -713,7 +724,7 @@ autocmd FileType lua map <buffer> <leader>pp :w<CR>:luafile %<CR>
 " restart kitty when saving conf file
 autocmd bufwritepost ~/.config/kitty/kitty.conf :silent !kill -SIGUSR1 $(pgrep -a kitty)
 
-autocmd FileType stata setlocal commentstring=//\ %s
+" autocmd FileType stata setlocal commentstring=//\ %s
 ]])
 
 -- -- set colorscheme in vimwiki
