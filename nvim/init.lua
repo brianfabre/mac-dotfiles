@@ -166,9 +166,12 @@ require("lazy").setup({
 			vim.g.markdown_fenced_languages = { "python=python", "r=r" }
 			vim.g.vim_markdown_autowrite = 1 -- auto-saves when entering link
 			vim.g.vim_markdown_folding_disabled = 1
+			-- vim.g.vim_markdown_folding_level = 2
 			vim.g.vim_markdown_frontmatter = 1 -- highlights yaml frontmatter
 			vim.g.vim_markdown_toc_autofit = 1
 			vim.g.vim_markdown_new_list_item_indent = 0 -- no indent when pressing typing 'o'
+			vim.g.vmt_fence_text = "TOC"
+			vim.g.vmt_fence_closing_text = "/TOC"
 		end,
 	},
 	{
@@ -401,37 +404,7 @@ require("lazy").setup({
 			"seblj/nvim-echo-diagnostics",
 		},
 		config = function()
-			require("echo-diagnostics").setup({
-				show_diagnostic_number = true,
-				show_diagnostic_source = false,
-			})
-			-- show line diagnostics automatically in hover window or echo
-			vim.diagnostic.config({ virtual_text = false })
-			vim.o.updatetime = 250
-			-- vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
-			vim.cmd([[autocmd CursorHold * lua require('echo-diagnostics').echo_line_diagnostic()]])
-
-			vim.fn.sign_define("DiagnosticSignError", {
-				texthl = "DiagnosticSignError",
-				text = "",
-				numhl = "DiagnosticSignError",
-			})
-
-			vim.fn.sign_define("DiagnosticSignWarn", {
-				texthl = "DiagnosticSignWarn",
-				text = "",
-				numhl = "DiagnosticSignWarn",
-			})
-			vim.fn.sign_define("DiagnosticSignHint", {
-				texthl = "DiagnosticSignHint",
-				text = "",
-				numhl = "DiagnosticSignHint",
-			})
-			vim.fn.sign_define("DiagnosticSignInfo", {
-				texthl = "DiagnosticSignInfo",
-				text = "",
-				numhl = "DiagnosticSignInfo",
-			})
+			require("plugin-config/lspconfig")
 		end,
 	},
 	{
@@ -569,14 +542,6 @@ au VimResized * let R_rconsole_height = winheight(0) / 3
 
 
 """"""""""""""
-""" vim-markdown-toc
-""""""""""""""
-let g:vmt_fence_text = 'TOC'
-let g:vmt_fence_closing_text = '/TOC'
-
-
-
-""""""""""""""
 """ vimwiki
 """"""""""""""
 " complete file path for external files
@@ -674,6 +639,9 @@ map("n", "x", '"_x')
 -- leave insert mode
 map("i", "jk", "<esc>")
 
+-- save
+map("n", "<leader>k", ":update<CR>", { desc = "Save" })
+
 -- quit all
 map("n", "<leader>qp", ":qa!<CR>", { desc = "Quit Neovim" })
 
@@ -742,7 +710,7 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 })
 
 -- set syntax for .md
-vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile", "BufRead" }, {
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufEnter" }, {
 	pattern = { "*.md" },
 	command = "set syntax=markdown",
 })
@@ -769,6 +737,15 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
 	command = ":delm a-zA-Z0-9",
 })
 
+-- autosave
+-- vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
+-- 	callback = function()
+-- 		if vim.bo.modified and not vim.bo.readonly and vim.fn.expand("%") ~= "" and vim.bo.buftype == "" then
+-- 			vim.api.nvim_command("silent update")
+-- 		end
+-- 	end,
+-- })
+
 -- }}}
 
 -- highlights{{{
@@ -791,5 +768,4 @@ require("bk/autohide_tabline")
 
 -- other{{{
 -- vim.opt.runtimepath:append("/Users/brian/Documents/neovim/lua/")
-
 -- }}}

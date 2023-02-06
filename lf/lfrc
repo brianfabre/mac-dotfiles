@@ -26,6 +26,10 @@ map a mkdir
 map zp zip
 
 map gx cd ~/Downloads
+map gy cd ~/Documents
+map g1 cd ~/Documents/Latex
+map g2 cd ~/Documents/Stata
+map g3 cd ~/Documents/R
 
 
 # interpreter for shell commands
@@ -128,3 +132,6 @@ cmd zip ${{
     rm -rf $1
 }}
 
+# display images
+set previewer ~/.config/lf/lf_kitty_preview
+set cleaner ~/.config/lf/lf_kitty_clean

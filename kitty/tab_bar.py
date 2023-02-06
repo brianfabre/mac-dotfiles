@@ -80,7 +80,6 @@ def _draw_left_status(
     tab_bg = screen.cursor.bg
     tab_fg = screen.cursor.fg
     default_bg = as_rgb(int(draw_data.default_bg))
-    # default_bg = active_tab_bg
     if extra_data.next_tab:
         next_tab_bg = as_rgb(draw_data.tab_bg(extra_data.next_tab))
         needs_soft_separator = next_tab_bg == tab_bg

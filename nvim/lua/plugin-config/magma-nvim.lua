@@ -49,7 +49,7 @@ local group = vim.api.nvim_create_augroup("statagroup", { clear = true })
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	pattern = { "stata" },
 	callback = function()
-		vim.keymap.set("x", "<localleader>v", ":<C-u>MagmaEvaluateVisual<CR>`>z<CR>", { silent = true })
+		vim.keymap.set("x", "<localleader>sd", ":<C-u>MagmaEvaluateVisual<CR>`>z<CR>", { silent = true })
 	end,
 	group = group,
 })
