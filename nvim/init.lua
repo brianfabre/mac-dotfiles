@@ -1,6 +1,6 @@
-----------------------
---      NEOVIM      --
-----------------------
+----------------
+--   NEOVIM   --
+----------------
 
 -- leader {{{
 vim.g.mapleader = " "
@@ -16,20 +16,17 @@ local function map(mode, lhs, rhs, opts)
 	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
--- local diag_on = false
--- local function toggle_diag()
--- 	if diag_on then
--- 		diag_on = false
--- 		vim.diagnostic.hide()
--- 		-- vim.lsp.diagnostic.disable()
--- 	else
--- 		diag_on = true
--- 		vim.diagnostic.show()
--- 		-- vim.lsp.diagnostic.enable()
--- 	end
--- end
--- vim.cmd([[autocmd BufRead * lua vim.diagnostic.hide()]])
--- vim.keymap.set("n", "<leader>dt", toggle_diag)
+local function close_float()
+	-- removes any stuck floating window
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local config = vim.api.nvim_win_get_config(win)
+		if config.relative ~= "" then
+			vim.api.nvim_win_close(win, false)
+			print("Closing window", win)
+		end
+	end
+end
+vim.keymap.set("n", "<leader>qf", close_float, { silent = true, desc = "Close float" })
 -- }}}
 
 -- lazy.nvim {{{
@@ -53,20 +50,20 @@ require("lazy").setup({
 	{
 		"catppuccin/nvim",
 		lazy = true,
-		-- priority = 1000,
+		priority = 1000,
 		name = "catppuccin",
 		config = function()
 			require("plugin-config/catppuccin")
-			vim.cmd([[colorscheme catppuccin]])
+			-- vim.cmd([[colorscheme catppuccin]])
 		end,
 	},
 	{
 		"folke/tokyonight.nvim",
 		lazy = true,
-		-- priority = 1000,
+		priority = 1000,
 		config = function()
 			require("plugin-config/tokyonight")
-			vim.cmd([[colorscheme tokyonight]])
+			-- vim.cmd([[colorscheme tokyonight]])
 		end,
 	},
 	{
@@ -87,7 +84,7 @@ require("lazy").setup({
 	{
 		"echasnovski/mini.base16",
 		lazy = true,
-		-- priority = 1000,
+		priority = 1000,
 		config = function()
 			require("mini.base16").setup({
 				palette = require("mini.base16").mini_palette("#112641", "#e2e98f", 75),
@@ -241,6 +238,21 @@ require("lazy").setup({
 		event = "TextYankPost",
 		config = function()
 			require("plugin-config/substitute")
+		end,
+	},
+	{
+		"norcalli/nvim-colorizer.lua",
+		cmd = "ColorizerToggle",
+		init = function()
+			vim.opt.termguicolors = true
+		end,
+		config = function()
+			require("colorizer").setup({
+				"*", -- Highlight all files, but customize some others.
+				"!python", -- Exclude vim from highlighting.
+				"!tex", -- Exclude vim from highlighting.
+				-- Exclusion Only makes sense if '*' is specified!
+			})
 		end,
 	},
 	{
@@ -407,22 +419,22 @@ require("lazy").setup({
 			require("plugin-config/lspconfig")
 		end,
 	},
-	{
-		"norcalli/nvim-colorizer.lua",
-		cmd = "ColorizerToggle",
-		-- enabled = false,
-		init = function()
-			vim.opt.termguicolors = true
-		end,
-		config = function()
-			require("colorizer").setup({
-				"*", -- Highlight all files, but customize some others.
-				"!python", -- Exclude vim from highlighting.
-				"!tex", -- Exclude vim from highlighting.
-				-- Exclusion Only makes sense if '*' is specified!
-			})
-		end,
-	},
+	-- {
+	-- 	"norcalli/nvim-colorizer.lua",
+	-- 	cmd = "ColorizerToggle",
+	-- 	-- enabled = false,
+	-- 	init = function()
+	-- 		vim.opt.termguicolors = true
+	-- 	end,
+	-- 	config = function()
+	-- 		require("colorizer").setup({
+	-- 			"*", -- Highlight all files, but customize some others.
+	-- 			"!python", -- Exclude vim from highlighting.
+	-- 			"!tex", -- Exclude vim from highlighting.
+	-- 			-- Exclusion Only makes sense if '*' is specified!
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"mhartington/formatter.nvim",
 		-- enabled = false,
@@ -469,6 +481,9 @@ require("lazy").setup({
 		config = function()
 			require("chatgpt").setup({
 				welcome_message = "",
+				openai_params = {
+					max_tokens = 3000,
+				},
 			})
 		end,
 		dependencies = {
@@ -527,7 +542,7 @@ command! Config execute ":e $MYVIMRC"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""
-""" nvim-r 
+""" nvim-r
 """"""""""""""
 let R_assign_map = '..'
 let g:R_auto_start = 2
@@ -573,16 +588,15 @@ set grepformat=%f:%l:%c:%m
 -- }}}
 
 -- options {{{
--- stylua: ignore start 
+-- stylua: ignore start
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
 vim.g.loaded_netrw = 1                                   -- disable netrw
 vim.g.loaded_netrwPlugin = 1                             -- disable netrw
 
 vim.opt.termguicolors = true
--- vim.opt.cmdheight = 0
-vim.opt.autochdir = true
-vim.opt.number = true
-vim.opt.relativenumber = true
+vim.opt.pumheight = 7
+-- vim.opt.number = true
+-- vim.opt.relativenumber = true
 vim.opt.splitbelow = true
 vim.opt.mouse = 'a'
 vim.opt.scrolloff = 4                                    -- leaves space when scrolling
@@ -603,9 +617,11 @@ vim.opt.swapfile = false
 vim.opt.completeopt = { 'noselect' }
 vim.opt.foldmethod = 'marker'
 
+-- ## not in use ##
+vim.opt.cmdheight = 0
+-- vim.opt.autochdir = true
 -- vim.opt.cursorline = true
 -- vim.opt.laststatus = 0                                   -- hides status line
-
 -- vim.formatoptions = 'tqj'                                -- removed 'c'
 -- stylua: ignore end
 -- }}}
@@ -737,6 +753,12 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
 	command = ":delm a-zA-Z0-9",
 })
 
+-- deletes trailing whitespaces on save
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+	pattern = { "*" },
+	command = [[%s/\s\+$//e]],
+})
+
 -- autosave
 -- vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
 -- 	callback = function()
@@ -769,3 +791,7 @@ require("bk/autohide_tabline")
 -- other{{{
 -- vim.opt.runtimepath:append("/Users/brian/Documents/neovim/lua/")
 -- }}}
+
+-- vim.cmd([[colorscheme dracula]])
+-- vim.cmd([[colorscheme tokyonight]])
+-- vim.cmd([[colorscheme catppuccin]])

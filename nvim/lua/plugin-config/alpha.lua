@@ -49,7 +49,8 @@ local links = {
 		{ type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
 		{ type = "padding", val = 1 },
 		dashboard.button("e", " " .. " New file", ":ene <BAR> startinsert <CR>"),
-		dashboard.button("i", " " .. " Config", ":e $MYVIMRC <CR>"),
+		dashboard.button("s", " " .. " Search directory", ":Telescope live_grep <CR>"),
+		dashboard.button("i", " " .. " Config", ":e $MYVIMRC <CR> :cd %:p:h <CR>"),
 		dashboard.button("w", " " .. " Wiki", ":e ~/Documents/wiki/index.md <CR>"),
 		-- dashboard.button("r", " " .. " R", ":cd ~/Documents/R<CR> :Telescope find_files <CR>"),
 		-- dashboard.button("p", " " .. " Python", ":cd ~/Documents/PycharmProjects<CR> :Telescope find_files <CR>"),
@@ -71,16 +72,14 @@ local subheader = {
 		{ type = "padding", val = 1 },
 		{ type = "text", val = os.date("%a, %B %d"), opts = { hl = "Float", position = "center" } },
 		{ type = "text", val = todos, opts = { hl = "Normal", position = "center" } },
+		-- { type = "text", val = return_todo, opts = { hl = "Normal", position = "center" } },
 	},
 	opts = {
 		position = "center",
 	},
 }
 
--- local todo = {
--- 	hi = "asdf",
--- 	bye = "qwerty",
--- }
+local plugins = tostring(require("lazy").stats().count)
 
 local config = {
 	layout = {
@@ -92,6 +91,12 @@ local config = {
 		links,
 		{ type = "padding", val = 2 },
 		recent,
+		{ type = "padding", val = 2 },
+		{
+			type = "text",
+			val = "Plugins: " .. plugins,
+			opts = { hl = "SpecialComment", position = "center" },
+		},
 	},
 	opts = {
 		noautocmd = false,

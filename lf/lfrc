@@ -17,6 +17,19 @@ cmd mkfile ${{
   $EDITOR $ans
 }}
 
+cmd fzf_jump ${{
+    res="$(find . -maxdepth 1 | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    if [ -d "$res" ] ; then
+        cmd="cd"
+    elif [ -f "$res" ] ; then
+        cmd="select"
+    else
+        exit 0
+    fi
+    lf -remote "send $id $cmd \"$res\""
+}}
+map / :fzf_jump
+
 # custom remaps
 map <enter> open
 map . set hidden!
@@ -27,10 +40,7 @@ map zp zip
 
 map gx cd ~/Downloads
 map gy cd ~/Documents
-map g1 cd ~/Documents/Latex
-map g2 cd ~/Documents/Stata
-map g3 cd ~/Documents/R
-
+map gz cd ~/Desktop
 
 # interpreter for shell commands
 set shell sh
@@ -133,5 +143,5 @@ cmd zip ${{
 }}
 
 # display images
-set previewer ~/.config/lf/lf_kitty_preview
-set cleaner ~/.config/lf/lf_kitty_clean
+# set previewer ~/.config/lf/lf_kitty_preview
+# set cleaner ~/.config/lf/lf_kitty_clean

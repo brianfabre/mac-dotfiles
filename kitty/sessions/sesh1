@@ -1,0 +1,5 @@
+new_tab my tab
+cd ~/somewhere
+enabled_layouts tall,stack
+layout stack
+launch zsh

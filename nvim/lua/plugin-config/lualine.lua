@@ -4,6 +4,8 @@ require("lualine").setup({
 		theme = "auto",
 		-- component_separators = { left = "", right = "" },
 		-- section_separators = { left = "", right = "" },
+		component_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
 		disabled_filetypes = {
 			statusline = { "alpha", "NvimTree" },
 			winbar = {},
@@ -18,25 +20,33 @@ require("lualine").setup({
 		-- },
 	},
 	sections = {
-		lualine_a = { "mode" },
-		lualine_b = { "branch", "diff", "diagnostics" },
+		-- lualine_a = { "mode" },
+		-- lualine_b = { "branch", "diff" },
+		-- lualine_c = {
+		-- 	{
+		-- 		"filename",
+		-- 		-- path = 3,
+		-- 	},
+		-- },
+		-- -- lualine_x = { "filetype" },
+		-- lualine_x = {
+		-- 	{ "diagnostics" },
+		-- 	{ "filetype" },
+		-- },
+		-- lualine_y = { "progress" },
+		-- lualine_z = { "location" },
+		lualine_a = {},
+		lualine_b = { "branch", "diff" },
 		lualine_c = {
 			{
 				"filename",
-				path = 3,
+				-- path = 3,
 			},
 		},
 		-- lualine_x = { "filetype" },
-		lualine_x = {
-			{
-				require("lazy.status").updates,
-				cond = require("lazy.status").has_updates,
-				color = { fg = "#ff9e64" },
-			},
-			{ "filetype" },
-		},
-		lualine_y = { "progress" },
-		lualine_z = { "location" },
+		lualine_x = { "diagnostics", "filetype" },
+		lualine_y = { "location" },
+		lualine_z = {},
 	},
 	inactive_sections = {
 		lualine_a = {},
