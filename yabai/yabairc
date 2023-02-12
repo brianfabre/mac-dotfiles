@@ -44,12 +44,11 @@ yabai -m config mouse_drop_action            swap
 
 # general space settings
 yabai -m config layout                       bsp
-# yabai -m config top_padding                  45 # for sketchy
-yabai -m config top_padding                  7
-yabai -m config bottom_padding               7
-yabai -m config left_padding                 7
-yabai -m config right_padding                7
-yabai -m config window_gap                   7
+yabai -m config top_padding                  2
+yabai -m config bottom_padding               22
+yabai -m config left_padding                 2
+yabai -m config right_padding                2
+yabai -m config window_gap                   0
 
 # float system preferences. Most of these just diable Yabai form resizing them.
 yabai -m rule --add app="^System Preferences$" manage=off
