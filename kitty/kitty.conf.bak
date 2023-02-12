@@ -6,12 +6,13 @@
 #: characters.
 
 # font_family      monospace
+# font_size 18.0
 # bold_font        auto
 # italic_font      auto
 # bold_italic_font auto
 
 # font_family      FiraCode Nerd Font Mono
-# font_size 16.0
+# font_size 18.0
 
 # font_family      Perfect DOS VGA 437 Win
 # font_size 22.0
@@ -19,14 +20,23 @@
 # font_family      Consolas
 # font_size 18.0
 
+# font_family      Terminus (TTF)
+# font_size 20.0
+#
 # font_family      Liga SFMono Nerd Font
-# font_size 17.0
+# font_size 18.0
 
 # PREFERRED
 # font_family      SauceCodePro Nerd Font Mono
 # font_size 18.0
 
-font_family      JetBrainsMono Nerd Font Mono
+# font_family      JetBrainsMono Nerd Font Mono
+# font_size 18.0
+
+# font_family      Hack Nerd Font Mono
+# font_size 16.0
+
+font_family      IBM Plex Mono
 font_size 18.0
 
 
@@ -225,7 +235,7 @@ bold_italic_font auto
 #: special keyword: background. Note that if cursor is set to none
 #: then this option is ignored.
 
-# cursor_shape block
+cursor_shape block
 
 #: The cursor shape can be one of block, beam, underline. Note that
 #: when reloading the config this will be changed only if the cursor
@@ -758,8 +768,7 @@ window_border_width 0.5pt
 #: this option. Using a value of center means the cell area will be
 #: placed centrally. A value of top-left means the padding will be
 #: only at the bottom and right edges.
-
-active_border_color #b45bcf
+# active_border_color #b45bcf
 # active_border_color #00ff00
 
 #: The color for the border of the active window. Set this to none to
@@ -1017,7 +1026,7 @@ hide_window_decorations titlebar-only
 #: The foreground and background colors.
 
 # background_opacity 1.0
-background_opacity 0.70
+# background_opacity 0.75
 
 #: The opacity of the background. A number between zero and one, where
 #: one is opaque and zero is fully transparent. This will only work if
@@ -1371,7 +1380,7 @@ listen_on unix:$TMPDIR/kitty
 #: special value of ask means that kitty will ask before opening the
 #: link when clicked.
 
-# shell_integration enabled
+shell_integration no-cursor
 
 #: Enable shell integration on supported shells. This enables features
 #: such as jumping to previous prompts, browsing the output of the
@@ -1487,7 +1496,7 @@ macos_option_as_alt left
 #: will only affect newly created OS windows.
 
 # macos_thicken_font 0
-# macos_thicken_font 0.2
+# macos_thicken_font 0.6
 
 #: Draw an extra border around the font with the given width, to
 #: increase legibility at small font sizes on macOS. For example, a
@@ -1998,7 +2007,7 @@ map alt+i     set_tab_title
 enabled_layouts horizontal, vertical, stack
 
 map kitty_mod+l next_layout
-map kitty_mod+k toggle_layout stack
+# map kitty_mod+k toggle_layout stack
 
 
 #: You can also create shortcuts to switch to specific layouts::
@@ -2280,23 +2289,24 @@ map kitty_mod+k toggle_layout stack
 
 #: }}}
 
-# custom tab {{{
-# tab_bar_margin_width      8
-# tab_bar_margin_height     8 0
-# tab_bar_style             separator
-# tab_bar_min_tabs          2
-# tab_separator             ""
-# tab_bar_edge              bottom
-# # tab_title_template        "{fmt.fg._5c6370}{fmt.bg.default}{fmt.fg._abb2bf}{fmt.bg._5c6370} {index}:{title} {fmt.fg._5c6370}{fmt.bg.default} "
-# # active_tab_title_template "{fmt.fg._9ff895}{fmt.bg.default}{fmt.fg._282c34}{fmt.bg._9ff895} {index}:{title} {fmt.fg._9ff895}{fmt.bg.default} "
-# tab_title_template        "{fmt.fg._5c6370}{fmt.bg.default}{fmt.fg._abb2bf}{fmt.bg._5c6370} {title} {fmt.fg._5c6370}{fmt.bg.default} "
-# active_tab_title_template "{fmt.fg._9ff895}{fmt.bg.default}{fmt.fg._282c34}{fmt.bg._9ff895} {title} {fmt.fg._9ff895}{fmt.bg.default} "
-#}}}
+#: Custom tab {{{
+# tab_bar_edge bottom
+# tab_bar_align left
+# tab_bar_style custom
+# tab_bar_min_tabs 1
+# tab_activity_symbol none
+# bell_on_tab no
+# tab_separator ""
+# tab_bar_margin_width 0.0
+# tab_bar_margin_height 0.0 0.0
+# # tab_title_template "{f'{index}{title[:30]}…' if title.rindex(title[-1]) + 1 > 30 else (title.center(6) if (title.rindex(title[-1]) + 1) % 2 == 0 else title.center(5))}"
+# tab_title_template        "[{index}] {title}"
+# active_tab_font_style   bold
 
-# tab bar
 tab_bar_edge bottom
 tab_bar_align left
-tab_bar_style custom
+tab_bar_style separator
+# tab_separator " ┇"
 tab_bar_min_tabs 1
 tab_activity_symbol none
 bell_on_tab no
@@ -2304,18 +2314,21 @@ tab_separator ""
 tab_bar_margin_width 0.0
 tab_bar_margin_height 0.0 0.0
 # tab_title_template "{f'{index}{title[:30]}…' if title.rindex(title[-1]) + 1 > 30 else (title.center(6) if (title.rindex(title[-1]) + 1) % 2 == 0 else title.center(5))}"
-tab_title_template        "[{index}] {title}"
+tab_title_template        " [{index}] {title} "
 active_tab_font_style   bold
 
-# vim-kitty
+#}}}
+
+#: vim-kitty-navigator {{{
 map ctrl+j kitten pass_keys.py neighboring_window bottom ctrl+j
 map ctrl+k kitten pass_keys.py neighboring_window top    ctrl+k
 map ctrl+h kitten pass_keys.py neighboring_window left   ctrl+h
 map ctrl+l kitten pass_keys.py neighboring_window right  ctrl+l
 allow_remote_control yes
 listen_on unix:/tmp/mykitty
+# }}}
 
 # BEGIN_KITTY_THEME
-# Molokai
+# Galaxy
 include current-theme.conf
 # END_KITTY_THEME

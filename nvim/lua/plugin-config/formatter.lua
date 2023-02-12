@@ -1,3 +1,15 @@
+local function cur_file()
+	return vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
+end
+
+local prettier = function()
+	return {
+		exe = "prettier",
+		args = { "--stdin-filepath", cur_file(), "--single-quote" },
+		stdin = true,
+	}
+end
+
 local stylua = function()
 	return {
 		exe = "stylua",
@@ -48,5 +60,6 @@ require("formatter").setup({
 		python = { black },
 		r = { styler },
 		tex = { latexindent },
+		json = { prettier },
 	},
 })

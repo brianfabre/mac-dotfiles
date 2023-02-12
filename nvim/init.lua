@@ -68,7 +68,7 @@ require("lazy").setup({
 	},
 	{
 		"Mofiqul/dracula.nvim",
-		-- lazy = true,
+		lazy = true,
 		priority = 1000,
 		config = function()
 			require("plugin-config/dracula-nvim")
@@ -88,6 +88,8 @@ require("lazy").setup({
 		config = function()
 			require("mini.base16").setup({
 				palette = require("mini.base16").mini_palette("#112641", "#e2e98f", 75),
+				-- palette = {
+				-- },
 				name = "minischeme",
 			})
 			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "", bg = "" })
@@ -793,5 +795,5 @@ require("bk/autohide_tabline")
 -- }}}
 
 -- vim.cmd([[colorscheme dracula]])
--- vim.cmd([[colorscheme tokyonight]])
+vim.cmd([[colorscheme tokyonight-night]])
 -- vim.cmd([[colorscheme catppuccin]])
