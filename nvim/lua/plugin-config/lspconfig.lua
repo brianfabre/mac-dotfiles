@@ -1,12 +1,12 @@
--- require("echo-diagnostics").setup({
--- 	show_diagnostic_number = true,
--- 	show_diagnostic_source = false,
--- })
--- -- show line diagnostics automatically in hover window or echo
--- vim.diagnostic.config({ virtual_text = false })
--- vim.o.updatetime = 250
--- -- vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
--- vim.cmd([[autocmd CursorHold * lua require('echo-diagnostics').echo_line_diagnostic()]])
+require("echo-diagnostics").setup({
+	show_diagnostic_number = true,
+	show_diagnostic_source = false,
+})
+-- show line diagnostics automatically in hover window or echo
+vim.diagnostic.config({ virtual_text = false })
+vim.o.updatetime = 250
+-- vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
+vim.cmd([[autocmd CursorHold * lua require('echo-diagnostics').echo_line_diagnostic()]])
 
 -- icons
 vim.fn.sign_define("DiagnosticSignError", {
@@ -69,7 +69,7 @@ end
 require("neodev").setup({})
 
 -- Set up lspconfig.
-require("lspconfig")["sumneko_lua"].setup({
+require("lspconfig")["lua_ls"].setup({
 	on_attach = on_attach,
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
 	settings = {

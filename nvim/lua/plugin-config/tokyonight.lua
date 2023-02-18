@@ -1,5 +1,5 @@
 require("tokyonight").setup({
-	transparent = true,
+	transparent = false,
 	styles = { sidebars = "transparent", floats = "transparent" },
 	on_highlights = function(hl, c)
 		-- local prompt = "#2d3149"

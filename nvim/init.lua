@@ -82,6 +82,14 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"sainnhe/sonokai",
+		priority = 1000,
+		config = function()
+			-- vim.g.sonokai_style = "andromeda"
+			vim.g.sonokai_better_performance = 1
+		end,
+	},
+	{
 		"echasnovski/mini.base16",
 		lazy = true,
 		priority = 1000,
@@ -130,7 +138,7 @@ require("lazy").setup({
 		init = function()
 			vim.g.vimwiki_list = {
 				{
-					path = "~/Documents/wiki/",
+					path = "/Volumes/MacAsahi/Documents/wiki/",
 					syntax = "markdown",
 					ext = ".md",
 					diary_rel_path = "journal/",
@@ -327,26 +335,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"echasnovski/mini.jump",
-		enabled = false,
-		config = function()
-			require("mini.jump").setup({
-				delay = {
-					highlight = 50,
-				},
-			})
-			-- vim.api.nvim_set_hl(0, "MiniJump", {
-			-- 	sp = "#ff0000",
-			-- 	bold = true,
-			-- 	undercurl = true,
-			-- })
-			vim.api.nvim_set_hl(0, "MiniJump", {
-				bg = "#ff0000",
-				fg = "#ffffff",
-			})
-		end,
-	},
-	{
 		"akinsho/toggleterm.nvim",
 		keys = { "<leader>lg" },
 		version = "*",
@@ -516,33 +504,6 @@ function! FindAll()
 endfunction
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ==> COLORSCHEME <==
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" DEPRECATED makes neovim/nvimtree transparent
-" augroup user_colors
-"   autocmd!
-"   autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
-"   autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
-"   autocmd ColorScheme * highlight NvimTreeNormal ctermbg=NONE guibg=NONE
-"   autocmd ColorScheme * highlight NvimTreeWinSeparator ctermbg=NONE guibg=NONE
-"   autocmd ColorScheme * highlight TelescopePromptNormal ctermbg=NONE guibg=NONE
-"   autocmd ColorScheme * highlight TelescopeResultsNormal ctermbg=NONE guibg=NONE
-"   autocmd ColorScheme * highlight TelescopePreviewNormal ctermbg=NONE guibg=NONE
-" augroup END
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ==> VIMRC <==
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" type :Config to enter this init.vim
-command! Config execute ":e $MYVIMRC"
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ==> PLUGINS <==
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 """"""""""""""
 """ nvim-r
 """"""""""""""
@@ -595,6 +556,7 @@ vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
 vim.g.loaded_netrw = 1                                   -- disable netrw
 vim.g.loaded_netrwPlugin = 1                             -- disable netrw
 
+vim.opt.background = "dark"
 vim.opt.termguicolors = true
 vim.opt.pumheight = 7
 -- vim.opt.number = true
@@ -620,7 +582,7 @@ vim.opt.completeopt = { 'noselect' }
 vim.opt.foldmethod = 'marker'
 
 -- ## not in use ##
-vim.opt.cmdheight = 0
+-- vim.opt.cmdheight = 0
 -- vim.opt.autochdir = true
 -- vim.opt.cursorline = true
 -- vim.opt.laststatus = 0                                   -- hides status line
@@ -795,5 +757,6 @@ require("bk/autohide_tabline")
 -- }}}
 
 -- vim.cmd([[colorscheme dracula]])
-vim.cmd([[colorscheme tokyonight-night]])
+-- vim.cmd([[colorscheme tokyonight-night]])
 -- vim.cmd([[colorscheme catppuccin]])
+vim.cmd([[colorscheme sonokai]])

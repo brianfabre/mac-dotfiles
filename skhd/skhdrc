@@ -2,15 +2,22 @@
 alt - r         : yabai -m space --rotate 270
 shift + alt - r : yabai -m space --rotate 90
 
-# toggle window fullscreen zoom
-alt - return : yabai -m window --toggle zoom-fullscreen
+# # toggle window fullscreen zoom
+# alt - return : yabai -m window --toggle zoom-fullscreen
 
+# restart yabai
+ctrl + alt + cmd - r : brew services restart yabai
 
-## focus display
+# open terminal, blazingly fast compared to iTerm/Hyper
+alt - return : kitty -1 -d /Users/brian/ --start-as maximized
+# alt - return : /Applications/WezTerm.app/Contents/MacOS/wezterm
+# alt - return : wezterm cli spawn --new-window
+
+# focus display
 alt - k : yabai -m window --focus north
 alt - j : yabai -m window --focus south
-alt - h : yabai -m window --focus west
-alt - l : yabai -m window --focus east
+alt - h : yabai -m window --focus west || yabai -m window --focus stack.next || yabai -m window --focus stack.first
+alt - l : yabai -m window --focus east || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
 
 # swap managed window
 shift + alt - a : yabai -m window --swap west
@@ -23,7 +30,7 @@ alt - t : yabai -m window --toggle float;\
           yabai -m window --grid 6:6:1:1:4:4
 
 ## Close active application
-alt - w : yabai -m window --close
+alt - q : yabai -m window --close
 
 # Resize windows
 shift + alt - h : yabai -m window --resize left:-50:0; \
@@ -54,10 +61,17 @@ hyper - g : yabai -m space --focus 5
 hyper - y : yabai -m space --focus 6
 hyper - space : yabai -m space --focus recent
 
+alt - 1 : yabai -m space --focus 1
+alt - 2 : yabai -m space --focus 2
+alt - 3 : yabai -m space --focus 3
+alt - 4 : yabai -m space --focus 4
+alt - 5 : yabai -m space --focus 5
+alt - 6 : yabai -m space --focus 6
+
 # switch between bsp and stack
-alt - p : yabai -m space --layout "$(yabai -m query --spaces --space | jq -r 'if .type == "bsp" then "stack" else "bsp" end')"
-# switch with hyper + [ or ]
-hyper - 0x1E : yabai -m window --focus stack.next || yabai -m window --focus stack.first
-hyper - 0x21 : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
+alt - w : yabai -m space --layout "$(yabai -m query --spaces --space | jq -r 'if .type == "bsp" then "stack" else "bsp" end')"
+# # switch with hyper + [ or ]
+# hyper - 0x1E : yabai -m window --focus stack.next || yabai -m window --focus stack.first
+# hyper - 0x21 : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
 
 alt - n : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~

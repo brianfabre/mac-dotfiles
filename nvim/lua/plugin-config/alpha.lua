@@ -4,7 +4,7 @@ if not status_ok then
 end
 
 local function return_todo()
-	local path = "/Users/brian/Documents/wiki/index.md"
+	local path = "/Volumes/MacAsahi/Documents/wiki/index.md"
 	-- todo's are between begstring and finstring
 	local begstring = "important dates"
 	local finstring = "wip"
@@ -51,11 +51,7 @@ local links = {
 		dashboard.button("e", " " .. " New file", ":ene <BAR> startinsert <CR>"),
 		dashboard.button("s", " " .. " Search directory", ":Telescope live_grep <CR>"),
 		dashboard.button("i", " " .. " Config", ":e $MYVIMRC <CR> :cd %:p:h <CR>"),
-		dashboard.button("w", " " .. " Wiki", ":e ~/Documents/wiki/index.md <CR>"),
-		-- dashboard.button("r", " " .. " R", ":cd ~/Documents/R<CR> :Telescope find_files <CR>"),
-		-- dashboard.button("p", " " .. " Python", ":cd ~/Documents/PycharmProjects<CR> :Telescope find_files <CR>"),
-		-- dashboard.button("l", " " .. " Latex", ":cd ~/Documents/Latex<CR> :Telescope find_files <CR>"),
-		-- dashboard.button("s", " " .. " Stata", ":cd ~/Documents/Stata<CR> :Telescope find_files <CR>"),
+		dashboard.button("w", " " .. " Wiki", ":e /Volumes/MacAsahi/Documents/wiki/index.md <CR>"),
 		dashboard.button("q", " " .. " Quit", ":qa<CR>"),
 	},
 	position = "center",
