@@ -56,20 +56,23 @@ local ts = {
 }
 
 local dropdown = require("telescope.themes").get_dropdown({
-	-- borderchars = {
-	-- 	{ "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-	-- 	prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-	-- 	results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-	-- 	preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-	-- },
-	width = 0.8,
+	borderchars = {
+		{ "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+		prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+		results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+		preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+	},
+	width = 0.6,
 	previewer = false,
 	-- prompt_title = false,
 	preview_title = false,
 })
 
+local themes = require("telescope.themes")
+
 vim.keymap.set("n", "<leader>ff", function()
 	ts.builtin.find_files(dropdown)
+	-- ts.builtin.find_files(themes.get_ivy())
 end, { desc = "Files" })
 vim.keymap.set("n", "<leader>fc", function()
 	ts.builtin.command_history(dropdown)

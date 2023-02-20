@@ -8,9 +8,9 @@ shift + alt - r : yabai -m space --rotate 90
 # restart yabai
 ctrl + alt + cmd - r : brew services restart yabai
 
-# open terminal, blazingly fast compared to iTerm/Hyper
+# open terminal
 alt - return : kitty -1 -d /Users/brian/ --start-as maximized
-# alt - return : /Applications/WezTerm.app/Contents/MacOS/wezterm
+# alt - return : /Applications/Alacritty.app/Contents/MacOS/alacritty
 # alt - return : wezterm cli spawn --new-window
 
 # focus display

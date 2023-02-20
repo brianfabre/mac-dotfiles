@@ -85,7 +85,7 @@ require("lazy").setup({
 		"sainnhe/sonokai",
 		priority = 1000,
 		config = function()
-			-- vim.g.sonokai_style = "andromeda"
+			vim.g.sonokai_style = "atlantis"
 			vim.g.sonokai_better_performance = 1
 		end,
 	},
@@ -448,7 +448,7 @@ require("lazy").setup({
 	{
 		"rlane/pounce.nvim",
 		config = function()
-			vim.cmd([[nmap / <cmd>Pounce<CR>]])
+			vim.cmd([[nmap F <cmd>Pounce<CR>]])
 			vim.api.nvim_set_hl(0, "PounceMatch", {
 				bg = "#ff0000",
 				fg = "#ffffff",

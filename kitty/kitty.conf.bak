@@ -199,7 +199,7 @@ bold_italic_font auto
 #: font glyph is rendered and the baseline at which the glyph is
 #: placed in the cell. For example::
 
-#:     modify_font cell_width 80%
+# modify_font cell_width 95%
 #:     modify_font cell_height -2px
 #:     modify_font baseline 3
 
@@ -848,7 +848,7 @@ hide_window_decorations titlebar-only
 #: insensitive, from the set [0-9A-Z]. Specify your preference as a
 #: string of characters.
 
-# confirm_os_window_close -1
+confirm_os_window_close 2
 
 #: Ask for confirmation when closing an OS window or a tab with at
 #: least this number of kitty windows in it by window manager (e.g.
@@ -1496,7 +1496,7 @@ macos_option_as_alt left
 #: will only affect newly created OS windows.
 
 # macos_thicken_font 0
-# macos_thicken_font 0.6
+macos_thicken_font 0.75
 
 #: Draw an extra border around the font with the given width, to
 #: increase legibility at small font sizes on macOS. For example, a
@@ -1799,7 +1799,7 @@ kitty_mod ctrl+shift
 
 #: New window
 
-map kitty_mod+t launch --location=vsplit
+map kitty_mod+t launch --location=split
 # map cmd+enter       new_window
 
 #::  You can open a new kitty window running an arbitrary program, for
@@ -2004,7 +2004,7 @@ map alt+i     set_tab_title
 
 #: Next layout
 
-enabled_layouts horizontal, vertical, stack
+enabled_layouts tall, horizontal, stack
 
 map kitty_mod+l next_layout
 # map kitty_mod+k toggle_layout stack
@@ -2329,6 +2329,6 @@ listen_on unix:/tmp/mykitty
 # }}}
 
 # BEGIN_KITTY_THEME
-# Dot Gov
+# Molokai
 include current-theme.conf
 # END_KITTY_THEME
