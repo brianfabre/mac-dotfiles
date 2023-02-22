@@ -6,4 +6,5 @@
 !sketchybar/
 !skhd/
 !yabai/
-!.zshrc
+!zsh/
+.zsh_*

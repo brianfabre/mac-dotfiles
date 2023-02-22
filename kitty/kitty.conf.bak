@@ -2329,6 +2329,6 @@ listen_on unix:/tmp/mykitty
 # }}}
 
 # BEGIN_KITTY_THEME
-# Molokai
+# Afterglow
 include current-theme.conf
 # END_KITTY_THEME

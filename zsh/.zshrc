@@ -85,7 +85,6 @@ export VISUAL="nvim"
 export LC_ALL=en_US.UTF-8
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 # export FZF_DEFAULT_OPTS="--height=80% --layout=reverse --info=inline --border --margin=1 --padding=1"
-export OPENAI_API_KEY="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"
 
 
 source ~/.zsh_plugins/powerlevel10k/powerlevel10k.zsh-theme
