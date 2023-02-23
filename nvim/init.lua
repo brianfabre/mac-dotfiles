@@ -195,8 +195,8 @@ map("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Set as working dir" })
 map("n", "<leader>cp", ':let @+=expand("%:p")<CR>', { desc = "Path to clipboard" })
 
 -- always centers after c-d/c-u
-map("n", "<C-d>", "<C-d>zz")
-map("n", "<C-u>", "<C-u>zz")
+-- map("n", "<C-d>", "<C-d>zz")
+-- map("n", "<C-u>", "<C-u>zz")
 
 -- move within wrapped lines
 -- map("n", "j", "gj")
