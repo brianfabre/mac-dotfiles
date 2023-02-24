@@ -9,8 +9,9 @@ shift + alt - r : yabai -m space --rotate 90
 ctrl + alt + cmd - r : brew services restart yabai
 
 # open terminal
-alt - return : kitty -1 -d /Users/brian/ --start-as maximized
+# alt - return : kitty -1 -d /Users/brian/ --start-as maximized
 # alt - return : /Applications/Alacritty.app/Contents/MacOS/alacritty
+alt - return : sh /Users/brian/.config/skhd/run_alacritty.sh
 # alt - return : wezterm cli spawn --new-window
 
 # focus display
