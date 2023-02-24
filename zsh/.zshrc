@@ -5,7 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export MACASAHI=/Volumes/MacAsahi/
 
 # zsh-autocomplete
 source ~/.zsh_plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
@@ -61,12 +60,10 @@ lfcd () {
 
 bindkey -s '^o' '^ulfcd\n'
 
-# # Add colors to Terminal
-# export CLICOLOR=1
-# export LSCOLORS=ExFxBxDxCxegedabagacad
 
 # source fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 
 # alias
 alias nv='nvim'
@@ -78,331 +75,22 @@ alias n='lf'
 # alias n='lfcd'
 # alias ls='exa -l --icons -h --no-time'
 alias rm='rm -i'
+alias mv='mv -i'
+alias ls='ls --color=auto'
+
 
 # export
 export EDITOR="nvim"
 export VISUAL="nvim"
 export LC_ALL=en_US.UTF-8
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+export MACASAHI=/Volumes/MacAsahi/
 # export FZF_DEFAULT_OPTS="--height=80% --layout=reverse --info=inline --border --margin=1 --padding=1"
 
 
 source ~/.zsh_plugins/powerlevel10k/powerlevel10k.zsh-theme
 
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# lf_icons {{{
-export LF_ICONS="\
-ln=:\
-or=:\
-tw=t:\
-ow=:\
-st=t:\
-di=:\
-pi=p:\
-so=s:\
-bd=b:\
-cd=c:\
-su=u:\
-sg=g:\
-ex=:\
-fi=:\
-*.styl=:\
-*.sass=:\
-*.scss=:\
-*.htm=:\
-*.html=:\
-*.slim=:\
-*.haml=:\
-*.ejs=:\
-*.css=:\
-*.less=:\
-*.md=:\
-*.mdx=:\
-*.markdown=:\
-*.rmd=:\
-*.json=:\
-*.webmanifest=:\
-*.js=:\
-*.mjs=:\
-*.jsx=:\
-*.rb=:\
-*.gemspec=:\
-*.rake=:\
-*.php=:\
-*.py=:\
-*.pyc=:\
-*.pyo=:\
-*.pyd=:\
-*.coffee=:\
-*.mustache=:\
-*.hbs=:\
-*.conf=:\
-*.ini=:\
-*.yml=:\
-*.yaml=:\
-*.toml=:\
-*.bat=:\
-*.mk=:\
-*.jpg=:\
-*.jpeg=:\
-*.bmp=:\
-*.png=:\
-*.webp=:\
-*.gif=:\
-*.ico=:\
-*.twig=:\
-*.cpp=:\
-*.c++=:\
-*.cxx=:\
-*.cc=:\
-*.cp=:\
-*.c=:\
-*.cs=:\
-*.h=:\
-*.hh=:\
-*.hpp=:\
-*.hxx=:\
-*.hs=:\
-*.lhs=:\
-*.nix=:\
-*.lua=:\
-*.java=:\
-*.sh=:\
-*.fish=:\
-*.bash=:\
-*.zsh=:\
-*.ksh=:\
-*.csh=:\
-*.awk=:\
-*.ps1=:\
-*.ml=λ:\
-*.mli=λ:\
-*.diff=:\
-*.db=:\
-*.sql=:\
-*.dump=:\
-*.clj=:\
-*.cljc=:\
-*.cljs=:\
-*.edn=:\
-*.scala=:\
-*.go=:\
-*.dart=:\
-*.xul=:\
-*.sln=:\
-*.suo=:\
-*.pl=:\
-*.pm=:\
-*.t=:\
-*.rss=:\
-'*.f#'=:\
-*.fsscript=:\
-*.fsx=:\
-*.fs=:\
-*.fsi=:\
-*.rs=:\
-*.rlib=:\
-*.d=:\
-*.erl=:\
-*.hrl=:\
-*.ex=:\
-*.exs=:\
-*.eex=:\
-*.leex=:\
-*.heex=:\
-*.vim=:\
-*.ai=:\
-*.psd=:\
-*.psb=:\
-*.ts=:\
-*.tsx=:\
-*.jl=:\
-*.pp=:\
-*.vue=﵂:\
-*.elm=:\
-*.swift=:\
-*.xcplayground=:\
-*.tex=ﭨ:\
-*.r=ﳒ:\
-*.rproj=鉶:\
-*.sol=ﲹ:\
-*.pem=:\
-*gruntfile.coffee=:\
-*gruntfile.js=:\
-*gruntfile.ls=:\
-*gulpfile.coffee=:\
-*gulpfile.js=:\
-*gulpfile.ls=:\
-*mix.lock=:\
-*dropbox=:\
-*.ds_store=:\
-*.gitconfig=:\
-*.gitignore=:\
-*.gitattributes=:\
-*.gitlab-ci.yml=:\
-*.bashrc=:\
-*.zshrc=:\
-*.zshenv=:\
-*.zprofile=:\
-*.vimrc=:\
-*.gvimrc=:\
-*_vimrc=:\
-*_gvimrc=:\
-*.bashprofile=:\
-*favicon.ico=:\
-*license=:\
-*node_modules=:\
-*react.jsx=:\
-*procfile=:\
-*dockerfile=:\
-*docker-compose.yml=:\
-*rakefile=:\
-*config.ru=:\
-*gemfile=:\
-*makefile=:\
-*cmakelists.txt=:\
-*robots.txt=ﮧ:\
-*Gruntfile.coffee=:\
-*Gruntfile.js=:\
-*Gruntfile.ls=:\
-*Gulpfile.coffee=:\
-*Gulpfile.js=:\
-*Gulpfile.ls=:\
-*Dropbox=:\
-*.DS_Store=:\
-*LICENSE=:\
-*React.jsx=:\
-*Procfile=:\
-*Dockerfile=:\
-*Docker-compose.yml=:\
-*Rakefile=:\
-*Gemfile=:\
-*Makefile=:\
-*CMakeLists.txt=:\
-*jquery.min.js=:\
-*angular.min.js=:\
-*backbone.min.js=:\
-*require.min.js=:\
-*materialize.min.js=:\
-*materialize.min.css=:\
-*mootools.min.js=:\
-*vimrc=:\
-Vagrantfile=:\
-*.tar=:\
-*.tgz=:\
-*.arc=:\
-*.arj=:\
-*.taz=:\
-*.lha=:\
-*.lz4=:\
-*.lzh=:\
-*.lzma=:\
-*.tlz=:\
-*.txz=:\
-*.tzo=:\
-*.t7z=:\
-*.zip=:\
-*.z=:\
-*.dz=:\
-*.gz=:\
-*.lrz=:\
-*.lz=:\
-*.lzo=:\
-*.xz=:\
-*.zst=:\
-*.tzst=:\
-*.bz2=:\
-*.bz=:\
-*.tbz=:\
-*.tbz2=:\
-*.tz=:\
-*.deb=:\
-*.rpm=:\
-*.jar=:\
-*.war=:\
-*.ear=:\
-*.sar=:\
-*.rar=:\
-*.alz=:\
-*.ace=:\
-*.zoo=:\
-*.cpio=:\
-*.7z=:\
-*.rz=:\
-*.cab=:\
-*.wim=:\
-*.swm=:\
-*.dwm=:\
-*.esd=:\
-*.jpg=:\
-*.jpeg=:\
-*.mjpg=:\
-*.mjpeg=:\
-*.gif=:\
-*.bmp=:\
-*.pbm=:\
-*.pgm=:\
-*.ppm=:\
-*.tga=:\
-*.xbm=:\
-*.xpm=:\
-*.tif=:\
-*.tiff=:\
-*.png=:\
-*.svg=:\
-*.svgz=:\
-*.mng=:\
-*.pcx=:\
-*.mov=:\
-*.mpg=:\
-*.mpeg=:\
-*.m2v=:\
-*.mkv=:\
-*.webm=:\
-*.ogm=:\
-*.mp4=:\
-*.m4v=:\
-*.mp4v=:\
-*.vob=:\
-*.qt=:\
-*.nuv=:\
-*.wmv=:\
-*.asf=:\
-*.rm=:\
-*.rmvb=:\
-*.flc=:\
-*.avi=:\
-*.fli=:\
-*.flv=:\
-*.gl=:\
-*.dl=:\
-*.xcf=:\
-*.xwd=:\
-*.yuv=:\
-*.cgm=:\
-*.emf=:\
-*.ogv=:\
-*.ogx=:\
-*.aac=:\
-*.au=:\
-*.flac=:\
-*.m4a=:\
-*.mid=:\
-*.midi=:\
-*.mka=:\
-*.mp3=:\
-*.mpc=:\
-*.ogg=:\
-*.ra=:\
-*.wav=:\
-*.oga=:\
-*.opus=:\
-*.spx=:\
-*.xspf=:\
-*.pdf=:\
-"
-
-# }}}
 

@@ -3,6 +3,7 @@ set hidden true
 set ignorecase true
 set drawbox
 set icons true
+set period 1
 
 # custom functions
 cmd mkdir ${{
