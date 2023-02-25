@@ -12,7 +12,7 @@ ctrl + alt + cmd - r : brew services restart yabai
 # alt - return : kitty -1 -d /Users/brian/ --start-as maximized
 # alt - return : /Applications/Alacritty.app/Contents/MacOS/alacritty
 alt - return : sh /Users/brian/.config/skhd/run_alacritty.sh
-# alt - return : wezterm cli spawn --new-window
+alt + cmd - return : /Applications/Firefox.app/Contents/MacOS/firefox
 
 # focus display
 alt - k : yabai -m window --focus north
