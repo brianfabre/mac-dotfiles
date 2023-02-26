@@ -9,128 +9,6 @@ end
 local M = {
 
 	{
-		"catppuccin/nvim",
-		lazy = true,
-		priority = 1000,
-		name = "catppuccin",
-		config = function()
-			require("catppuccin").setup({
-				-- flavour = "mocha", -- latte, frappe, macchiato, mocha
-				flavour = "mocha", -- latte, frappe, macchiato, mocha
-				transparent_background = false,
-				term_colors = true,
-			})
-			-- vim.cmd([[colorscheme catppuccin]])
-		end,
-	},
-	{
-		"folke/tokyonight.nvim",
-		lazy = true,
-		priority = 1000,
-		config = function()
-			require("tokyonight").setup({
-				transparent = false,
-				styles = { sidebars = "transparent", floats = "transparent" },
-				on_highlights = function(hl, c)
-					hl.htmlH1 = { fg = c.teal, underline = true, bold = true }
-					hl.htmlH2 = { fg = c.blue, underline = true, bold = true }
-					hl.htmlH3 = { fg = c.green, underline = true, bold = true }
-					hl.htmlBold = { fg = c.red, bold = true }
-					hl.htmlItalic = { fg = c.magenta, italic = true }
-					hl.htmlBoldItalic = { fg = c.yellow, bold = true, italic = true }
-					hl.htmlLink = { fg = c.orange, underline = true }
-					hl.Comment = { fg = c.dark5 }
-				end,
-			})
-			-- vim.cmd([[colorscheme tokyonight]])
-		end,
-	},
-	{
-		"Mofiqul/dracula.nvim",
-		lazy = true,
-		priority = 1000,
-		config = function()
-			local dracula = require("dracula")
-			dracula.setup({
-				transparent_bg = true, -- default false
-				-- set italic comment
-				italic_comment = true, -- default false
-				overrides = {
-					-- Examples
-					-- NonText = { fg = dracula.colors().white }, -- set NonText fg to white
-					-- NvimTreeIndentMarker = { link = "NonText" }, -- link to NonText highlight
-					-- Nothing = {} -- clear highlight of Nothing
-					htmlH1 = { fg = dracula.colors().cyan, underline = true, bold = true },
-					htmlH2 = { fg = dracula.colors().pink, underline = true, bold = true },
-					htmlH3 = { fg = dracula.colors().green, underline = true, bold = true },
-					htmlH4 = { fg = dracula.colors().orange, underline = true, bold = true },
-					htmlH5 = { fg = dracula.colors().purple, underline = true, bold = true },
-					htmlH6 = { fg = dracula.colors().yellow, underline = true, bold = true },
-					htmlItalic = { fg = dracula.colors().purple, italic = true },
-					htmlLink = { fg = dracula.colors().orange, underline = true },
-					htmlBoldItalic = { fg = dracula.colors().green, bold = true, italic = true },
-					-- Comment = { fg = dracula.colors().comment },
-					Comment = { fg = "#A9A9A9", italic = true },
-				},
-			})
-
-			-- tabline colors
-			local colors = require("dracula").colors()
-			vim.api.nvim_set_hl(0, "MiniTablineCurrent", {
-				bg = colors.comment,
-				fg = colors.yellow,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", {
-				bg = colors.comment,
-				fg = colors.bright_blue,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineHidden", {
-				fg = colors.yellow,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineModifiedHidden", {
-				fg = colors.bright_blue,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineVisible", {
-				bg = "",
-				-- fg = colors.pink,
-			})
-			vim.api.nvim_set_hl(0, "MiniTablineModifiedVisible", {
-				bg = "",
-				fg = colors.comment,
-			})
-			vim.cmd([[colorscheme dracula]])
-			-- should be called later?
-			vim.api.nvim_set_hl(0, "Folded", { fg = "#ABB2BF" })
-			vim.api.nvim_set_hl(0, "Visual", { bg = "#A9A9A9", fg = "#282A36" })
-			-- makes neovim/nvimtree transparent
-			vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "", fg = "" })
-			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "", fg = "" })
-		end,
-	},
-	{
-		"sainnhe/sonokai",
-		priority = 1000,
-		config = function()
-			vim.g.sonokai_style = "atlantis"
-			vim.g.sonokai_better_performance = 1
-		end,
-	},
-	{
-		"echasnovski/mini.base16",
-		lazy = true,
-		priority = 1000,
-		config = function()
-			require("mini.base16").setup({
-				palette = require("mini.base16").mini_palette("#112641", "#e2e98f", 75),
-				-- palette = {
-				-- },
-				name = "minischeme",
-			})
-			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "", bg = "" })
-			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#112641" })
-		end,
-	},
-	{
 		"echasnovski/mini.tabline",
 		config = function()
 			require("mini.tabline").setup({})
@@ -156,7 +34,11 @@ local M = {
 			vim.g.vimwiki_key_mappings = { table_mappings = 0 }
 		end,
 		config = function()
-			vim.cmd([[autocmd FileType vimwiki nnoremap <CR> <cmd>silent VimwikiFollowLink<cr>]])
+			vim.cmd([[
+            autocmd FileType vimwiki nnoremap <CR> <cmd>silent VimwikiFollowLink<cr>
+            " complete file path for external files
+            inoremap <expr> <c-f> fzf#vim#complete#path('rg --files --no-ignore-vcs')
+            ]])
 		end,
 	},
 	{
@@ -183,6 +65,13 @@ local M = {
 			vim.g.vim_markdown_new_list_item_indent = 0 -- no indent when pressing typing 'o'
 			vim.g.vmt_fence_text = "TOC"
 			vim.g.vmt_fence_closing_text = "/TOC"
+
+			vim.cmd([[
+            let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always"
+            let g:zettel_format = '%Y%m%d%H%M%S'
+            let g:zettel_options = [{"disable_front_matter": 1, "template" :  "~/Documents/wiki/template.tpl"}]
+            let g:vimwiki_markdown_link_ext = 1
+            ]])
 		end,
 	},
 	{
@@ -238,23 +127,21 @@ local M = {
 		end,
 	},
 	{
-		"norcalli/nvim-colorizer.lua",
-		cmd = "ColorizerToggle",
-		init = function()
-			vim.opt.termguicolors = true
-		end,
-		config = function()
-			require("colorizer").setup({
-				"*", -- Highlight all files, but customize some others.
-				"!python", -- Exclude vim from highlighting.
-				"!tex", -- Exclude vim from highlighting.
-				-- Exclusion Only makes sense if '*' is specified!
-			})
-		end,
-	},
-	{
 		"jalvesaq/Nvim-R",
 		ft = "r",
+		config = function()
+			vim.cmd([[
+            let R_assign_map = '..'
+            let g:R_auto_start = 2
+            let R_csv_app = 'terminal:vd'
+            " let R_set_omnifunc = []
+            let R_auto_omni = []
+            let R_rconsole_height = winheight(0) / 3
+            let R_rconsole_width = 0
+
+            " au VimResized * let R_rconsole_height = winheight(0) / 3
+            ]])
+		end,
 	},
 	{
 		"lervag/vimtex",
@@ -400,7 +287,6 @@ local M = {
 	{
 		"norcalli/nvim-colorizer.lua",
 		cmd = "ColorizerToggle",
-		-- enabled = false,
 		init = function()
 			vim.opt.termguicolors = true
 		end,
@@ -459,6 +345,7 @@ local M = {
 	},
 	{
 		"knubie/vim-kitty-navigator",
+		enabled = false,
 	},
 	{
 		"karb94/neoscroll.nvim",

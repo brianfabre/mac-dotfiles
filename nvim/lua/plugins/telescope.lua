@@ -37,8 +37,10 @@ local M = {
 					},
 					layout_config = {
 						horizontal = {
-							height = 0.6,
-							width = 0.8,
+							-- height = 0.6,
+							height = 0.99,
+							-- width = 0.8,
+							width = 0.99,
 							preview_width = 0.5,
 						},
 					},
