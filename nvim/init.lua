@@ -41,12 +41,11 @@ vim.api.nvim_set_hl(0, "SpellBad", {
 })
 
 -- require
--- runs python code in new split
-require("bk/run_code")
--- hides tabline when only one buffer
-require("bk/autohide_tabline")
+require("bk/run_code") -- runs python code in new split
+require("bk/autohide_tabline") -- hides tabline when only one buffer
 require("config/options")
 require("config/autocmd")
+require("config/keymaps")
 
 -- colorscheme
 -- vim.cmd([[colorscheme dracula]])
@@ -64,15 +63,3 @@ function! FindAll()
 endfunction
 ]])
 vim.keymap.set("n", "<leader>\\", ":call FindAll()<CR>", { silent = true, desc = "QuickFix search" })
-
-local function close_float()
-	-- removes any stuck floating window
-	for _, win in ipairs(vim.api.nvim_list_wins()) do
-		local config = vim.api.nvim_win_get_config(win)
-		if config.relative ~= "" then
-			vim.api.nvim_win_close(win, false)
-			print("Closing window", win)
-		end
-	end
-end
-vim.keymap.set("n", "<leader>qf", close_float, { silent = true, desc = "Close float" })

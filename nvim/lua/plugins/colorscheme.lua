@@ -5,15 +5,11 @@ local M = {
 		lazy = true,
 		priority = 1000,
 		name = "catppuccin",
-		config = function()
-			require("catppuccin").setup({
-				-- flavour = "mocha", -- latte, frappe, macchiato, mocha
-				flavour = "mocha", -- latte, frappe, macchiato, mocha
-				transparent_background = true,
-				term_colors = true,
-			})
-			-- vim.cmd([[colorscheme catppuccin]])
-		end,
+		opts = {
+			flavour = "mocha", -- latte, frappe, macchiato, mocha
+			transparent_background = true,
+			term_colors = true,
+		},
 	},
 	{
 		"folke/tokyonight.nvim",

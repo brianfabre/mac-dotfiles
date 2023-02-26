@@ -76,11 +76,9 @@ local M = {
 	},
 	{
 		"numToStr/Comment.nvim",
-		config = function()
-			require("Comment").setup({
-				mappings = { extra = false },
-			})
-		end,
+		opts = {
+			mappings = { extra = false },
+		},
 	},
 	{
 		"jiangmiao/auto-pairs",
@@ -90,26 +88,24 @@ local M = {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		config = function()
-			require("nvim-treesitter.configs").setup({
-				-- A list of parser names, or "all"
-				ensure_installed = { "python", "markdown", "lua", "vim", "latex", "r" },
-				auto_install = true,
-				highlight = {
-					enable = true,
-					disable = { "markdown" },
+		opts = {
+			-- A list of parser names, or "all"
+			ensure_installed = { "python", "markdown", "lua", "vim", "latex", "r" },
+			auto_install = true,
+			highlight = {
+				enable = true,
+				disable = { "markdown" },
+			},
+			incremental_selection = {
+				enable = true,
+				keymaps = {
+					init_selection = "<CR>",
+					node_incremental = "<CR>",
+					scope_incremental = "<S-CR>",
+					node_decremental = "<BS>",
 				},
-				incremental_selection = {
-					enable = true,
-					keymaps = {
-						init_selection = "<CR>",
-						node_incremental = "<CR>",
-						scope_incremental = "<S-CR>",
-						node_decremental = "<BS>",
-					},
-				},
-			})
-		end,
+			},
+		},
 	},
 	{
 		"nvim-treesitter/playground",
@@ -193,27 +189,24 @@ local M = {
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 		},
+		opts = {},
 		config = function()
-			require("neoclip").setup()
 			map("n", "<leader>fy", ":Telescope neoclip<cr>", { desc = "Neoclip" })
 		end,
 	},
 	{
 		"kevinhwang91/nvim-bqf",
 		ft = "qf",
-		config = function()
-			-- Adapt fzf's delimiter in nvim-bqf
-			require("bqf").setup({
-				filter = {
-					fzf = {
-						extra_opts = { "--bind", "ctrl-o:toggle-all", "--delimiter", "│" },
-					},
+		opts = {
+			filter = {
+				fzf = {
+					extra_opts = { "--bind", "ctrl-o:toggle-all", "--delimiter", "│" },
 				},
-				preview = {
-					auto_preview = true,
-				},
-			})
-		end,
+			},
+			preview = {
+				auto_preview = true,
+			},
+		},
 	},
 	{
 		"folke/zen-mode.nvim",
@@ -240,12 +233,6 @@ local M = {
 						-- list = false, -- disable whitespace characters
 					},
 				},
-				plugins = {
-					kitty = {
-						enabled = false,
-						font = "+4", -- font size increment
-					},
-				},
 			})
 		end,
 	},
@@ -253,7 +240,6 @@ local M = {
 		"chentoast/marks.nvim",
 		config = function()
 			require("marks").setup({
-				-- force_write_shada = true,
 				mappings = {
 					preview = false,
 					delete_buf = "mda",
@@ -266,23 +252,17 @@ local M = {
 	{
 		"kylechui/nvim-surround",
 		version = "*",
-		config = function()
-			require("nvim-surround").setup({
-				-- Configuration here, or leave empty to use defaults
-			})
-		end,
+		opts = {},
 	},
 	{
 		"rcarriga/nvim-notify",
 		lazy = true,
 		enabled = true,
-		config = function()
-			require("notify").setup({
-				stages = "static",
-				timeout = 2000,
-				render = "minimal",
-			})
-		end,
+		opts = {
+			stages = "static",
+			timeout = 2000,
+			render = "minimal",
+		},
 	},
 	{
 		"norcalli/nvim-colorizer.lua",
@@ -290,21 +270,12 @@ local M = {
 		init = function()
 			vim.opt.termguicolors = true
 		end,
-		config = function()
-			require("colorizer").setup({
-				"*", -- Highlight all files, but customize some others.
-				"!python", -- Exclude vim from highlighting.
-				"!tex", -- Exclude vim from highlighting.
-				-- Exclusion Only makes sense if '*' is specified!
-			})
-		end,
+		opts = {},
 	},
 	{
 		"folke/neodev.nvim",
 		-- enabled = false,
-		config = function()
-			require("neodev").setup({})
-		end,
+		opts = {},
 	},
 	{
 		"rlane/pounce.nvim",
@@ -329,14 +300,12 @@ local M = {
 		"jackMort/ChatGPT.nvim",
 		-- enabled = false,
 		cmd = "ChatGPT",
-		config = function()
-			require("chatgpt").setup({
-				welcome_message = "",
-				openai_params = {
-					max_tokens = 3000,
-				},
-			})
-		end,
+		opts = {
+			welcome_message = "",
+			openai_params = {
+				max_tokens = 3000,
+			},
+		},
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 			"nvim-lua/plenary.nvim",

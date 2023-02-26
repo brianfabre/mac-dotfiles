@@ -56,6 +56,11 @@ local M = {
 					{ type = "padding", val = 1 },
 					dashboard.button("e", " " .. " New file", ":ene <BAR> startinsert <CR>"),
 					dashboard.button("s", " " .. " Search directory", ":Telescope live_grep <CR>"),
+					dashboard.button(
+						"p",
+						" " .. " Projects",
+						":lua require'telescope'.extensions.project.project{} <CR>"
+					),
 					dashboard.button("i", " " .. " Config", ":e $MYVIMRC <CR> :cd %:p:h <CR>"),
 					dashboard.button("w", " " .. " Wiki", ":e /Volumes/MacAsahi/Documents/wiki/index.md <CR>"),
 					dashboard.button("q", " " .. " Quit", ":qa<CR>"),
