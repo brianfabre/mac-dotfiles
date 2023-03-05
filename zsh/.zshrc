@@ -77,6 +77,7 @@ alias n='lf'
 alias rm='rm -i'
 alias mv='mv -i'
 alias ls='ls --color=auto'
+alias neofetch='macchina'
 
 
 # export

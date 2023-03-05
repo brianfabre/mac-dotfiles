@@ -52,7 +52,7 @@ for i in "${!SPACE_ICONS[@]}"; do
                               script="$PLUGIN_DIR/space.sh"             \
                               click_script="yabai -m space --focus $sid"
 done
-#
+
 sketchybar --add item space_separator left                              \
            --set space_separator icon=                                 \
                                  background.padding_left=12              \

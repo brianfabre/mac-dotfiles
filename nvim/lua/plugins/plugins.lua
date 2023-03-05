@@ -87,27 +87,6 @@ local M = {
 		end,
 	},
 	{
-		"nvim-treesitter/nvim-treesitter",
-		opts = {
-			-- A list of parser names, or "all"
-			ensure_installed = { "python", "markdown", "lua", "vim", "latex", "r" },
-			auto_install = true,
-			highlight = {
-				enable = true,
-				disable = { "markdown" },
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<CR>",
-					node_incremental = "<CR>",
-					scope_incremental = "<S-CR>",
-					node_decremental = "<BS>",
-				},
-			},
-		},
-	},
-	{
 		"nvim-treesitter/playground",
 		cmd = "TSPlaygroundToggle",
 	},
@@ -281,35 +260,35 @@ local M = {
 		"rlane/pounce.nvim",
 		config = function()
 			vim.cmd([[nmap F <cmd>Pounce<CR>]])
-			vim.api.nvim_set_hl(0, "PounceMatch", {
-				bg = "#ff0000",
-				fg = "#ffffff",
-			})
-			vim.api.nvim_set_hl(0, "PounceGap", {
-				bg = "#ff0000",
-				fg = "#ffffff",
-			})
-			vim.api.nvim_set_hl(0, "PounceAccept", {
-				bg = "#00FF00",
-				fg = "#000000",
-				bold = true,
-			})
+			-- vim.api.nvim_set_hl(0, "PounceMatch", {
+			-- 	bg = "#ff0000",
+			-- 	fg = "#ffffff",
+			-- })
+			-- vim.api.nvim_set_hl(0, "PounceGap", {
+			-- 	bg = "#ff0000",
+			-- 	fg = "#ffffff",
+			-- })
+			-- vim.api.nvim_set_hl(0, "PounceAccept", {
+			-- 	bg = "#00FF00",
+			-- 	fg = "#000000",
+			-- 	bold = true,
+			-- })
 		end,
 	},
 	{
 		"jackMort/ChatGPT.nvim",
 		-- enabled = false,
 		cmd = "ChatGPT",
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+		},
 		opts = {
 			welcome_message = "",
 			openai_params = {
 				max_tokens = 3000,
 			},
-		},
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
 		},
 	},
 	{
@@ -330,9 +309,9 @@ local M = {
 			-- t["<C-f>"] = { "scroll", { "vim.api.nvim_win_get_height(0)", "true", "450" } }
 			-- t["<C-y>"] = { "scroll", { "-0.10", "false", "100" } }
 			-- t["<C-e>"] = { "scroll", { "0.10", "false", "100" } }
-			-- t["zt"] = { "zt", { "250" } }
+			t["zt"] = { "zt", { "100" } }
 			t["zz"] = { "zz", { "100" } }
-			-- t["zb"] = { "zb", { "250" } }
+			t["zb"] = { "zb", { "100" } }
 
 			require("neoscroll.config").set_mappings(t)
 		end,
