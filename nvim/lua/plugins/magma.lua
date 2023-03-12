@@ -22,7 +22,6 @@ local M = {
 			-- magma options
 			vim.g.magma_automatically_open_output = false
 			-- vim.g.magma_output_window_borders = false
-			vim.g.magma_image_provider = "kitty"
 
 			-- highlights for float
 			-- moved to base16 config

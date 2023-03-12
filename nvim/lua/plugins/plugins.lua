@@ -20,7 +20,7 @@ local M = {
 		init = function()
 			vim.g.vimwiki_list = {
 				{
-					path = "/Volumes/MacAsahi/Documents/wiki/",
+					path = "/Volumes/Bob/wiki/",
 					syntax = "markdown",
 					ext = ".md",
 					diary_rel_path = "journal/",
@@ -188,34 +188,6 @@ local M = {
 		},
 	},
 	{
-		"folke/zen-mode.nvim",
-		cmd = "ZenMode",
-		config = function()
-			require("zen-mode").setup({
-				window = {
-					backdrop = 0.95, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
-					-- height and width can be:
-					-- * an absolute number of cells when > 1
-					-- * a percentage of the width / height of the editor when <= 1
-					-- * a function that returns the width or the height
-					width = 80, -- width of the Zen window
-					height = 0.9, -- height of the Zen window
-					-- by default, no options are changed for the Zen window
-					-- uncomment any of the options below, or add other vim.wo options you want to apply
-					options = {
-						-- signcolumn = "no", -- disable signcolumn
-						number = false, -- disable number column
-						relativenumber = false, -- disable relative numbers
-						cursorline = false, -- disable cursorline
-						cursorcolumn = false, -- disable cursor column
-						-- foldcolumn = "0", -- disable fold column
-						-- list = false, -- disable whitespace characters
-					},
-				},
-			})
-		end,
-	},
-	{
 		"chentoast/marks.nvim",
 		config = function()
 			require("marks").setup({
@@ -259,41 +231,21 @@ local M = {
 	{
 		"rlane/pounce.nvim",
 		config = function()
-			vim.cmd([[nmap F <cmd>Pounce<CR>]])
-			-- vim.api.nvim_set_hl(0, "PounceMatch", {
-			-- 	bg = "#ff0000",
-			-- 	fg = "#ffffff",
-			-- })
-			-- vim.api.nvim_set_hl(0, "PounceGap", {
-			-- 	bg = "#ff0000",
-			-- 	fg = "#ffffff",
-			-- })
-			-- vim.api.nvim_set_hl(0, "PounceAccept", {
-			-- 	bg = "#00FF00",
-			-- 	fg = "#000000",
-			-- 	bold = true,
-			-- })
+			vim.cmd([[nmap / <cmd>Pounce<CR>]])
+			vim.api.nvim_set_hl(0, "PounceMatch", {
+				bg = "#ff0000",
+				fg = "#ffffff",
+			})
+			vim.api.nvim_set_hl(0, "PounceGap", {
+				bg = "#ff0000",
+				fg = "#ffffff",
+			})
+			vim.api.nvim_set_hl(0, "PounceAccept", {
+				bg = "#00FF00",
+				fg = "#000000",
+				bold = true,
+			})
 		end,
-	},
-	{
-		"jackMort/ChatGPT.nvim",
-		-- enabled = false,
-		cmd = "ChatGPT",
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
-		},
-		opts = {
-			welcome_message = "",
-			openai_params = {
-				max_tokens = 3000,
-			},
-		},
-	},
-	{
-		"knubie/vim-kitty-navigator",
-		enabled = false,
 	},
 	{
 		"karb94/neoscroll.nvim",
@@ -315,6 +267,28 @@ local M = {
 
 			require("neoscroll.config").set_mappings(t)
 		end,
+	},
+	{
+		"shortcuts/no-neck-pain.nvim",
+		cmd = "NoNeckPain",
+		opts = {
+			width = 80,
+			buffers = {
+				left = {
+					enabled = true,
+				},
+				right = {
+					enabled = true,
+				},
+			},
+		},
+		-- require("no-neck-pain").setup({
+		-- 	buffers = {
+		-- 		left = {
+		-- 			enabled = false,
+		-- 		},
+		-- 	},
+		-- }),
 	},
 }
 

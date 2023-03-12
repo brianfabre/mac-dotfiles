@@ -64,3 +64,6 @@ map("n", "<leader>li", ":e $MYVIMRC<CR>", { desc = "init.lua" })
 -- resize windows
 map("n", "<leader>=", ':exe "resize +2"<CR>', { desc = "Win size increase" })
 map("n", "<leader>-", ':exe "resize -2"<CR>', { desc = "Win size decrease" })
+
+-- / is used by pounce so remap to ?
+map("n", "?", "/")

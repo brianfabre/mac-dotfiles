@@ -50,8 +50,8 @@ require("config/keymaps")
 -- colorscheme
 -- vim.cmd([[colorscheme dracula]])
 -- vim.cmd([[colorscheme tokyonight-night]])
--- vim.cmd([[colorscheme catppuccin]])
-vim.cmd([[colorscheme sonokai]])
+vim.cmd([[colorscheme catppuccin]])
+-- vim.cmd([[colorscheme sonokai]])
 
 -- functions
 vim.cmd([[

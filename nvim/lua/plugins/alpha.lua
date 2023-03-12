@@ -62,29 +62,27 @@ local M = {
 						":lua require'telescope'.extensions.project.project{} <CR>"
 					),
 					dashboard.button("i", " " .. " Config", ":e $MYVIMRC <CR> :cd %:p:h <CR>"),
-					dashboard.button("w", " " .. " Wiki", ":e /Volumes/MacAsahi/Documents/wiki/index.md <CR>"),
+					dashboard.button("w", " " .. " Wiki", ":e /Volumes/Bob/wiki/index.md <CR>"),
 					dashboard.button("q", " " .. " Quit", ":qa<CR>"),
 				},
 				position = "center",
 			}
 
-			-- local fortune = require("alpha.fortune")
-			local todos = return_todo
-
-			local subheader = {
-				type = "group",
-				-- val = fortune(),
-				val = {
-					{ type = "text", val = "TO-DO", opts = { hl = "SpecialComment", position = "center" } },
-					{ type = "padding", val = 1 },
-					{ type = "text", val = os.date("%a, %B %d"), opts = { hl = "Float", position = "center" } },
-					{ type = "text", val = todos, opts = { hl = "Normal", position = "center" } },
-					-- { type = "text", val = return_todo, opts = { hl = "Normal", position = "center" } },
-				},
-				opts = {
-					position = "center",
-				},
-			}
+			-- local todos = return_todo
+			-- local subheader = {
+			-- 	type = "group",
+			-- 	-- val = fortune(),
+			-- 	val = {
+			-- 		{ type = "text", val = "TO-DO", opts = { hl = "SpecialComment", position = "center" } },
+			-- 		{ type = "padding", val = 1 },
+			-- 		{ type = "text", val = os.date("%a, %B %d"), opts = { hl = "Float", position = "center" } },
+			-- 		{ type = "text", val = todos, opts = { hl = "Normal", position = "center" } },
+			-- 		-- { type = "text", val = return_todo, opts = { hl = "Normal", position = "center" } },
+			-- 	},
+			-- 	opts = {
+			-- 		position = "center",
+			-- 	},
+			-- }
 
 			local plugins = tostring(require("lazy").stats().count)
 
