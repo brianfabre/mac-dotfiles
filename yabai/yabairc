@@ -75,5 +75,6 @@ yabai -m rule --add app="^Stata/MP 16.0$" manage=off
 yabai -m rule --add app="^Flux$" manage=off
 yabai -m rule --add app="^console$" manage=off
 yabai -m rule --add app="^Bitwarden$" manage=off
+yabai -m rule --add app="^Preview$" manage=off
 
 echo "yabai configuration loaded.."

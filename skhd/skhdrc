@@ -15,8 +15,8 @@ alt - return : sh /Users/brian/.config/skhd/run_alacritty.sh
 alt + cmd - return : /Applications/Firefox.app/Contents/MacOS/firefox
 
 # focus display
-alt - k : yabai -m window --focus north
-alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north || yabai -m window --focus stack.next || yabai -m window --focus stack.first
+alt - j : yabai -m window --focus south || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
 alt - h : yabai -m window --focus west || yabai -m window --focus stack.next || yabai -m window --focus stack.first
 alt - l : yabai -m window --focus east || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
 
@@ -70,9 +70,8 @@ alt - 5 : yabai -m space --focus 5
 alt - 6 : yabai -m space --focus 6
 
 # switch between bsp and stack
-alt - w : yabai -m space --layout "$(yabai -m query --spaces --space | jq -r 'if .type == "bsp" then "stack" else "bsp" end')"
+alt - tab : yabai -m space --layout "$(yabai -m query --spaces --space | jq -r 'if .type == "bsp" then "stack" else "bsp" end')"
 # # switch with hyper + [ or ]
 # hyper - 0x1E : yabai -m window --focus stack.next || yabai -m window --focus stack.first
 # hyper - 0x21 : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
 
-alt - n : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~

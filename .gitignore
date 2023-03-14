@@ -1,4 +1,5 @@
-/*
+# /*
+*.*
 !alacritty/
 !karabiner/
 !kitty/
@@ -7,5 +8,4 @@
 !sketchybar/
 !skhd/
 !yabai/
-!zsh/
-.zsh_s*
+!zsh/.zshrc
