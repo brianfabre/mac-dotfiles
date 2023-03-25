@@ -115,6 +115,19 @@ local M = {
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#112641" })
 		end,
 	},
+	{
+		"Mofiqul/vscode.nvim",
+		lazy = true,
+		priority = 1000,
+		config = function()
+			require("vscode").setup({
+				-- transparent = true,
+				italic_comments = true,
+				disable_nvimtree_bg = true,
+			})
+			-- require("vscode").load()
+		end,
+	},
 }
 
 return M

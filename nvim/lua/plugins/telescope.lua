@@ -103,7 +103,6 @@ local M = {
 
 			vim.keymap.set("n", "<leader>ff", function()
 				ts.builtin.find_files(dropdown)
-				-- ts.builtin.find_files(themes.get_ivy())
 			end, { desc = "Files" })
 			vim.keymap.set("n", "<leader>fc", function()
 				ts.builtin.command_history(dropdown)
@@ -118,7 +117,6 @@ local M = {
 			vim.keymap.set("n", "<leader>fm", ts.builtin.marks, { desc = "Marks" })
 			vim.keymap.set("n", "<leader>fl", ts.builtin.highlights, { desc = "Highlights" })
 			vim.keymap.set("n", "<leader>fs", ts.builtin.colorscheme, { desc = "Colorscheme" })
-			vim.keymap.set("n", "<leader>ft", ":ChatGPT<CR>", { desc = "ChatGPT" })
 
 			-- vim.keymap.set(
 			-- 	"n",

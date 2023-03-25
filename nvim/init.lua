@@ -26,13 +26,6 @@ require("lazy").setup("plugins", {
 	},
 })
 
--- vim command
-vim.cmd([[
-" set grep to rg
-set grepprg=rg\ --vimgrep
-set grepformat=%f:%l:%c:%m
-]])
-
 -- highlights
 -- set spell
 vim.api.nvim_set_hl(0, "SpellBad", {
@@ -50,8 +43,9 @@ require("config/keymaps")
 -- colorscheme
 -- vim.cmd([[colorscheme dracula]])
 -- vim.cmd([[colorscheme tokyonight-night]])
-vim.cmd([[colorscheme catppuccin]])
+-- vim.cmd([[colorscheme catppuccin]])
 -- vim.cmd([[colorscheme sonokai]])
+vim.cmd([[colorscheme vscode]])
 
 -- functions
 vim.cmd([[

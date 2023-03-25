@@ -2,8 +2,8 @@ local M = {
 
 	{
 		"xiyaowong/nvim-transparent",
+		enabled = false,
 		opts = {
-			enable = false,
 			extra_groups = {
 				"Folded",
 				"TelescopeNormal",
