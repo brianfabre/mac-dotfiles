@@ -56,7 +56,8 @@ lfcd () {
     fi
 }
 
-bindkey -s '^o' '^ulfcd\n'
+# bindkey -s '^o' '^ulfcd\n'
+alias lf="lfcd"
 
 
 # source fzf

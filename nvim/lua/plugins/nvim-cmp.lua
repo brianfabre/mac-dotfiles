@@ -155,13 +155,15 @@ local M = {
 				}),
 				sources = cmp.config.sources({
 					{ name = "ultisnips" }, -- For ultisnips users
-					{ name = "omni" },
 					{
 						name = "nvim_lsp",
 						entry_filter = function(entry)
 							return require("cmp").lsp.CompletionItemKind.Snippet ~= entry:get_kind()
 						end,
 					},
+					{ name = "omni" },
+					{ name = "buffer" },
+					{ name = "path" },
 				}, {
 					-- { name = 'buffer' },
 					-- { name = "omni", trigger_characters = { "$" } },
@@ -187,6 +189,20 @@ local M = {
 			-- cmp_ultisnips.setup({
 			-- 	filetype_source = "ultisnips_default",
 			-- })
+
+			cmp.setup.filetype("python", {
+				sources = cmp.config.sources({
+					{ name = "ultisnips" },
+					{
+						name = "nvim_lsp",
+						entry_filter = function(entry)
+							return require("cmp").lsp.CompletionItemKind.Snippet ~= entry:get_kind()
+						end,
+					},
+					{ name = "buffer" },
+					{ name = "path" },
+				}),
+			})
 
 			-- disables completion in markdown
 			local autocmd = vim.api.nvim_create_autocmd

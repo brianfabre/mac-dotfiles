@@ -7,8 +7,8 @@ vim.g.loaded_netrwPlugin = 1                             -- disable netrw
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
 vim.opt.pumheight = 7
--- vim.opt.number = true
--- vim.opt.relativenumber = true
+vim.opt.number = true
+vim.opt.relativenumber = true
 vim.opt.splitbelow = true
 vim.opt.mouse = 'a'
 vim.opt.scrolloff = 4                                    -- leaves space when scrolling
@@ -28,6 +28,7 @@ vim.opt.showbreak = '>'                                  -- append '>>' to inden
 vim.opt.swapfile = false
 vim.opt.completeopt = { 'noselect' }
 vim.opt.foldmethod = 'marker'
+vim.opt.laststatus = 3                                   -- global status
 
 -- ## not in use ##
 -- vim.opt.cmdheight = 0

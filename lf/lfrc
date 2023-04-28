@@ -1,5 +1,5 @@
 # options
-set hidden true
+# set hidden true
 set ignorecase true
 set drawbox
 set icons true
@@ -30,6 +30,10 @@ cmd fzf_jump ${{
     lf -remote "send $id $cmd \"$res\""
 }}
 map / :fzf_jump
+
+# # copy file path
+# cmd yank-path $printf '%s' "$fx" | wl-copy
+# map Y yank-path
 
 # custom remaps
 map <enter> open
@@ -143,6 +147,6 @@ cmd zip ${{
     rm -rf $1
 }}
 
-# display images
+# # display images
 # set previewer ~/.config/lf/lf_kitty_preview
 # set cleaner ~/.config/lf/lf_kitty_clean

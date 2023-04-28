@@ -58,7 +58,7 @@ sketchybar --add item space_separator left                              \
                                  background.padding_left=12              \
 # }}}
 
-# front_app{{{
+# front_app {{{
 sketchybar --add item       front_app left                                    \
            --subscribe      front_app front_app_switched                      \
            --set            front_app script="$PLUGIN_DIR/front_app.sh"       \
@@ -105,12 +105,12 @@ sketchybar --subscribe battery system_woke
 # CPU_USE=$(printf "%02.0f"\\n "$(echo "$CPU_SYS*100"  | bc -l)")
 # sketchybar --set cpu label="CPU: ${CPU_USE}%"
 # '
+#
+# sketchybar --add item cpu right
+# sketchybar --set cpu script="$CPU_SCRIPT"
+# sketchybar --set cpu update_freq=2
 
-sketchybar --add item cpu right
-sketchybar --set cpu script="$CPU_SCRIPT"
-sketchybar --set cpu update_freq=2
-
-# sound{{{
+# sound {{{
 sketchybar --add item  sound right                    \
            --set sound update_freq=1                  \
 	               script="$PLUGIN_DIR/sound.sh"  \
