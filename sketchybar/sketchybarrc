@@ -84,10 +84,10 @@ sketchybar --set time update_freq=15
 # ------- Battery ----------
 sketchybar --add item battery right                      \
            --set battery script="$PLUGIN_DIR/battery.sh" \
-                         update_freq=10                  \
+                         update_freq=10
+sketchybar --subscribe battery system_woke
 # sketchybar --set battery label.color=0xffcad3f5
 # sketchybar --set battery icon.color=0xffcad3f5
-sketchybar --subscribe battery system_woke
 
 
 # # ------- RAM Usage ----------
