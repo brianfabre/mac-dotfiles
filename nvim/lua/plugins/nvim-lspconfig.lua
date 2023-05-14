@@ -2,9 +2,10 @@ local M = {
 
 	{
 		"neovim/nvim-lspconfig",
-		-- enabled = false,
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			"seblj/nvim-echo-diagnostics",
+			{ "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
 		},
 		config = function()
 			require("echo-diagnostics").setup({

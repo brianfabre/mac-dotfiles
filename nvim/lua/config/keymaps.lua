@@ -1,9 +1,9 @@
 local function map(mode, lhs, rhs, opts)
-	local options = { noremap = true, silent = true }
-	if opts then
-		options = vim.tbl_extend("force", options, opts)
-	end
-	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+    local options = { noremap = true, silent = true }
+    if opts then
+        options = vim.tbl_extend("force", options, opts)
+    end
+    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
 -- move between panes to left/bottom/top/right
@@ -15,7 +15,8 @@ map("n", "<C-k>", "<C-w>k")
 -- move between buffers
 map("n", "<S-l>", ":bnext<CR>")
 map("n", "<S-h>", ":bprevious<CR>")
-map("n", "<Leader>qq", ":bdelete!<CR>", { desc = "Quit buffer" })
+-- map("n", "<Leader>qq", ":bdelete!<CR>", { desc = "Quit buffer" })
+map("n", "<Leader>qq", ":bp | bd! #<CR>", { desc = "Quit buffer" })
 map("n", "<Leader>qa", ":%bd|e#<CR>:bnext<CR>:bd<CR>e", { desc = "Quit all other buffers" })
 
 -- move line/down

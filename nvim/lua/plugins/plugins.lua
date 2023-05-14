@@ -8,12 +8,12 @@ end
 
 local M = {
 
-	{
-		"echasnovski/mini.tabline",
-		config = function()
-			require("mini.tabline").setup({})
-		end,
-	},
+	-- {
+	-- 	"echasnovski/mini.tabline",
+	-- 	config = function()
+	-- 		require("mini.tabline").setup({})
+	-- 	end,
+	-- },
 	{
 		"vimwiki/vimwiki",
 		-- must initialize before load plugin
@@ -123,26 +123,51 @@ local M = {
 		ft = "tex",
 		config = function()
 			vim.g.vimtex_quickfix_mode = 0
+			vim.cmd([[
+                let g:vimtex_compiler_latexmk = {
+                \ 'executable' : 'latexmk',
+                \ 'options' : [
+                \   '-xelatex',
+                \   '-file-line-error',
+                \   '-synctex=1',
+                \   '-interaction=nonstopmode',
+                \ ],
+                \}
+            ]])
 		end,
 	},
 	{
 		"echasnovski/mini.indentscope",
-		config = function()
-			-- disable indentscope in startify, markdown
-			vim.api.nvim_create_autocmd({ "FileType" }, {
-				pattern = { "alpha", "markdown", "lazy" },
+		event = { "BufReadPre", "BufNewFile" },
+		init = function()
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
 				callback = function()
 					vim.b.miniindentscope_disable = true
 				end,
 			})
-
+		end,
+		config = function()
 			require("mini.indentscope").setup({
+				symbol = "│",
+				options = { try_as_border = true },
 				draw = {
 					delay = 1,
 					animation = require("mini.indentscope").gen_animation.none(),
 				},
 			})
 		end,
+	},
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		event = { "BufReadPost", "BufNewFile" },
+		opts = {
+			-- char = "▏",
+			char = "│",
+			filetype_exclude = { "help", "alpha", "markdown", "neo-tree", "lazy" },
+			show_trailing_blankline_indent = false,
+			show_current_context = false,
+		},
 	},
 	{
 		"dstein64/vim-startuptime",
@@ -221,11 +246,6 @@ local M = {
 		init = function()
 			vim.opt.termguicolors = true
 		end,
-		opts = {},
-	},
-	{
-		"folke/neodev.nvim",
-		-- enabled = false,
 		opts = {},
 	},
 	{

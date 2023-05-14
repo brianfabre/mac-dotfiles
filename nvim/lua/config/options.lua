@@ -25,10 +25,12 @@ vim.opt.linebreak = true                                 -- doesnt split words
 vim.opt.breakindent = true                               -- enable indentation
 vim.opt.breakindentopt = { 'shift:4', 'sbr', 'list:-1' } -- indent by an additional 4 characters on wrapped line
 vim.opt.showbreak = '>'                                  -- append '>>' to indent
-vim.opt.swapfile = false
 vim.opt.completeopt = { 'noselect' }
 vim.opt.foldmethod = 'marker'
 vim.opt.laststatus = 3                                   -- global status
+
+-- vim.opt.swapfile = false
+vim.opt.updatetime = 300
 
 -- ## not in use ##
 -- vim.opt.cmdheight = 0

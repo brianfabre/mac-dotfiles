@@ -2,6 +2,7 @@ local M = {
 
 	{
 		"nvim-tree/nvim-tree.lua",
+		enabled = false,
 		-- keys = { "<leader>v" },
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
