@@ -2,7 +2,7 @@ local M = {
 
     {
         "nvim-telescope/telescope.nvim",
-        cmd = "Telescope",
+        event = { "BufReadPre", "BufNewFile" },
         version = false, -- telescope did only one release, so use HEAD for now
         dependencies = {
             "nvim-lua/plenary.nvim",
@@ -104,19 +104,18 @@ local M = {
             vim.keymap.set("n", "<leader>ff", function()
                 ts.builtin.find_files(dropdown)
             end, { desc = "Files" })
-            vim.keymap.set("n", "<leader>fc", function()
+            vim.keymap.set("n", "<leader>sc", function()
                 ts.builtin.command_history(dropdown)
             end, { desc = "Command history" })
-            vim.keymap.set("n", "<leader>fv", function()
+            vim.keymap.set("n", "<leader>sv", function()
                 ts.builtin.buffers(dropdown)
             end, { desc = "Buffers" })
-            vim.keymap.set("n", "<leader>fg", ts.grep_fuzzy, { desc = "Grep" })
-            vim.keymap.set("n", "<leader>fb", ts.builtin.current_buffer_fuzzy_find, { desc = "Buffer search" })
-            -- vim.keymap.set("n", "<leader>fc", ts.builtin.command_history, {})
-            vim.keymap.set("n", "<leader>fh", ts.builtin.help_tags, { desc = "Help tags" })
-            vim.keymap.set("n", "<leader>fm", ts.builtin.marks, { desc = "Marks" })
-            vim.keymap.set("n", "<leader>fl", ts.builtin.highlights, { desc = "Highlights" })
-            vim.keymap.set("n", "<leader>fs", ts.builtin.colorscheme, { desc = "Colorscheme" })
+            vim.keymap.set("n", "<leader>sg", ts.grep_fuzzy, { desc = "Grep" })
+            vim.keymap.set("n", "<leader>sb", ts.builtin.current_buffer_fuzzy_find, { desc = "Buffer" })
+            vim.keymap.set("n", "<leader>sh", ts.builtin.help_tags, { desc = "Help tags" })
+            vim.keymap.set("n", "<leader>sm", ts.builtin.marks, { desc = "Marks" })
+            vim.keymap.set("n", "<leader>sl", ts.builtin.highlights, { desc = "Highlights" })
+            vim.keymap.set("n", "<leader>ss", ts.builtin.colorscheme, { desc = "Colorscheme" })
 
             -- vim.keymap.set(
             -- 	"n",

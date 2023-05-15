@@ -26,13 +26,6 @@ require("lazy").setup("plugins", {
     },
 })
 
--- highlights
--- set spell
-vim.api.nvim_set_hl(0, "SpellBad", {
-    bg = "#ff0000",
-    fg = "#ffffff",
-})
-
 -- require
 require("bk/run_code") -- runs python code in new split
 -- require("bk/autohide_tabline") -- hides tabline when only one buffer (dont need with bufferline)
@@ -41,12 +34,16 @@ require("config/autocmd")
 require("config/keymaps")
 
 -- colorscheme
--- vim.cmd([[colorscheme dracula]])
-vim.cmd([[colorscheme tokyonight]])
--- vim.cmd([[colorscheme nordic]])
--- vim.cmd([[colorscheme catppuccin]])
--- vim.cmd([[colorscheme sonokai]])
--- vim.cmd([[colorscheme vscode]])
+local function color(theme)
+    vim.cmd("colorscheme " .. theme)
+end
+color("tokyonight")
+-- color("dracula")
+-- color("tokyonight")
+-- color("nordic")
+-- color("catppuccin")
+-- color("sonokai")
+-- color("vscode")
 
 -- functions
 vim.cmd([[
@@ -58,3 +55,10 @@ function! FindAll()
 endfunction
 ]])
 vim.keymap.set("n", "<leader>\\", ":call FindAll()<CR>", { silent = true, desc = "QuickFix search" })
+
+-- highlights
+-- set spell
+vim.api.nvim_set_hl(0, "SpellBad", {
+    bg = "#FF0000",
+    fg = "#FFFFFF",
+})

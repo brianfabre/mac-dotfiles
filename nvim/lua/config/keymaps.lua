@@ -12,12 +12,17 @@ map("n", "<C-l>", "<C-w>l")
 map("n", "<C-j>", "<C-w>j")
 map("n", "<C-k>", "<C-w>k")
 
+-- windows
+map("n", "<leader>wo", "<C-W>p", { desc = "other window" })
+map("n", "<leader>wd", "<C-W>c", { desc = "delete window" })
+map("n", "<leader>w-", "<C-W>s", { desc = "split window below" })
+map("n", "<leader>w|", "<C-W>v", { desc = "split window right" })
+
 -- move between buffers
 map("n", "<S-l>", ":bnext<CR>")
 map("n", "<S-h>", ":bprevious<CR>")
--- map("n", "<Leader>qq", ":bdelete!<CR>", { desc = "Quit buffer" })
-map("n", "<Leader>qq", ":bp | bd! #<CR>", { desc = "Quit buffer" })
-map("n", "<Leader>qa", ":%bd|e#<CR>:bnext<CR>:bd<CR>e", { desc = "Quit all other buffers" })
+map("n", "<Leader>qq", ":bp | bd! #<CR>", { desc = "quit buffer" })
+map("n", "<Leader>qa", ":%bd|e#<CR>:bnext<CR>:bd<CR>e", { desc = "quit all other buffers" })
 
 -- move line/down
 map("n", "<S-Up>", ":m-2<CR>")
@@ -35,15 +40,15 @@ map("n", "x", '"_x')
 map("i", "jk", "<esc>")
 
 -- save
-map("n", "<leader>k", ":update<CR>", { desc = "Save" })
+map("n", "<leader>k", ":update<CR>", { desc = "save" })
 
 -- quit all
-map("n", "<leader>qp", ":qa!<CR>", { desc = "Quit Neovim" })
+map("n", "<leader>qp", ":qa!<CR>", { desc = "quit neovim" })
 
 -- file path
-map("n", "<leader>cw", ":lua print(vim.fn.getcwd())<CR>", { desc = "Echo CWD" })
-map("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Set as working dir" })
-map("n", "<leader>cp", ':let @+=expand("%:p")<CR>', { desc = "Path to clipboard" })
+map("n", "<leader>cw", ":lua print(vim.fn.getcwd())<CR>", { desc = "echo CWD" })
+map("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "set as working dir" })
+map("n", "<leader>cp", ':let @+=expand("%:p")<CR>', { desc = "path to clipboard" })
 
 -- always centers after c-d/c-u
 -- map("n", "<C-d>", "<C-d>zz")
@@ -57,14 +62,18 @@ map("i", ">>", "<c-t>")
 map("v", ".", ":normal .<CR>")
 
 -- open lazy.nvim
-map("n", "<leader>ly", ":Lazy<CR>", { desc = "lazy.nvim" })
+map("n", "<leader>l", ":Lazy<CR>", { desc = "lazy.nvim" })
 
 -- open nvim config
-map("n", "<leader>li", ":e $MYVIMRC<CR>", { desc = "init.lua" })
+map("n", "<leader>oc", ":e $MYVIMRC<CR>", { desc = "config" })
 
 -- resize windows
-map("n", "<leader>=", ':exe "resize +2"<CR>', { desc = "Win size increase" })
-map("n", "<leader>-", ':exe "resize -2"<CR>', { desc = "Win size decrease" })
+map("n", "<leader>=", ':exe "resize +2"<CR>', { desc = "win size increase" })
+map("n", "<leader>-", ':exe "resize -2"<CR>', { desc = "win size decrease" })
 
 -- / is used by pounce so remap to ?
 map("n", "?", "/")
+
+-- ui stuff
+map("n", "<leader>us", ":set invspell<CR>", { desc = "toggle spelling" })
+map("n", "<leader>uw", ":set wrap!<CR>", { desc = "toggle word wrap" })

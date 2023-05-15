@@ -6,11 +6,11 @@ local M = {
         event = { "BufReadPost", "BufNewFile" },
         opts = {
             -- A list of parser names, or "all"
-            ensure_installed = { "python", "markdown", "lua", "vim", "latex", "r" },
+            ensure_installed = { "python", "markdown", "lua", "vim", "r" },
             auto_install = true,
             highlight = {
                 enable = true,
-                disable = { "markdown" },
+                disable = { "markdown", "latex" },
             },
             indent = { enable = true },
             -- incremental_selection = {
