@@ -76,13 +76,13 @@ local M = {
             mappings = { extra = false },
         },
     },
-    {
-        "jiangmiao/auto-pairs",
-        event = "VeryLazy",
-        config = function()
-            vim.g.AutoPairsShortcutFastWrap = "<c-e>"
-        end,
-    },
+    -- {
+    --     "jiangmiao/auto-pairs",
+    --     event = "VeryLazy",
+    --     config = function()
+    --         vim.g.AutoPairsShortcutFastWrap = "<c-e>"
+    --     end,
+    -- },
     {
         "gbprod/substitute.nvim",
         event = "TextYankPost",
@@ -127,6 +127,13 @@ local M = {
                 \ ],
                 \}
             ]])
+        end,
+    },
+    {
+        "echasnovski/mini.pairs",
+        event = "VeryLazy",
+        config = function(_, opts)
+            require("mini.pairs").setup(opts)
         end,
     },
     {

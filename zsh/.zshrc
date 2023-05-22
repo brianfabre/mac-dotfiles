@@ -1,11 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-#if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-#fi
-
-
 # zsh-autocomplete
 #source ~/.zsh_plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 #zstyle ':autocomplete:*' fzf-completion yes
@@ -19,19 +11,6 @@ export HISTCONTROL=ignoredups:erasedups
 # zoxide
 #eval "$(zoxide init zsh)"
 
-
-# auto ls when cd
-# function cd {
-#     if [ -z "$1" ]; then
-#         builtin cd
-#     else
-#         builtin cd "$1"
-#     fi
-#     if [ $? -eq 0 ]; then
-#         ls
-#     fi
-# }
-
 # vim mode
 # bindkey -v
 # KEYTIMEOUT=20
@@ -40,6 +19,19 @@ export HISTCONTROL=ignoredups:erasedups
 # Edit line in vim with ctrl-e:
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
+
+# fd - cd to selected directory
+fd () {
+  local dir
+  dir=$(find ${1:-.} -path '*/Library*' -prune \
+                  -o -path '*/Music' -prune \
+                  -o -path '*/.git' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+                  # -o -path '*/venv' -prune \
+                  # -o -path '*/Repos/*/*' -prune \
+                  # -o -path '*/\.*' -prune \
 
 # lf cd function
 lfcd () {
@@ -72,7 +64,6 @@ alias lg='lazygit'
 alias lz='NVIM_APPNAME=lazyvim nvim'
 # alias cd='z'
 alias n='lf'
-# alias n='lfcd'
 # alias ls='exa -l --icons -h --no-time'
 alias rm='rm -i'
 alias mv='mv -i'
@@ -87,12 +78,6 @@ export LC_ALL=en_US.UTF-8
 export PATH=/usr/local/bin:$PATH
 # export FZF_DEFAULT_OPTS="--height=80% --layout=reverse --info=inline --border --margin=1 --padding=1"
 
-
-#source ~/.zsh_plugins/powerlevel10k/powerlevel10k.zsh-theme
-
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"

@@ -1,4 +1,33 @@
 local M = {
+    {
+        "ahmedkhalf/project.nvim",
+        opts = {
+            -- Methods of detecting the root directory. **"lsp"** uses the native neovim
+            -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
+            -- order matters: if one is not detected, the other is used as fallback. You
+            -- can also delete or rearangne the detection methods.
+            detection_methods = { "lsp", "pattern" },
+
+            -- All the patterns used to detect root dir, when **"pattern"** is in
+            -- detection_methods
+            patterns = { "main.tex", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+
+            -- Don't calculate root dir on specific directories
+            -- Ex: { "~/.cargo/*", ... }
+            exclude_dirs = {},
+
+            -- Show hidden files in telescope
+            show_hidden = false,
+        },
+        event = "VeryLazy",
+        config = function(_, opts)
+            require("project_nvim").setup(opts)
+            require("telescope").load_extension("projects")
+        end,
+        keys = {
+            { "<leader>sp", "<Cmd>Telescope projects<CR>", desc = "projects" },
+        },
+    },
 
     {
         "nvim-telescope/telescope.nvim",
@@ -103,19 +132,19 @@ local M = {
 
             vim.keymap.set("n", "<leader>ff", function()
                 ts.builtin.find_files(dropdown)
-            end, { desc = "Files" })
+            end, { desc = "files" })
             vim.keymap.set("n", "<leader>sc", function()
                 ts.builtin.command_history(dropdown)
-            end, { desc = "Command history" })
+            end, { desc = "command history" })
             vim.keymap.set("n", "<leader>sv", function()
                 ts.builtin.buffers(dropdown)
-            end, { desc = "Buffers" })
-            vim.keymap.set("n", "<leader>sg", ts.grep_fuzzy, { desc = "Grep" })
-            vim.keymap.set("n", "<leader>sb", ts.builtin.current_buffer_fuzzy_find, { desc = "Buffer" })
-            vim.keymap.set("n", "<leader>sh", ts.builtin.help_tags, { desc = "Help tags" })
-            vim.keymap.set("n", "<leader>sm", ts.builtin.marks, { desc = "Marks" })
-            vim.keymap.set("n", "<leader>sl", ts.builtin.highlights, { desc = "Highlights" })
-            vim.keymap.set("n", "<leader>ss", ts.builtin.colorscheme, { desc = "Colorscheme" })
+            end, { desc = "buffers" })
+            vim.keymap.set("n", "<leader>sg", ts.grep_fuzzy, { desc = "grep" })
+            vim.keymap.set("n", "<leader>sb", ts.builtin.current_buffer_fuzzy_find, { desc = "buffer" })
+            vim.keymap.set("n", "<leader>sh", ts.builtin.help_tags, { desc = "help tags" })
+            vim.keymap.set("n", "<leader>sm", ts.builtin.marks, { desc = "marks" })
+            vim.keymap.set("n", "<leader>sl", ts.builtin.highlights, { desc = "highlights" })
+            vim.keymap.set("n", "<leader>ss", ts.builtin.colorscheme, { desc = "colorscheme" })
 
             -- vim.keymap.set(
             -- 	"n",

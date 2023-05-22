@@ -119,14 +119,14 @@ window:
 
 # Font configuration
 font:
-  size: 14.0
+  size: 16.0
   normal:
     # family: FantasqueSansMono Nerd Font Mono
     # family: RobotoMono Nerd Font Mono
     # family: Hack Nerd Font Mono
-    family: JetBrainsMono Nerd Font Mono
+    # family: JetBrainsMono Nerd Font Mono
     # family: SauceCodePro Nerd Font Mono
-    # family: FiraCode Nerd Font Mono
+    family: FiraCode Nerd Font Mono
     # family: NotoSansMono Nerd Font Mono
     # family: Menlo
     style: Regular
@@ -134,9 +134,9 @@ font:
     # family: FantasqueSansMono Nerd Font Mono
     # family: RobotoMono Nerd Font Mono
     # family: Hack Nerd Font Mono
-    family: JetBrainsMono Nerd Font Mono
+    # family: JetBrainsMono Nerd Font Mono
     # family: SauceCodePro Nerd Font Mono
-    # family: FiraCode Nerd Font Mono
+    family: FiraCode Nerd Font Mono
     # family: NotoSansMono Nerd Font Mono
     # family: Menlo
     style: Bold
@@ -144,9 +144,9 @@ font:
     # family: FantasqueSansMono Nerd Font Mono
     # family: RobotoMono Nerd Font Mono
     # family: Hack Nerd Font Mono
-    family: JetBrainsMono Nerd Font Mono
+    # family: JetBrainsMono Nerd Font Mono
     # family: SauceCodePro Nerd Font Mono
-    # family: FiraCode Nerd Font Mono
+    family: FiraCode Nerd Font Mono
     # family: NotoSansMono Nerd Font Mono
     # family: Menlo
     style: Italic
@@ -154,9 +154,9 @@ font:
     # family: FantasqueSansMono Nerd Font Mono
     # family: RobotoMono Nerd Font Mono
     # family: Hack Nerd Font Mono
-    family: JetBrainsMono Nerd Font Mono
+    # family: JetBrainsMono Nerd Font Mono
     # family: SauceCodePro Nerd Font Mono
-    # family: FiraCode Nerd Font Mono
+    family: FiraCode Nerd Font Mono
     # family: NotoSansMono Nerd Font Mono
     # family: Menlo
     style: Bold Italic

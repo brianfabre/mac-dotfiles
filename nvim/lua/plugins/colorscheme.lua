@@ -17,6 +17,10 @@ local M = {
         end,
     },
     {
+        "rebelot/kanagawa.nvim",
+        opts = {},
+    },
+    {
         "catppuccin/nvim",
         lazy = true,
         priority = 1000,
