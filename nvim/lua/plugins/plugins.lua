@@ -174,20 +174,6 @@ local M = {
         cmd = "StartupTime",
     },
     {
-        "SirVer/ultisnips",
-        -- enabled = false,
-        -- event = "InsertEnter",
-        -- event = "BufEnter *.md",
-        init = function()
-            vim.g.UltiSnipsExpandTrigger = ";;"
-        end,
-        config = function()
-            -- vim.g.UltiSnipsExpandTrigger = ";;"
-            -- vim.g.UltiSnipsSnippetDirectories = "$HOME.'/.config/nvim/UltiSnips'"
-            vim.g.UltiSnipsSnippetDirectories = { os.getenv("HOME") .. "/.config/nvim/UltiSnips" }
-        end,
-    },
-    {
         "AckslD/nvim-neoclip.lua",
         event = "TextYankPost",
         opts = {},
@@ -269,6 +255,20 @@ local M = {
             })
         end,
     },
+    -- {
+    --     "SirVer/ultisnips",
+    --     -- enabled = false,
+    --     -- event = "InsertEnter",
+    --     -- event = "BufEnter *.md",
+    --     init = function()
+    --         vim.g.UltiSnipsExpandTrigger = ";;"
+    --     end,
+    --     config = function()
+    --         -- vim.g.UltiSnipsExpandTrigger = ";;"
+    --         -- vim.g.UltiSnipsSnippetDirectories = "$HOME.'/.config/nvim/UltiSnips'"
+    --         vim.g.UltiSnipsSnippetDirectories = { os.getenv("HOME") .. "/.config/nvim/UltiSnips" }
+    --     end,
+    -- },
 }
 
 return M

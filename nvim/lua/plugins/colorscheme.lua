@@ -27,8 +27,8 @@ local M = {
         name = "catppuccin",
         opts = {
             flavour = "mocha", -- latte, frappe, macchiato, mocha
-            transparent_background = true,
-            term_colors = true,
+            -- transparent_background = true,
+            -- term_colors = true,
         },
     },
     {
@@ -43,20 +43,6 @@ local M = {
                     colors.border = "#565f89"
                 end,
             })
-            -- 	require("tokyonight").setup({
-            -- 		transparent = true,
-            -- 		styles = { sidebars = "transparent", floats = "transparent" },
-            -- 		on_highlights = function(hl, c)
-            -- 			hl.htmlH1 = { fg = c.teal, underline = true, bold = true }
-            -- 			hl.htmlH2 = { fg = c.blue, underline = true, bold = true }
-            -- 			hl.htmlH3 = { fg = c.green, underline = true, bold = true }
-            -- 			hl.htmlBold = { fg = c.red, bold = true }
-            -- 			hl.htmlItalic = { fg = c.magenta, italic = true }
-            -- 			hl.htmlBoldItalic = { fg = c.yellow, bold = true, italic = true }
-            -- 			hl.htmlLink = { fg = c.orange, underline = true }
-            -- 			hl.Comment = { fg = c.dark5 }
-            -- 		end,
-            -- 	})
         end,
     },
     {

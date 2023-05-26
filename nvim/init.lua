@@ -1,6 +1,6 @@
-----------------
---   NEOVIM   --
-----------------
+--------------------
+----   NEOVIM   ----
+--------------------
 
 -- leader
 vim.g.mapleader = " "
@@ -28,7 +28,6 @@ require("lazy").setup("plugins", {
 
 -- require
 require("bk/run_code") -- runs python code in new split
--- require("bk/autohide_tabline") -- hides tabline when only one buffer (dont need with bufferline)
 require("config/options")
 require("config/autocmd")
 require("config/keymaps")
@@ -38,11 +37,11 @@ local function color(theme)
     vim.cmd("colorscheme " .. theme)
 end
 -- color("kanagawa")
-color("tokyonight")
+-- color("tokyonight")
 -- color("dracula")
 -- color("tokyonight")
 -- color("nordic")
--- color("catppuccin")
+color("catppuccin")
 -- color("sonokai")
 -- color("vscode")
 

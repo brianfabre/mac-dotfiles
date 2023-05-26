@@ -77,3 +77,6 @@ map("n", "?", "/")
 -- ui stuff
 map("n", "<leader>us", ":set invspell<CR>", { desc = "toggle spelling" })
 map("n", "<leader>uw", ":set wrap!<CR>", { desc = "toggle word wrap" })
+
+-- fastwrap
+map("i", "<C-e>", "<esc>lxep<esc>i")
