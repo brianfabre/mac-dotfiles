@@ -130,35 +130,6 @@ local M = {
         end,
     },
     {
-        "echasnovski/mini.pairs",
-        event = "VeryLazy",
-        config = function(_, opts)
-            require("mini.pairs").setup(opts)
-        end,
-    },
-    {
-        "echasnovski/mini.indentscope",
-        event = { "BufReadPre", "BufNewFile" },
-        init = function()
-            vim.api.nvim_create_autocmd("FileType", {
-                pattern = { "help", "alpha", "markdown", "neo-tree", "lazy" },
-                callback = function()
-                    vim.b.miniindentscope_disable = true
-                end,
-            })
-        end,
-        config = function()
-            require("mini.indentscope").setup({
-                symbol = "│",
-                options = { try_as_border = true },
-                draw = {
-                    delay = 1,
-                    animation = require("mini.indentscope").gen_animation.none(),
-                },
-            })
-        end,
-    },
-    {
         "lukas-reineke/indent-blankline.nvim",
         event = { "BufReadPost", "BufNewFile" },
         opts = {
@@ -255,20 +226,6 @@ local M = {
             })
         end,
     },
-    -- {
-    --     "SirVer/ultisnips",
-    --     -- enabled = false,
-    --     -- event = "InsertEnter",
-    --     -- event = "BufEnter *.md",
-    --     init = function()
-    --         vim.g.UltiSnipsExpandTrigger = ";;"
-    --     end,
-    --     config = function()
-    --         -- vim.g.UltiSnipsExpandTrigger = ";;"
-    --         -- vim.g.UltiSnipsSnippetDirectories = "$HOME.'/.config/nvim/UltiSnips'"
-    --         vim.g.UltiSnipsSnippetDirectories = { os.getenv("HOME") .. "/.config/nvim/UltiSnips" }
-    --     end,
-    -- },
 }
 
 return M
