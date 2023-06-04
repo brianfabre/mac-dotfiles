@@ -75,6 +75,16 @@ local M = {
         opts = {
             mappings = { extra = false },
         },
+        -- config = function()
+        --     require("Comment").setup(opts)
+        --     map("n", "<leader>/", ":normal! gcc<cr>", { desc = "toggle comment line" })
+        --     map(
+        --         "v",
+        --         "<leader>/",
+        --         "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
+        --         { desc = "toggle comment selection" }
+        --     )
+        -- end,
     },
     -- {
     --     "jiangmiao/auto-pairs",

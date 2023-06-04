@@ -10,8 +10,8 @@ ctrl + alt + cmd - r : brew services restart yabai
 
 # open terminal
 # alt - return : kitty -1 -d /Users/brian/ --start-as maximized
-# alt - return : /Applications/Alacritty.app/Contents/MacOS/alacritty
-alt - return : sh /Users/brian/.config/skhd/run_alacritty.sh; yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse
+alt - return : sh /Users/brian/.config/skhd/run_wezterm.sh
+# alt - return : sh /Users/brian/.config/skhd/run_alacritty.sh; yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse
 alt + cmd - return : /Applications/Firefox.app/Contents/MacOS/firefox
 
 # focus display

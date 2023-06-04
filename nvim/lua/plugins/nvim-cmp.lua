@@ -92,6 +92,20 @@ local M = {
                     -- ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
                     -- ["<C-Space>"] = cmp.mapping.complete(),
                     -- ["<C-e>"] = cmp.mapping.abort(),
+                    -- ["<C-n>"] = cmp.mapping(function(fallback)
+                    --     if luasnip.jumpable(1) then
+                    --         luasnip.jump(1)
+                    --     else
+                    --         fallback()
+                    --     end
+                    -- end, { "i", "s" }),
+                    -- ["<C-p>"] = cmp.mapping(function(fallback)
+                    --     if luasnip.jumpable(-1) then
+                    --         luasnip.jump(-1)
+                    --     else
+                    --         fallback()
+                    --     end
+                    -- end, { "i", "s" }),
                     ["<Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })

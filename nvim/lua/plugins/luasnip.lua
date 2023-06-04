@@ -12,6 +12,11 @@ local M = {
         history = true,
         delete_check_events = "TextChanged",
     },
+    config = function()
+        require("luasnip.loaders.from_lua").load({
+            paths = vim.fn["stdpath"]("config") .. "/luasnippets/",
+        })
+    end,
 }
 
 return M
