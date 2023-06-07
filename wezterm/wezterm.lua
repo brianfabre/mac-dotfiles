@@ -13,16 +13,18 @@ end
 -- This is where you actually apply your config choices
 config.font_size = 16
 config.font = wezterm.font_with_fallback({
-    -- "JetBrains Mono",
     "SF Mono",
+    -- "JetBrains Mono",
     -- "IBM Plex Mono",
     { family = "Symbols Nerd Font Mono", scale = 0.75 },
 })
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
+-- config.window_background_opacity = 0.9
 
 -- For example, changing the color scheme:
-config.color_scheme = "Batman"
+-- config.color_scheme = "Catppuccin Macchiato"
+config.color_scheme = "Dracula (Official)"
 
 -- and finally, return the configuration to wezterm
 return config

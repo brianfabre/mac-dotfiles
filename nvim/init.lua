@@ -36,14 +36,12 @@ require("config/keymaps")
 local function color(theme)
     vim.cmd("colorscheme " .. theme)
 end
-color("kanagawa")
+-- color("kanagawa")
 -- color("tokyonight")
 -- color("dracula")
--- color("tokyonight")
 -- color("nordic")
 -- color("catppuccin")
--- color("sonokai")
--- color("vscode")
+color("sonokai")
 
 -- functions
 vim.cmd([[
