@@ -10,7 +10,8 @@ local M = {
 
     {
         "vimwiki/vimwiki",
-        cmd = "VimwikiIndex",
+        -- cmd = "VimwikiIndex",
+        event = "VeryLazy",
         -- must initialize before load plugin
         init = function()
             vim.g.vimwiki_list = {
@@ -45,8 +46,6 @@ local M = {
         -- all vimwiki-related dependencies here
         -- must load vimwiki first
         dependencies = {
-            "michal-h21/vim-zettel",
-            "mzlogin/vim-markdown-toc",
             "godlygeek/tabular",
         },
         config = function()
@@ -58,15 +57,32 @@ local M = {
             vim.g.vim_markdown_frontmatter = 1 -- highlights yaml frontmatter
             vim.g.vim_markdown_toc_autofit = 1
             vim.g.vim_markdown_new_list_item_indent = 0 -- no indent when pressing typing 'o'
-            vim.g.vmt_fence_text = "TOC"
-            vim.g.vmt_fence_closing_text = "/TOC"
-
+        end,
+    },
+    {
+        "michal-h21/vim-zettel",
+        ft = {
+            "vimwiki",
+            "markdown",
+        },
+        config = function()
             vim.cmd([[
             let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always"
             let g:zettel_format = '%Y%m%d%H%M%S'
-            let g:zettel_options = [{"disable_front_matter": 1, "template" :  "~/Documents/wiki/template.tpl"}]
+            let g:zettel_options = [{"disable_front_matter": 1, "template" :  "/Volumes/Bob/wiki/template.tpl"}]
             let g:vimwiki_markdown_link_ext = 1
             ]])
+        end,
+    },
+    {
+        "mzlogin/vim-markdown-toc",
+        ft = {
+            "vimwiki",
+            "markdown",
+        },
+        config = function()
+            vim.g.vmt_fence_text = "TOC"
+            vim.g.vmt_fence_closing_text = "/TOC"
         end,
     },
     {

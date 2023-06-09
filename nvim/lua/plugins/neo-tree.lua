@@ -32,7 +32,7 @@ return {
             use_libuv_file_watcher = true,
         },
         window = {
-            width = 30,
+            width = 25,
             mappings = {
                 ["<space>"] = "none",
             },
@@ -44,19 +44,19 @@ return {
                 expander_expanded = "",
                 expander_highlight = "NeoTreeExpander",
             },
-            -- symbols = {
-            --     -- Change type
-            --     added = "✚",
-            --     deleted = "✖",
-            --     modified = "",
-            --     renamed = "",
-            --     -- Status type
-            --     untracked = "",
-            --     ignored = "",
-            --     unstaged = "",
-            --     staged = "",
-            --     conflict = "",
-            -- },
+            symbols = {
+                -- Change type
+                added = "✚",
+                deleted = "✖",
+                modified = "",
+                renamed = "",
+                -- Status type
+                untracked = "",
+                ignored = "",
+                unstaged = "",
+                staged = "",
+                conflict = "",
+            },
         },
     },
     config = function(_, opts)
