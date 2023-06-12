@@ -10,8 +10,9 @@ local M = {
 
     {
         "vimwiki/vimwiki",
-        -- cmd = "VimwikiIndex",
-        event = "VeryLazy",
+        cmd = "VimwikiIndex",
+        keys = "<space>ww",
+        -- event = "VeryLazy",
         -- must initialize before load plugin
         init = function()
             vim.g.vimwiki_list = {

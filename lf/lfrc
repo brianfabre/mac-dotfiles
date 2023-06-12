@@ -1,5 +1,5 @@
 # options
-# set hidden true
+set hidden true
 set ignorecase true
 set drawbox
 set icons true

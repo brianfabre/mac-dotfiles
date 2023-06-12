@@ -1,22 +1,6 @@
 local M = {
 
     {
-        "AlexvZyl/nordic.nvim",
-        lazy = true,
-        priority = 1000,
-        config = function()
-            -- require("nordic").load()
-            require("nordic").setup({
-                -- Enable bold keywords.
-                bold_keywords = true,
-                telescope = {
-                    -- Available styles: `classic`, `flat`.
-                    style = "classic",
-                },
-            })
-        end,
-    },
-    {
         "rebelot/kanagawa.nvim",
         opts = {},
     },
@@ -27,7 +11,7 @@ local M = {
         name = "catppuccin",
         opts = {
             flavour = "mocha", -- latte, frappe, macchiato, mocha
-            transparent_background = true,
+            transparent_background = false,
             -- term_colors = true,
         },
     },

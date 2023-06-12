@@ -1,4 +1,5 @@
 local M = {
+
     {
         "ahmedkhalf/project.nvim",
         opts = {
@@ -53,6 +54,14 @@ local M = {
             require("telescope").setup({
                 defaults = {
                     file_ignore_patterns = { "%.csv", "%.txt", "%.xml" },
+                    layout_strategy = "vertical",
+                    layout_config = {
+                        height = 0.95,
+                        width = 0.95,
+                        preview_height = 0.5,
+                        mirror = true,
+                        prompt_position = "top",
+                    },
                     mappings = {
                         i = {
                             ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
@@ -64,15 +73,13 @@ local M = {
                             ["<C-o>"] = path_link,
                         },
                     },
-                    layout_config = {
-                        horizontal = {
-                            -- height = 0.6,
-                            height = 0.8,
-                            -- width = 0.8,
-                            width = 0.8,
-                            preview_width = 0.5,
-                        },
-                    },
+                    -- layout_config = {
+                    --     horizontal = {
+                    --         height = 0.8,
+                    --         width = 0.8,
+                    --         preview_width = 0.5,
+                    --     },
+                    -- },
                     preview = {
                         -- hide_on_startup = true, -- hide previewer when picker starts
                     },
@@ -115,6 +122,7 @@ local M = {
                         shorten_path = true,
                         word_match = "-w",
                         only_sort_text = true,
+                        use_regex = true,
                         search = "",
                     })
                 end,
@@ -125,7 +133,23 @@ local M = {
                 width = 0.4,
                 previewer = false,
                 -- prompt_title = false,
+            })
+
+            local dropdown_grep = require("telescope.themes").get_dropdown({
+                borderchars = borderchars_dropdown,
+                -- width = 0.2,
+                previewer = true,
                 preview_title = false,
+                prompt_title = "FZF",
+                shorten_path = true,
+                word_match = "-w",
+                only_sort_text = true,
+                use_regex = true,
+                search = "",
+                layout_config = {
+                    width = 0.8,
+                    height = 0.4,
+                },
             })
 
             local themes = require("telescope.themes")
@@ -140,6 +164,9 @@ local M = {
                 ts.builtin.buffers(dropdown)
             end, { desc = "buffers" })
             vim.keymap.set("n", "<leader>sg", ts.grep_fuzzy, { desc = "grep" })
+            -- vim.keymap.set("n", "<leader>sg", function()
+            --     ts.builtin.grep_string(dropdown_grep)
+            -- end, { desc = "grep" })
             vim.keymap.set("n", "<leader>sb", ts.builtin.current_buffer_fuzzy_find, { desc = "buffer" })
             vim.keymap.set("n", "<leader>sh", ts.builtin.help_tags, { desc = "help tags" })
             vim.keymap.set("n", "<leader>sm", ts.builtin.marks, { desc = "marks" })

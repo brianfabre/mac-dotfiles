@@ -24,7 +24,9 @@ config.hide_tab_bar_if_only_one_tab = true
 
 -- For example, changing the color scheme:
 -- config.color_scheme = "Catppuccin Macchiato"
-config.color_scheme = "Dracula (Official)"
+-- config.color_scheme = "Dracula (Official)"
+config.color_scheme = "GitHub Dark"
+-- config.color_scheme = "Monokai Remastered"
 
 -- and finally, return the configuration to wezterm
 return config

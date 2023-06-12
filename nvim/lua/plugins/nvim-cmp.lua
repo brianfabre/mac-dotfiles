@@ -112,8 +112,8 @@ local M = {
                         -- cmp.select_next_item()
                         elseif luasnip.expand_or_jumpable() then
                             luasnip.expand_or_jump()
-                        elseif has_words_before() then
-                            cmp.complete()
+                        -- elseif has_words_before() then
+                        --     cmp.complete()
                         else
                             fallback()
                         end
@@ -190,7 +190,8 @@ local M = {
             -- disables completion in markdown
             local autocmd = vim.api.nvim_create_autocmd
             autocmd("FileType", {
-                pattern = { "markdown", "sh" },
+                -- pattern = { "markdown", "sh" },
+                pattern = { "sh" },
                 callback = function()
                     require("cmp").setup.buffer({ enabled = false })
                 end,
