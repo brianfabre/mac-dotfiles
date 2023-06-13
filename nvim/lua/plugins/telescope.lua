@@ -58,7 +58,7 @@ local M = {
                     layout_config = {
                         height = 0.95,
                         width = 0.95,
-                        preview_height = 0.5,
+                        -- preview_height = 0.5,
                         mirror = true,
                         prompt_position = "top",
                     },
@@ -130,26 +130,9 @@ local M = {
 
             local dropdown = require("telescope.themes").get_dropdown({
                 borderchars = borderchars_dropdown,
-                width = 0.4,
                 previewer = false,
+                layout_config = { width = 0.4 },
                 -- prompt_title = false,
-            })
-
-            local dropdown_grep = require("telescope.themes").get_dropdown({
-                borderchars = borderchars_dropdown,
-                -- width = 0.2,
-                previewer = true,
-                preview_title = false,
-                prompt_title = "FZF",
-                shorten_path = true,
-                word_match = "-w",
-                only_sort_text = true,
-                use_regex = true,
-                search = "",
-                layout_config = {
-                    width = 0.8,
-                    height = 0.4,
-                },
             })
 
             local themes = require("telescope.themes")

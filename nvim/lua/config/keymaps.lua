@@ -80,3 +80,6 @@ map("n", "<leader>uw", ":set wrap!<CR>", { desc = "toggle word wrap" })
 
 -- fastwrap
 map("i", "<C-e>", "<esc>lxep<esc>i")
+
+map("n", "<leader>\\", ":lua require('config/utils').FindAll()<CR>", { desc = "quickfix search" })
+map("n", "<leader>ur", ":lua require('config/utils').SearchReplace()<CR>", { desc = "search and replace" })

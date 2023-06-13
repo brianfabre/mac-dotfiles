@@ -27,10 +27,7 @@ require("lazy").setup("plugins", {
 })
 
 -- require
-require("bk/run_code") -- runs python code in new split
-require("config/options")
-require("config/autocmd")
-require("config/keymaps")
+require("config")
 
 -- colorscheme
 local function color(theme)
@@ -41,21 +38,3 @@ end
 -- color("tokyonight")
 -- color("dracula")
 color("catppuccin")
-
--- functions
-vim.cmd([[
-function! FindAll()
-  call inputsave()
-  let p = input('Search: ')
-  call inputrestore()
-  execute 'vimgrep "'.p.'" % |copen'
-endfunction
-]])
-vim.keymap.set("n", "<leader>\\", ":call FindAll()<CR>", { silent = true, desc = "QuickFix search" })
-
--- highlights
--- set spell
-vim.api.nvim_set_hl(0, "SpellBad", {
-    bg = "#FF0000",
-    fg = "#FFFFFF",
-})

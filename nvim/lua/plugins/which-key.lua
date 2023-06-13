@@ -20,13 +20,13 @@ local M = {
 
             local wk = require("which-key")
             wk.register({
-                c = { name = "Directory" },
-                f = { name = "Files" },
+                c = { name = "directory" },
+                f = { name = "files" },
                 -- o = { name = "Open ...", g = { "Lazygit" } },
-                o = { name = "Open ..." },
-                p = { name = "Run code" },
-                q = { name = "Quit ..." },
-                s = { name = "Search ..." },
+                o = { name = "open ..." },
+                p = { name = "run code" },
+                q = { name = "quit ..." },
+                s = { name = "search ..." },
                 -- s = {
                 --     name = "Search ...",
                 --     p = { ":cd ~/.local/share/nvim/lazy<CR> :Telescope find_files <CR>", "Plugins" },
