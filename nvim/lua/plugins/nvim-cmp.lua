@@ -3,6 +3,7 @@ local M = {
     {
         "hrsh7th/nvim-cmp",
         event = { "BufReadPre", "BufNewFile" },
+        -- event = "InsertEnter",
         keys = ":",
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",

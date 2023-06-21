@@ -1,5 +1,6 @@
 local M = {
     "L3MON4D3/LuaSnip",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "rafamadriz/friendly-snippets",
         config = function()

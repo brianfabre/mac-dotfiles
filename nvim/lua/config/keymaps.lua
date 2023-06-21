@@ -38,6 +38,8 @@ map("n", "x", '"_x')
 
 -- leave insert mode
 map("i", "jk", "<esc>")
+map("t", "jk", "<C-\\><C-n>")
+map("t", "<Esc>", "<C-\\><C-n>")
 
 -- save
 map("n", "<leader>k", ":update<CR>", { desc = "save" })

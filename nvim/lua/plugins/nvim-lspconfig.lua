@@ -109,6 +109,15 @@ local M = {
 
             require("lspconfig")["pyright"].setup({
                 on_attach = on_attach,
+                settings = {
+                    python = {
+                        analysis = {
+                            -- autoSearchPaths = true,
+                            -- useLibraryCodeForTypes = true,
+                            diagnosticMode = "openFilesOnly",
+                        },
+                    },
+                },
             })
             -- require("lspconfig").jedi_language_server.setup({})
 

@@ -1,6 +1,12 @@
 return {
     "Vigemus/iron.nvim",
-    -- command = "IronRepl",
+    cmd = "IronRepl",
+    keys = {
+        { "<leader>rs", "<cmd>IronRepl<cr>", desc = "start iron" },
+        { "<leader>rr", "<cmd>IronRestart<cr>", desc = "restart iron" },
+        { "<leader>rf", "<cmd>IronFocus<cr>", desc = "focus iron" },
+        { "<leader>rh", "<cmd>IronHide<cr>", desc = "hide iron" },
+    },
     config = function()
         local iron = require("iron.core")
 
@@ -9,12 +15,15 @@ return {
                 -- Whether a repl should be discarded or not
                 scratch_repl = true,
                 -- Your repl definitions come here
+                -- repl_definition = {
+                --     sh = {
+                --         -- Can be a table or a function that
+                --         -- returns a table (see below)
+                --         command = { "zsh" },
+                --     },
+                -- },
                 repl_definition = {
-                    sh = {
-                        -- Can be a table or a function that
-                        -- returns a table (see below)
-                        command = { "zsh" },
-                    },
+                    python = require("iron.fts.python").ipython,
                 },
                 -- How the repl window will be displayed
                 -- See below for more information
@@ -46,8 +55,8 @@ return {
         })
 
         -- iron also has a list of commands, see :h iron-commands for all available commands
-        -- vim.keymap.set("n", "<space>rs", "<cmd>IronRepl<cr>")
-        -- vim.keymap.set("n", "<space>rr", "<cmd>IronRestart<cr>")
+        -- vim.keymap.set("n", "<leader>rs", "<cmd>IronRepl<cr>")
+        -- vim.keymap.set("n", "<leader>rr", "<cmd>IronRestart<cr>")
         -- vim.keymap.set("n", "<space>rf", "<cmd>IronFocus<cr>")
         -- vim.keymap.set("n", "<space>rh", "<cmd>IronHide<cr>")
     end,

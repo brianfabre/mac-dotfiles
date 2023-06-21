@@ -1,35 +1,4 @@
 local M = {
-
-    {
-        "ahmedkhalf/project.nvim",
-        opts = {
-            -- Methods of detecting the root directory. **"lsp"** uses the native neovim
-            -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
-            -- order matters: if one is not detected, the other is used as fallback. You
-            -- can also delete or rearangne the detection methods.
-            detection_methods = { "lsp", "pattern" },
-
-            -- All the patterns used to detect root dir, when **"pattern"** is in
-            -- detection_methods
-            patterns = { "main.tex", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
-
-            -- Don't calculate root dir on specific directories
-            -- Ex: { "~/.cargo/*", ... }
-            exclude_dirs = {},
-
-            -- Show hidden files in telescope
-            show_hidden = false,
-        },
-        event = "VeryLazy",
-        config = function(_, opts)
-            require("project_nvim").setup(opts)
-            require("telescope").load_extension("projects")
-        end,
-        keys = {
-            { "<leader>sp", "<Cmd>Telescope projects<CR>", desc = "projects" },
-        },
-    },
-
     {
         "nvim-telescope/telescope.nvim",
         event = { "BufReadPre", "BufNewFile" },
@@ -55,6 +24,7 @@ local M = {
                 defaults = {
                     file_ignore_patterns = { "%.csv", "%.txt", "%.xml" },
                     layout_strategy = "vertical",
+                    prompt_prefix = "   ",
                     layout_config = {
                         height = 0.95,
                         width = 0.95,
@@ -111,7 +81,6 @@ local M = {
             })
 
             require("telescope").load_extension("fzf")
-            require("telescope").load_extension("neoclip")
 
             -- mappings
             local ts = {
@@ -144,7 +113,8 @@ local M = {
                 ts.builtin.command_history(dropdown)
             end, { desc = "command history" })
             vim.keymap.set("n", "<leader>sv", function()
-                ts.builtin.buffers(dropdown)
+                -- ts.builtin.buffers(dropdown)
+                ts.builtin.buffers()
             end, { desc = "buffers" })
             vim.keymap.set("n", "<leader>sg", ts.grep_fuzzy, { desc = "grep" })
             -- vim.keymap.set("n", "<leader>sg", function()
@@ -163,6 +133,35 @@ local M = {
             -- 	opts
             -- )
         end,
+    },
+    {
+        "ahmedkhalf/project.nvim",
+        opts = {
+            -- Methods of detecting the root directory. **"lsp"** uses the native neovim
+            -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
+            -- order matters: if one is not detected, the other is used as fallback. You
+            -- can also delete or rearangne the detection methods.
+            detection_methods = { "lsp", "pattern" },
+
+            -- All the patterns used to detect root dir, when **"pattern"** is in
+            -- detection_methods
+            patterns = { "main.tex", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+
+            -- Don't calculate root dir on specific directories
+            -- Ex: { "~/.cargo/*", ... }
+            exclude_dirs = {},
+
+            -- Show hidden files in telescope
+            show_hidden = false,
+        },
+        event = "VeryLazy",
+        config = function(_, opts)
+            require("project_nvim").setup(opts)
+            require("telescope").load_extension("projects")
+        end,
+        keys = {
+            { "<leader>sp", "<Cmd>Telescope projects<CR>", desc = "projects" },
+        },
     },
 }
 

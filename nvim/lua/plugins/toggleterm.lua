@@ -3,6 +3,7 @@ local M = {
     {
         "akinsho/toggleterm.nvim",
         keys = { "<leader>ol" },
+        cmd = "ToggleTerm",
         version = "*",
         config = function()
             require("toggleterm").setup({
@@ -35,41 +36,39 @@ local M = {
             })
 
             local Terminal = require("toggleterm.terminal").Terminal
-            local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
-            -- local lf = Terminal:new({ cmd = "lf", hidden = true })
+            local lazygit = Terminal:new({
+                cmd = "lazygit",
+                hidden = true,
+                direction = "float",
+                float_opts = {
+                    border = "none",
+                    width = 100000,
+                    height = 100000,
+                },
+                on_open = function(_)
+                    vim.cmd("startinsert!")
+                    -- vim.cmd "set laststatus=0"
+                end,
+                on_close = function(_)
+                    -- vim.cmd "set laststatus=3"
+                end,
+                count = 99,
+            })
 
-            function _lazygit_toggle()
+            function _LAZYGIT_TOGGLE()
                 lazygit:toggle()
             end
 
-            -- vim.api.nvim_set_keymap(
-            vim.keymap.set("n", "<leader>ol", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
-
-            --//------------------------------------------//--
-            --//     works but messes with settings,      //--
-            --//   e.g. removes numbers, adds tabline,    //--
-            --//                   etc.                   //--
-            --//------------------------------------------//--
-            -- -- lf file picker
-            -- local temp_path = "/tmp/lfpickerpath"
-            -- local lfpicker = Terminal:new({
-            -- 	cmd = "lf -selection-path " .. temp_path,
-            -- 	hide_numbers = "false",
-            -- 	on_close = function(term)
-            -- 		local file = io.open(temp_path, "r")
-            -- 		if file ~= nil then
-            -- 			vim.cmd("tabe " .. file:read("*a"))
-            -- 			file:close()
-            -- 			os.remove(temp_path)
-            -- 		end
-            -- 	end,
-            -- })
-
-            -- function _lfpicker_toggle()
-            -- 	lfpicker:toggle()
+            -- local Terminal = require("toggleterm.terminal").Terminal
+            -- local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+            -- -- local lf = Terminal:new({ cmd = "lf", hidden = true })
+            --
+            -- function _lazygit_toggle()
+            --     lazygit:toggle()
             -- end
-
-            -- vim.api.nvim_set_keymap("n", "<leader>lf", "<cmd>lua _lfpicker_toggle()<CR>", { noremap = true, silent = true })
+            --
+            -- -- vim.api.nvim_set_keymap(
+            -- vim.keymap.set("n", "<leader>ol", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
         end,
     },
 }

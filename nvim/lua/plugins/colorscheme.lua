@@ -2,6 +2,8 @@ local M = {
 
     {
         "rebelot/kanagawa.nvim",
+        lazy = true,
+        priority = 1000,
         opts = {},
     },
     {
@@ -36,7 +38,7 @@ local M = {
         config = function()
             local dracula = require("dracula")
             dracula.setup({
-                transparent_bg = true, -- default false
+                -- transparent_bg = true, -- default false
                 -- set italic comment
                 italic_comment = true, -- default false
                 overrides = {

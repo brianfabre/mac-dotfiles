@@ -172,14 +172,6 @@ local M = {
         cmd = "StartupTime",
     },
     {
-        "AckslD/nvim-neoclip.lua",
-        event = "TextYankPost",
-        opts = {},
-        config = function()
-            map("n", "<leader>sy", ":Telescope neoclip<cr>", { desc = "Neoclip" })
-        end,
-    },
-    {
         "kevinhwang91/nvim-bqf",
         ft = "qf",
         opts = {
@@ -216,7 +208,7 @@ local M = {
     {
         "rcarriga/nvim-notify",
         lazy = true,
-        enabled = true,
+        -- enabled = false,
         opts = {
             stages = "static",
             timeout = 2000,

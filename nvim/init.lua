@@ -26,9 +26,6 @@ require("lazy").setup("plugins", {
     },
 })
 
--- require
-require("config")
-
 -- colorscheme
 local function color(theme)
     vim.cmd("colorscheme " .. theme)
@@ -36,5 +33,8 @@ end
 -- color("kanagawa")
 -- color("sonokai")
 -- color("tokyonight")
--- color("dracula")
-color("catppuccin")
+color("dracula")
+-- color("catppuccin")
+
+-- require
+require("config")
