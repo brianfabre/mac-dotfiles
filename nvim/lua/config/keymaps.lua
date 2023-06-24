@@ -70,8 +70,12 @@ map("n", "<leader>l", ":Lazy<CR>", { desc = "lazy.nvim" })
 map("n", "<leader>oc", ":e $MYVIMRC<CR>", { desc = "config" })
 
 -- resize windows
-map("n", "<leader>=", ':exe "resize +2"<CR>', { desc = "win size increase" })
-map("n", "<leader>-", ':exe "resize -2"<CR>', { desc = "win size decrease" })
+-- map("n", "<leader>=", ':exe "resize +2"<CR>', { desc = "win size increase" })
+-- map("n", "<leader>-", ':exe "resize -2"<CR>', { desc = "win size decrease" })
+map("n", "=", [[<cmd>vertical resize +5<cr>]]) -- make the window biger vertically
+map("n", "-", [[<cmd>vertical resize -5<cr>]]) -- make the window smaller vertically
+map("n", "+", [[<cmd>horizontal resize +2<cr>]]) -- make the window bigger horizontally by pressing shift and =
+map("n", "_", [[<cmd>horizontal resize -2<cr>]]) -- make the window smaller horizontally by pressing shift and -
 
 -- / is used by pounce so remap to ?
 map("n", "?", "/")

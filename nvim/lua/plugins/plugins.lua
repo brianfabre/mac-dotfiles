@@ -1,11 +1,3 @@
-local function map(mode, lhs, rhs, opts)
-    local options = { noremap = true, silent = true }
-    if opts then
-        options = vim.tbl_extend("force", options, opts)
-    end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
 local M = {
 
     {
@@ -92,16 +84,16 @@ local M = {
         opts = {
             mappings = { extra = false },
         },
-        -- config = function()
-        --     require("Comment").setup(opts)
-        --     map("n", "<leader>/", ":normal! gcc<cr>", { desc = "toggle comment line" })
-        --     map(
-        --         "v",
-        --         "<leader>/",
-        --         "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
-        --         { desc = "toggle comment selection" }
-        --     )
-        -- end,
+        config = function(_, opts)
+            require("Comment").setup(opts)
+            vim.keymap.set("n", "<leader>/", ":normal gcc<cr>", { desc = "toggle comment line" })
+            vim.keymap.set(
+                "v",
+                "<leader>/",
+                "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
+                { desc = "toggle comment selection" }
+            )
+        end,
     },
     -- {
     --     "jiangmiao/auto-pairs",
@@ -110,17 +102,6 @@ local M = {
     --         vim.g.AutoPairsShortcutFastWrap = "<c-e>"
     --     end,
     -- },
-    {
-        "gbprod/substitute.nvim",
-        event = "TextYankPost",
-        config = function()
-            require("substitute").setup({})
-            vim.keymap.set("n", "s", "<cmd>lua require('substitute').operator()<cr>", { noremap = true })
-            vim.keymap.set("n", "ss", "<cmd>lua require('substitute').line()<cr>", { noremap = true })
-            vim.keymap.set("n", "S", "<cmd>lua require('substitute').eol()<cr>", { noremap = true })
-            vim.keymap.set("x", "s", "<cmd>lua require('substitute').visual()<cr>", { noremap = true })
-        end,
-    },
     {
         "jalvesaq/Nvim-R",
         ft = "r",
@@ -222,28 +203,6 @@ local M = {
             vim.opt.termguicolors = true
         end,
         opts = {},
-    },
-    {
-        "rlane/pounce.nvim",
-        keys = {
-            { "/", mode = { "n", "x", "o" }, desc = "pounce" },
-        },
-        config = function()
-            vim.cmd([[nmap / <cmd>Pounce<CR>]])
-            vim.api.nvim_set_hl(0, "PounceMatch", {
-                bg = "#ff0000",
-                fg = "#ffffff",
-            })
-            vim.api.nvim_set_hl(0, "PounceGap", {
-                bg = "#ff0000",
-                fg = "#ffffff",
-            })
-            vim.api.nvim_set_hl(0, "PounceAccept", {
-                bg = "#00FF00",
-                fg = "#000000",
-                bold = true,
-            })
-        end,
     },
 }
 

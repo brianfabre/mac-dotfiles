@@ -19,7 +19,5 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end,
 })
 
-return write
-
--- alert(vim.inspect(bufnr))
--- alert(vim.inspect(pos))
+alert(vim.inspect(bufnr))
+alert(vim.inspect(pos))

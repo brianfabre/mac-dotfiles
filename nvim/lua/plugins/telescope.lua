@@ -125,13 +125,6 @@ local M = {
             vim.keymap.set("n", "<leader>sm", ts.builtin.marks, { desc = "marks" })
             vim.keymap.set("n", "<leader>sl", ts.builtin.highlights, { desc = "highlights" })
             vim.keymap.set("n", "<leader>ss", ts.builtin.colorscheme, { desc = "colorscheme" })
-
-            -- vim.keymap.set(
-            -- 	"n",
-            -- 	"<leader>ff",
-            -- 	"<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
-            -- 	opts
-            -- )
         end,
     },
     {

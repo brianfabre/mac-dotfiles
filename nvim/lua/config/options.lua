@@ -10,6 +10,7 @@ vim.opt.pumheight = 7
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.splitbelow = true
+vim.opt.splitright = true
 vim.opt.mouse = 'a'
 vim.opt.scrolloff = 4                                    -- leaves space when scrolling
 vim.opt.hlsearch = false

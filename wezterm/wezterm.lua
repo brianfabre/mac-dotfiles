@@ -11,7 +11,7 @@ if wezterm.config_builder then
 end
 
 -- This is where you actually apply your config choices
-config.font_size = 16
+config.font_size = 15
 config.font = wezterm.font_with_fallback({
     "SF Mono",
     -- "JetBrains Mono",
@@ -20,6 +20,7 @@ config.font = wezterm.font_with_fallback({
 })
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
+config.adjust_window_size_when_changing_font_size = false
 -- config.window_background_opacity = 0.9
 
 -- For example, changing the color scheme:
